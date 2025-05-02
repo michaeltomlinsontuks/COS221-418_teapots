@@ -1,0 +1,17 @@
+name: Prevent Config Files
+
+on: [push]
+
+jobs:
+  check-config-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Check for Config Files
+        run: |
+          if git ls-tree -r HEAD --name-only | grep -E '\.config$|secrets\.json|appsettings\.json'; then
+            echo "Error: Config files are not allowed to be pushed to the repository."
+            exit 1
+          fi
