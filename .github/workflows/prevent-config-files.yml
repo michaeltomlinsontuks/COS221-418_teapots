@@ -11,7 +11,7 @@ jobs:
 
       - name: Check for Config Files
         run: |
-          if git ls-tree -r HEAD --name-only | grep -E '\.config$|secrets\.json|appsettings\.json'; then
+          if git ls-tree -r HEAD --name-only | grep -E '\.config$|secrets\.json|appsettings\.json|config\.php'; then
             echo "Error: Config files are not allowed to be pushed to the repository."
             exit 1
           fi
