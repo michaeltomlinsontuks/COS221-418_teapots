@@ -1,0 +1,36 @@
+# Ignore all `.config` files
+*.config
+
+# Ignore IntelliJ IDEA/JetBrains IDE files
+.idea/
+*.iml
+
+# Ignore Eclipse IDE files
+.project
+.classpath
+.settings/
+
+# Ignore NetBeans IDE files
+nbproject/
+
+# Ignore VSCode files
+.vscode/
+
+# Ignore build and compiled files
+/target/
+/build/
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore logs
+*.log
+
+# Ignore system or temporary files
+.DS_Store
+Thumbs.db
+
+# Ignore environment/dependency files
+node_modules/
+vendor/
