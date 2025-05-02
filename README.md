@@ -1,6 +1,6 @@
 # CompareIt
 
-CompareIt is a next-generation price comparison web application that aggregates up-to-date price listings from various online and physical retailers globally. Our platform offers a clean, user-friendly experience that enables users to browse products, compare prices from different retailers, leave reviews, and manage product data.
+CompareIt is a next-generation price comparison web application that aggregates product listings from various online retailers. Our platform provides a clean, user-friendly experience for users to browse products, compare prices across different retailers, leave reviews, and find the best deals.
 
 ## Table of Contents
 - [Features](#features)
@@ -16,19 +16,20 @@ CompareIt is a next-generation price comparison web application that aggregates 
     - [Review Management](#review-management)
     - [Filter Management](#filter-management)
 - [External API Integration](#external-api-integration)
+- [Mock Data Generation](#mock-data-generation)
 - [Database Structure](#database-structure)
 - [Development Standards](#development-standards)
-- [Mock Data Explanation](#mock-data-explanation)
 
 ## Features
 
 - **User Authentication and Authorization**: Secure login, registration, and API key generation
 - **Product Browsing**: Browse and search for products across multiple categories
-- **Advanced Filtering**: Filter products based on brand, retailer, user rating, and more
-- **Price Comparison**: View dynamic lists of retailers offering products with up-to-date pricing
+- **Advanced Filtering**: Filter products based on brand, category, user rating, and more
+- **Price Comparison**: View dynamic lists of retailers offering products with comparative pricing
 - **User Reviews and Ratings**: Submit, edit, and view product reviews and ratings
-- **Admin Management**: Manage product data, categories, and retailer information
 - **Responsive Design**: Clean interface optimized for both desktop and mobile devices
+- **Product Image Carousel**: View multiple product images for better product assessment
+- **Sorting Options**: Sort products by name, price, discount percentage, and more
 
 ## Project Structure
 
@@ -209,7 +210,7 @@ Retrieves a list of products with basic information for display on the product b
 - `page` (integer, optional): Page number for pagination
 - `limit` (integer, optional): Number of products per page
 - `search` (string, optional): Search term for filtering products
-- `sort` (string, optional): Field to sort by
+- `sort` (string, optional): Field to sort by (name, price, discount)
 - `order` (string, optional): Sort order ("asc" or "desc")
 - `filters` (object, optional): Filter criteria (categories, brands, etc.)
 
@@ -218,9 +219,12 @@ Retrieves a list of products with basic information for display on the product b
   - `productID` (integer): Unique product identifier
   - `productName` (string): Product name
   - `productDescription` (string): Short product description
-  - `productImage` (string): URL to product image
-  - `rating` (number): Average user rating
-  - `brandName` (string): Brand name
+  - `thumbnailImage` (string): URL to product thumbnail image
+  - `customerReviewAverage` (number): Average user rating
+  - `customerReviewCount` (integer): Number of reviews
+  - `manufacturer` (string): Brand/manufacturer name
+  - `bestPrice` (number): Best available price across retailers
+  - `bestCompany` (string): Retailer offering the best price
 
 ##### `getProduct`
 
@@ -233,13 +237,15 @@ Retrieves detailed information about a specific product.
 - Detailed product object:
   - `productID` (integer): Unique product identifier
   - `productName` (string): Product name
-  - `productDescription` (string): Detailed product description
-  - `productImage` (string): URL to primary product image
-  - `productImages` (array): URLs to additional product images
-  - `rating` (number): Average user rating
-  - `brandID` (integer): Brand identifier
-  - `brandName` (string): Brand name
-  - `categories` (array): List of product categories
+  - `longDescription` (string): Detailed product description
+  - `thumbnailImage` (string): URL to primary product image
+  - `imageGallery` (array): URLs to additional product images (from carousel)
+  - `customerReviewAverage` (number): Average user rating
+  - `customerReviewCount` (integer): Number of reviews
+  - `manufacturer` (string): Brand/manufacturer name
+  - `modelNumber` (string): Manufacturer's model number
+  - `category` (string): Product category
+  - `onlineAvailability` (boolean): Whether the product is available online
 
 ##### `getProductComparisons`
 
@@ -250,13 +256,13 @@ Retrieves price comparisons from different retailers for a specific product.
 
 **Response:**
 - Array of comparison objects:
-  - `apiID` (integer): Unique identifier for the retailer API
-  - `apiName` (string): Retailer name
+  - `companyID` (integer): Unique identifier for the retailer
+  - `companyName` (string): Retailer name
   - `price` (number): Current price
   - `discountPercentage` (number): Discount percentage if applicable
   - `originalPrice` (number): Original price before discount
   - `inStock` (boolean): Whether the product is in stock
-  - `lastUpdated` (string): Timestamp of last price update
+  - `addToCartURL` (string): URL for adding the product to cart at the retailer
 
 #### Review Management
 
@@ -337,7 +343,7 @@ Retrieves available product categories.
 
 ##### `getBrands`
 
-Retrieves available product brands.
+Retrieves available product brands/manufacturers.
 
 **Parameters:**
 - `categoryID` (integer, optional): Filter brands by category
@@ -347,67 +353,86 @@ Retrieves available product brands.
   - `brandID` (integer): Unique brand identifier
   - `brandName` (string): Brand name
 
-##### `getAPIs`
-
-Retrieves information about available retailer APIs.
-
-**Parameters:**
-- None
-
-**Response:**
-- Array of API objects:
-  - `apiID` (integer): Unique API identifier
-  - `apiName` (string): Retailer name
-  - `apiType` (string): API type or category
-
 ## External API Integration
 
-CompareIt integrates with various external APIs to retrieve up-to-date product information and pricing. For development purposes, we primarily use:
+CompareIt primarily integrates with the Best Buy API to retrieve accurate product information:
 
-- **Best Buy API**: [Best Buy Developer API Documentation](https://developer.bestbuy.com/)
+- **Best Buy API**: [Best Buy Developer API Documentation](https://bestbuyapis.github.io/api-documentation/)
 
-*Additional API integrations will be documented here as they are implemented.*
+The Best Buy API provides comprehensive product data including:
+- Product specifications
+- Images
+- Pricing
+- Customer reviews
+- Categorization
+
+## Mock Data Generation
+
+For development and demonstration purposes, CompareIt uses a custom MockDataGenerator to create realistic pricing data across multiple fictional retailers.
+
+### MockDataGenerator Features
+
+- Creates 10 fictional retail company data sources
+- Generates prices based on Best Buy pricing with ±10% variation
+- Creates realistic discount percentages
+- Maintains stock status information
+- Generates Add-to-Cart URLs
+- Available at: [GitHub - Mock Data Generator](https://github.com/michaeltomlinsontuks/MockDataGenerator/)
 
 ## Database Structure
 
 ### Core Tables
 
 #### Product
-- `ProductID` (PK): Uniquely identifies the product
-- `ProductName`: Title for the product
-- `ProductDescription`: Product description
-- `ProductImage`: Primary product image URL
-- `ProductImages`: Additional product images (JSON array)
-- `BrandID` (FK): Reference to Brand table
-- `Rating`: Computed average rating
+- `productID` (PK): Uniquely identifies the product
+- `productName`: Title for the product
+- `longDescription`: Detailed product description
+- `thumbnailImage`: Primary product image URL
+- `customerReviewAverage`: Average rating from reviews
+- `customerReviewCount`: Total number of reviews
+- `manufacturer`: Brand/manufacturer name
+- `modelNumber`: Manufacturer's model number
+- `releaseDate`: Product release date
+- `category`: Product category
+- `onlineAvailability`: Whether product is available online
+- `bestPrice`: Best available price across retailers
+- `bestCompany`: Retailer offering the best price
+
+#### ImageGallery
+- `imageID` (PK): Uniquely identifies the image
+- `productID` (FK): Reference to Product table
+- `imageURL`: URL to the image
+- `imageType`: Type of image (main, angle, back, top, etc.)
 
 #### Brand
-- `BrandID` (PK): Uniquely identifies the brand
-- `BrandName`: Brand name
+- `brandID` (PK): Uniquely identifies the brand
+- `brandName`: Brand/manufacturer name
 
 #### Categories
-- `CategoryID` (PK): Uniquely identifies the category
-- `CategoryName`: Category name
-- `CategoryEquivalents`: Array of website-specific categories
+- `categoryID` (PK): Uniquely identifies the category
+- `categoryName`: Category name
+- `categoryEquivalents`: Array of website-specific categories
 
-#### ProductCategoryMap
-- `ProductID` (FK): Reference to Product table
-- `CategoryID` (FK): Reference to Categories table
+#### CompanyList
+- `companyID` (PK): Uniquely identifies the retail company
+- `companyName`: Name of the retail company
+- `companyLogo`: URL to company logo
 
-#### APIList
-- `apiID` (PK): Uniquely identifies the API
-- `apiName`: Name of the retailer API
-- `apiRequestStructure`: API request format
-- `apiResponseStructure`: API response format
-
-#### ProductAPIMap
-- `apiID` (FK): Reference to APIList table
+#### ProductPricing
+- `priceID` (PK): Uniquely identifies the price entry
 - `productID` (FK): Reference to Product table
+- `companyID` (FK): Reference to CompanyList table
+- `price`: Current price
+- `originalPrice`: Original price before discount
+- `discountPercentage`: Discount percentage if applicable
+- `inStock`: Whether the product is in stock
+- `addToCartURL`: URL for adding product to cart
 
 #### User
 - `userID` (PK): Uniquely identifies the user
 - `username`: User's username
 - `password`: Password hash (SHA-512)
+- `email`: User's email address
 - `apiKey`: User's API key
 
 #### Review
@@ -418,11 +443,6 @@ CompareIt integrates with various external APIs to retrieve up-to-date product i
 - `reviewDescription`: Review content
 - `reviewRating`: Rating (1-5)
 - `reviewDate`: Timestamp of when the review was created
-
-#### Best Buy
-- `productID` (FK): Reference to Product table
-- `Price`: Current price
-- `DiscountPercentage`: Discount percentage if applicable
 
 *Full database schema details are available in the Database folder.*
 
@@ -445,20 +465,4 @@ CompareIt integrates with various external APIs to retrieve up-to-date product i
 - Responsive design using percentage-based sizing
 - Minimalistic, clean user interface
 - Accessibility considerations for all users
-
-## Mock Data Explanation
-
-### Sources
-
-Finding sources was extremely difficult as most e-commerce websites only have API access for sellers.
-In practice, a real company would have to negotiate with these companies to get access to their API.
-Given these limitations, there are a few options:
-
-- **Developer API access**
-  - Best Buy
-  - EBay
-  - Amazon - Required Amazon Affiliate Program - Not technically available in South Africa
-- **Web Scrappers**
-  - APIFY - Legality issues
-
-Ultimately we decided to use Best Buy as the source data is clean and structured. Something like EBay has the issue with many different sellers and prices. The API also had the easiest-to-use documentation. Then we made a MockDataGenerator to create realistic subsets for the website to use and compare between.
+- Best Buy logo included in footer (contractual requirement)
