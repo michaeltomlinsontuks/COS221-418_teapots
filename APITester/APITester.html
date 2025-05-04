@@ -10,7 +10,7 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: #f8f9fa;
         }
@@ -20,13 +20,13 @@
         }
         .json-editor {
             font-family: monospace;
-            min-height: 400px; /* Increased height */
-            max-height: none; /* Remove any max height limitation */
+            min-height: 400px;
+            max-height: none;
             resize: vertical;
-            overflow-y: auto; /* Enable vertical scrolling */
-            white-space: pre; /* Preserve formatting */
-            font-size: 14px; /* Readable font size */
-            line-height: 1.5; /* Better line spacing */
+            overflow-y: auto;
+            white-space: pre;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .response-container {
             background-color: #f8f9fa;
@@ -62,87 +62,576 @@
             max-height: none;
             overflow: visible;
         }
+        .error-test {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .error-test-header {
+            background-color: #dc3545;
+            color: white;
+        }
+        .test-history-item {
+            cursor: pointer;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .test-history-item:hover {
+            background-color: #f1f1f1;
+        }
+        .success-response {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .error-response {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .test-suite-item {
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-case-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .nav-tabs .nav-link {
+            cursor: pointer;
+        }
+        .response-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .batch-test-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-result-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .test-passed {
+            background-color: #28a745;
+        }
+        .test-failed {
+            background-color: #dc3545;
+        }
+        .test-pending {
+            background-color: #ffc107;
+        }
+        .api-url-input {
+            margin-bottom: 15px;
+        }
+        .collapsible-section {
+            margin-bottom: 10px;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            padding: 8px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+        }
+        .collapsible-content {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            display: none;
+        }
+        .badge-counter {
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>CompareIt API Tester</h1>
 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h2 class="card-title h5 mb-0">API Request</h2>
-        </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="apiEndpoint" class="form-label">Select API Endpoint:</label>
-                    <select class="form-select" id="apiEndpoint">
-                        <optgroup label="User Management">
-                            <option value="login">login</option>
-                            <option value="register">register</option>
-                            <option value="getUserID">getUserID</option>
-                            <option value="validatePassword">validatePassword</option>
-                            <option value="verifyPassword">verifyPassword</option>
-                            <option value="hashPassword">hashPassword</option>
-                        </optgroup>
-                        <optgroup label="Product Management">
-                            <option value="getProductPage">getProductPage</option>
-                            <option value="getProduct">getProduct</option>
-                            <option value="getProductComparisons">getProductComparisons</option>
-                        </optgroup>
-                        <optgroup label="Review Management">
-                            <option value="addReview">addReview</option>
-                            <option value="removeReview">removeReview</option>
-                            <option value="editReview">editReview</option>
-                            <option value="getReviews">getReviews</option>
-                        </optgroup>
-                        <optgroup label="Filter Management">
-                            <option value="getCategories">getCategories</option>
-                            <option value="getBrands">getBrands</option>
-                        </optgroup>
-                    </select>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h2 class="card-title h5 mb-0">Settings</h2>
+                    <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#settingsCollapse">
+                        <i class="bi bi-gear"></i>
+                    </button>
                 </div>
-                <div class="col-md-6">
-                    <label for="apiKey" class="form-label">API Key:</label>
-                    <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key or guest key">
+                <div class="card-body collapse" id="settingsCollapse">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="apiUrl" class="form-label">API URL:</label>
+                                <input type="text" class="form-control" id="apiUrl" value="api.php" placeholder="Enter API URL">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="defaultApiKey" class="form-label">Default API Key:</label>
+                                <input type="text" class="form-control" id="defaultApiKey" placeholder="Enter default API key">
+                                <div class="form-text">This will be used as the default API key for all requests.</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Parameters:</label>
-                <div id="parameterFields" class="card p-3 mb-3">
-                    <!-- Dynamic parameter fields will be inserted here -->
-                    <p class="text-muted">Select an API endpoint to see parameters</p>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="requestBody" class="form-label">Request JSON:</label>
-                <textarea class="form-control json-editor" id="requestBody" spellcheck="false"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <button id="generateRequest" class="btn btn-secondary me-2">Generate Request</button>
-                <button id="sendRequest" class="btn btn-primary">
-                    Send Request
-                    <span class="spinner-border spinner-border-sm" id="spinner" role="status" aria-hidden="true"></span>
-                </button>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header bg-success text-white">
-            <h2 class="card-title h5 mb-0">API Response</h2>
+    <!-- Main Testing Interface with Tabs -->
+    <ul class="nav nav-tabs mb-3" id="mainTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="single-test-tab" data-bs-toggle="tab" data-bs-target="#single-test" type="button" role="tab">
+                Single Request
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="error-testing-tab" data-bs-toggle="tab" data-bs-target="#error-testing" type="button" role="tab">
+                Error Testing
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="batch-testing-tab" data-bs-toggle="tab" data-bs-target="#batch-testing" type="button" role="tab">
+                Batch Testing
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="test-suites-tab" data-bs-toggle="tab" data-bs-target="#test-suites" type="button" role="tab">
+                Test Suites
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
+                History <span class="badge bg-secondary badge-counter" id="historyCount">0</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="mainTabsContent">
+        <!-- Single Request Tab -->
+        <div class="tab-pane fade show active" id="single-test" role="tabpanel">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="card-title h5 mb-0">API Request</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="apiEndpoint" class="form-label">Select API Endpoint:</label>
+                                    <select class="form-select" id="apiEndpoint">
+                                        <optgroup label="User Management">
+                                            <option value="login">login</option>
+                                            <option value="register">register</option>
+                                            <option value="getUserID">getUserID</option>
+                                            <option value="validatePassword">validatePassword</option>
+                                            <option value="verifyPassword">verifyPassword</option>
+                                            <option value="hashPassword">hashPassword</option>
+                                        </optgroup>
+                                        <optgroup label="Product Management">
+                                            <option value="getProductPage">getProductPage</option>
+                                            <option value="getProduct">getProduct</option>
+                                            <option value="getProductComparisons">getProductComparisons</option>
+                                        </optgroup>
+                                        <optgroup label="Review Management">
+                                            <option value="addReview">addReview</option>
+                                            <option value="removeReview">removeReview</option>
+                                            <option value="editReview">editReview</option>
+                                            <option value="getReviews">getReviews</option>
+                                        </optgroup>
+                                        <optgroup label="Filter Management">
+                                            <option value="getCategories">getCategories</option>
+                                            <option value="getBrands">getBrands</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="apiKey" class="form-label">API Key:</label>
+                                    <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key or guest key">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Parameters:</label>
+                                <div id="parameterFields" class="card p-3 mb-3">
+                                    <!-- Dynamic parameter fields will be inserted here -->
+                                    <p class="text-muted">Select an API endpoint to see parameters</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="requestBody" class="form-label">Request JSON:</label>
+                                <textarea class="form-control json-editor" id="requestBody" spellcheck="false"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <button id="generateRequest" class="btn btn-secondary me-2">Generate Request</button>
+                                <button id="sendRequest" class="btn btn-primary">
+                                    Send Request
+                                    <span class="spinner-border spinner-border-sm" id="spinner" role="status" aria-hidden="true"></span>
+                                </button>
+                                <button id="saveToTestSuite" class="btn btn-outline-success ms-2">
+                                    <i class="bi bi-save"></i> Save to Test Suite
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h2 class="card-title h5 mb-0">API Response</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="responseStatusContainer" class="mb-3" style="display: none;">
+                                <div id="responseStatus" class="response-status"></div>
+                            </div>
+                            <div class="response-container">
+                                <pre id="responseBody">No response yet. Send a request to see results here.</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="response-container">
-                <pre id="responseBody">No response yet. Send a request to see results here.</pre>
+        
+        <!-- Error Testing Tab -->
+        <div class="tab-pane fade" id="error-testing" role="tabpanel">
+            <div class="card">
+                <div class="card-header error-test-header">
+                    <h2 class="card-title h5 mb-0">Error Test Cases</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select class="form-select" id="errorTestEndpoint">
+                                <option value="">Select Endpoint to Test</option>
+                                <optgroup label="User Management">
+                                    <option value="login">login</option>
+                                    <option value="register">register</option>
+                                    <option value="getUserID">getUserID</option>
+                                    <option value="validatePassword">validatePassword</option>
+                                </optgroup>
+                                <optgroup label="Product Management">
+                                    <option value="getProductPage">getProductPage</option>
+                                    <option value="getProduct">getProduct</option>
+                                    <option value="getProductComparisons">getProductComparisons</option>
+                                </optgroup>
+                                <optgroup label="Review Management">
+                                    <option value="addReview">addReview</option>
+                                    <option value="removeReview">removeReview</option>
+                                    <option value="editReview">editReview</option>
+                                    <option value="getReviews">getReviews</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="errorTestCase">
+                                <option value="">Select Error Test Case</option>
+                                <option value="missingAPIKey">Missing API Key</option>
+                                <option value="invalidAPIKey">Invalid API Key</option>
+                                <option value="missingRequiredParams">Missing Required Parameters</option>
+                                <option value="invalidParamType">Invalid Parameter Type</option>
+                                <option value="invalidParamValue">Invalid Parameter Value</option>
+                                <option value="exceedLimits">Exceed Limits/Boundaries</option>
+                                <option value="malformedJSON">Malformed JSON</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="runErrorTest" class="btn btn-danger">Run Error Test</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-dark text-white">
+                                    <h3 class="card-title h6 mb-0">Error Test Request</h3>
+                                </div>
+                                <div class="card-body">
+                                    <textarea class="form-control json-editor" id="errorRequestBody" spellcheck="false" placeholder="Error test request will appear here"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-dark text-white">
+                                    <h3 class="card-title h6 mb-0">Error Test Response</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="response-container">
+                                        <pre id="errorResponseBody">No error test run yet.</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h3 class="card-title h6 mb-0">Error Test Results</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Test Case</th>
+                                        <th>Endpoint</th>
+                                        <th>Expected Error</th>
+                                        <th>Actual Error</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="errorTestResults">
+                                    <tr>
+                                        <td colspan="5" class="text-center">No error tests run yet</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Batch Testing Tab -->
+        <div class="tab-pane fade" id="batch-testing" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h2 class="card-title h5 mb-0">Batch Testing</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <button class="btn btn-outline-primary mb-3" id="createNewBatchTest">
+                            <i class="bi bi-plus-circle"></i> Create New Batch Test
+                        </button>
+                        <button class="btn btn-primary mb-3 ms-2" id="runAllBatchTests">
+                            <i class="bi bi-play-fill"></i> Run All Tests
+                        </button>
+                        <button class="btn btn-outline-danger mb-3 ms-2" id="clearAllBatchTests">
+                            <i class="bi bi-trash"></i> Clear All
+                        </button>
+                    </div>
+                    
+                    <div id="batchTestsContainer">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> Create a new batch test or add tests from the Single Request tab using "Save to Test Suite"
+                        </div>
+                        <!-- Batch tests will be inserted here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Suites Tab -->
+        <div class="tab-pane fade" id="test-suites" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h2 class="card-title h5 mb-0">Test Suites</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="testSuiteName" placeholder="Enter test suite name">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-warning" id="createTestSuite">
+                                <i class="bi bi-plus-circle"></i> Create Test Suite
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                <button class="btn btn-outline-success" id="exportTestSuites">
+                                    <i class="bi bi-download"></i> Export
+                                </button>
+                                <button class="btn btn-outline-primary" id="importTestSuites">
+                                    <i class="bi bi-upload"></i> Import
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="importTestSuitesFile" style="display: none;">
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h3 class="card-title h6 mb-0">Saved Test Suites</h3>
+                                </div>
+                                <div class="card-body test-case-container p-0">
+                                    <ul class="list-group" id="testSuitesList">
+                                        <li class="list-group-item text-center text-muted">No test suites available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h3 class="card-title h6 mb-0">Test Cases</h3>
+                                </div>
+                                <div class="card-body test-case-container" id="testCasesContainer">
+                                    <div class="alert alert-info">
+                                        Select a test suite to view its test cases
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Tab -->
+        <div class="tab-pane fade" id="history" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h2 class="card-title h5 mb-0">Request History</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-danger" id="clearHistory">
+                            <i class="bi bi-trash"></i> Clear History
+                        </button>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h3 class="card-title h6 mb-0">Recent Requests</h3>
+                                </div>
+                                <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                                    <ul class="list-group" id="historyList">
+                                        <li class="list-group-item text-center text-muted">No request history</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h3 class="card-title h6 mb-0">Request</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre id="historyRequest" class="response-container">Select a request from history</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h3 class="card-title h6 mb-0">Response</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre id="historyResponse" class="response-container">Select a request from history</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-sm btn-outline-primary" id="replayRequest" disabled>
+                                    <i class="bi bi-arrow-repeat"></i> Replay Request
+                                </button>
+                                <button class="btn btn-sm btn-outline-success ms-2" id="addToTestSuite" disabled>
+                                    <i class="bi bi-plus-circle"></i> Add to Test Suite
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="APITester.js"></script>
+<!-- Modal for Test Suite Selection -->
+<div class="modal fade" id="testSuiteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Test Suite</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="selectTestSuite" class="form-label">Select a Test Suite:</label>
+                    <select class="form-select" id="selectTestSuite">
+                        <!-- Test suites will be inserted here -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="testCaseName" class="form-label">Test Case Name:</label>
+                    <input type="text" class="form-control" id="testCaseName" placeholder="Enter a name for this test case">
+                </div>
+                <div class="mb-3">
+                    <label for="expectedOutcome" class="form-label">Expected Outcome:</label>
+                    <select class="form-select" id="expectedOutcome">
+                        <option value="success">Success Response</option>
+                        <option value="error">Error Response</option>
+                        <option value="specific">Specific Fields Match</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="specificFieldsContainer" style="display: none;">
+                    <label class="form-label">Specify Fields to Match:</label>
+                    <div id="matchFieldsContainer">
+                        <div class="row mb-2">
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" placeholder="Field path" name="fieldPath[]">
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" placeholder="Expected value" name="fieldValue[]">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-sm btn-outline-danger removeField">
+                                    <i class="bi bi-dash-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addMatchField">
+                        <i class="bi bi-plus-circle"></i> Add Field
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveToSuite">Save to Suite</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap and API Tester JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Original scripts -->
+<script src="UIScripts.js"></script>
+
+<!-- New controller scripts -->
+<script src="SingleRequestScripts.js"></script>
+<script src="ErrorTesting.js"></script>
+<script src="BatchTesting.js"></script>
+<script src="TestSuites.js"></script>
 </body>
 </html>
