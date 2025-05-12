@@ -3,28 +3,32 @@ require_once("header.php")
     ?>
 
 <body>
+
     <?php
     // the get is all that is changed on links 
     //link pagebuilder.php?page="####"
     //onclick="location.href = 'pagebuilder.php?page=products'" />
     //can do this in the items themselves
-    switch ($_GET['page']) {
-        case ("login"):
-            include_once("pages/login.php");
-            break;
-        case ("signUp"):
-            include_once("pages/signup.php");
-            break;
-        case ("products"):
-            include_once("pages/products.php");
-            break;
-        case ("view"):
-            include_once("pages/view.php");
-            break;
-        default:
-            include_once("pages/products.php");
-            break;
-    }
+    if (isset($_GET['page']))
+        switch ($_GET['page']) {
+            case ("login"):
+                include_once("pages/login.php");
+                break;
+            case ("signUp"):
+                include_once("pages/signup.php");
+                break;
+            case ("products"):
+                include_once("pages/products.php");
+                break;
+            case ("view"):
+                include_once("pages/view.php");
+                break;
+            default:
+                include_once("pages/products.php");
+                break;
+        }
+    else
+        include_once "pages/products.php";
     ?>
     <?php
     require_once("footer.php")
