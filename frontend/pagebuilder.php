@@ -7,7 +7,7 @@ require_once("header.php")
     // the get is all that is changed on links 
     //link pagebuilder.php?page="####"
     //onclick="location.href = 'pagebuilder.php?page=products'" />
-    
+    //can do this in the items themselves
     switch ($_GET['page']) {
         case ("login"):
             include_once("pages/login.php");
@@ -22,6 +22,7 @@ require_once("header.php")
             include_once("pages/view.php");
             break;
         default:
+            include_once("pages/products.php");
             break;
     }
     ?>
