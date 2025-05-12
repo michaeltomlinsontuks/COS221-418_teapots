@@ -6,13 +6,13 @@ require_once("header.php")
 
     <div class="headingBar">
 
-        <div class="filterOverlay" id="overlay">
-            <?php
-            if (isset($_GET['page']) && $_GET['page'] == "products") {
-                echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
-            }
-            ?>
-        </div>
+        <?php
+        if (isset($_GET['page']) && $_GET['page'] == "products") {
+            echo "<div class=\"filterOverlay\" id=\"overlay\">";
+            echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
+            echo "</div>";
+        }
+        ?>
         <div class="titleUnder">
 
 
