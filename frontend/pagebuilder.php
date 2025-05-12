@@ -5,12 +5,19 @@ require_once("header.php")
 <body>
 
     <div class="headingBar">
+
         <?php
+        if (isset($_GET['page']) && $_GET['page'] == "products") {
+            echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\">";
+        }
+
+
         if (isset($_GET['page']))
             echo $_GET['page'];
         else
             echo "products"
                 ?>
+
         </div>
 
         <div class="contentContainer">
