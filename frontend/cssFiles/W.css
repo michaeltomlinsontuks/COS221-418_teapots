@@ -1,0 +1,12 @@
+.headingBar
+{
+    width: 100%;
+    height: 7vh;
+    font-size: 25pt;
+    text-align: center;
+}
+.contentContainer
+{
+    border: solid black 3px;
+    height: 90vh;
+}
