@@ -11,17 +11,16 @@ require_once("header.php")
             echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\">";
         }
 
-
         if (isset($_GET['page']))
             echo $_GET['page'];
         else
-            echo "products"
-                ?>
+            echo "products";
+        ?>
 
-        </div>
+    </div>
 
-        <div class="contentContainer">
-            <?php
+    <div class="contentContainer">
+        <?php
         // the get is all that is changed on links 
         //link pagebuilder.php?page="####"
         //onclick="location.href = 'pagebuilder.php?page=products'" />
