@@ -1,12 +1,30 @@
 //### var initialization ###
 
 var table;
-
+var menuBtn;
+var overlay;
+var overlayExtended;
 //### var initialization ###
 document.addEventListener("DOMContentLoaded", initialiseVar);
 
 function initialiseVar() {
     table = document.getElementById("PTID");
+    menuBtn = document.getElementById("menu");
+    overlay = document.getElementById("overlay");
+    overlayExtended = false;
+    menuBtn.addEventListener("click", function () {
+
+        if (overlayExtended === false) {
+            overlay.style.animation = "overlayGrow 3s ease-in-out forwards"
+            overlayExtended = true;
+            console.log("i ran");
+        }
+        else {
+            overlay.style.animation = "overlayShrink 3s ease-in-out forwards"
+            overlayExtended = false;
+        }
+    })
+
     insertTd();
 }
 

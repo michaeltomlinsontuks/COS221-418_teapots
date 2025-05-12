@@ -7,11 +7,61 @@
     border-bottom: 0;
     position: relative;
     align-content: center;
+    z-index: 0;
+}
+
+.filterOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    z-index: 1;
+    outline: solid black 3px;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    justify-content: center;
+    align-content: center;
+}
+
+@keyframes overlayGrow {
+    from {
+        width: 64px;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes overlayShrink {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 64px;
+    }
+}
+
+.titleUnder {
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    top: 0;
 }
 
 .headingBar input {
     position: absolute;
     left: 20px;
+    top: 30%;
+    width: 32px;
+    z-index: 1;
 }
 
 .contentContainer {
