@@ -15,7 +15,7 @@
 
     <select #SID>
         <option value="customer">customer</option>
-        <option value="courier">admin</option>
+        <option value="courier">seller</option>
     </select>
     <br>
 
