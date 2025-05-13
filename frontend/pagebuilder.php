@@ -7,6 +7,9 @@ require_once("header.php")
     <div class="headingBar">
 
         <?php
+
+
+
         if (isset($_GET['page']) && $_GET['page'] == "products") {
             echo "<div class=\"filterOverlay\" id=\"overlay\">";
             echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
@@ -17,12 +20,24 @@ require_once("header.php")
 
 
             <?php
-            if (isset($_GET['page']))
+            if (isset($_GET['page'])) {
                 echo $_GET['page'];
-            else
+
+                $page = $_GET['page'];
+                if ($page == "signup" || $page == "login") {
+                    if ($page == "signup")
+                        $page = "login?";
+                    else
+                        $page = "signup?";
+
+                    echo "<input type=\"button\" id = \"CHID\" value =$page  class = \"changeDir\">";
+                }
+
+            } else
                 echo "products";
             ?>
         </div>
+
     </div>
 
     <div class="contentContainer">
@@ -36,7 +51,7 @@ require_once("header.php")
                 case ("login"):
                     include_once("pages/login.php");
                     break;
-                case ("signUp"):
+                case ("signup"):
                     include_once("pages/signup.php");
                     break;
                 case ("products"):

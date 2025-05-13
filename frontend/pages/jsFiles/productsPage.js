@@ -15,12 +15,11 @@ function initialiseVar() {
     menuBtn.addEventListener("click", function () {
 
         if (overlayExtended === false) {
-            overlay.style.animation = "overlayGrow 3s ease-in-out forwards"
+            overlay.style.animation = "overlayGrow 1.5s ease-in-out forwards"
             overlayExtended = true;
-            console.log("i ran");
         }
         else {
-            overlay.style.animation = "overlayShrink 3s ease-in-out forwards"
+            overlay.style.animation = "overlayShrink 1.5s ease-in-out forwards"
             overlayExtended = false;
         }
     })
@@ -62,7 +61,7 @@ function insertTd() {
 
             var imgInput = document.createElement("input");
             imgInput.type = "image";
-            imgInput.src = "insertIn";
+            imgInput.src = "";
             imgInput.alt = "Image goes here";
             imgInput.className = "productImage";
             imgDiv.className = "productImageDiv";
