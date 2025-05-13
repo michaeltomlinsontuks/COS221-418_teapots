@@ -20,9 +20,13 @@ function getInputParameters() {
         $handle = fopen("php://stdin", "r");
         $line = fgets($handle);
         fclose($handle);
-        $params['tableName'] = trim($line);
+        $line = trim($line);
+        if (!empty($line)) {
+            $params['tableName'] = $line;
+        }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $params['tableName'] = isset($_POST['tableName']) ? trim($_POST['tableName']) : $params['tableName'];
+        $params['tableName'] = isset($_POST['tableName']) && !empty($_POST['tableName']) ?
+            trim($_POST['tableName']) : $params['tableName'];
         $params['productPercentage'] = isset($_POST['productPercentage']) ? (int)$_POST['productPercentage'] : $params['productPercentage'];
         $params['priceMin'] = isset($_POST['priceMin']) ? (int)$_POST['priceMin'] : $params['priceMin'];
         $params['priceMax'] = isset($_POST['priceMax']) ? (int)$_POST['priceMax'] : $params['priceMax'];
@@ -36,9 +40,16 @@ function getInputParameters() {
 }
 
 $conn = getConnection();
+// After getting input parameters
 $params = getInputParameters();
 
+// Validate and clean the table name
 $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $params['tableName']);
+
+// Check if the table name is empty after sanitization
+if (empty($tableName)) {
+    die("Error: Please provide a valid table name containing only letters, numbers, or underscores.");
+}
 $productPercentage = $params['productPercentage'];
 $priceMin = $params['priceMin'];
 $priceMax = $params['priceMax'];
@@ -46,13 +57,13 @@ $discountMin = $params['discountMin'];
 $discountMax = $params['discountMax'];
 $discountedProductPercentage = $params['discountedProductPercentage'];
 
-$prodTableName = "Products";
+// Update table and column names to match the database schema
+$prodTableName = "Product";
 $productID = "ProductID";
-$initialPrice = "initial_price";
-$finalPrice = "final_price";
+$initialPrice = "SalePrice";
 
 //Select all the products
-$query = "SELECT $productID, $initialPrice, $finalPrice FROM $prodTableName";
+$query = "SELECT $productID, $initialPrice FROM $prodTableName";
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
@@ -91,7 +102,7 @@ $numProductsToDiscount = ceil(count($randomProducts) * ($discountedProductPercen
 for ($i = 0; $i < count($randomProducts); $i++) {
     // Adjust initial price for all products
     $adjustmentFactor = (mt_rand(-$priceMin, $priceMax) / 100) + 1;
-    $randomProducts[$i]['adjusted_initial'] = round($randomProducts[$i][$initialPrice] * $adjustmentFactor, 2);
+    $randomProducts[$i]['regularPrice'] = round($randomProducts[$i][$initialPrice] * $adjustmentFactor, 2);
 
     // Apply discount only to the percentage of products that should get discounts
     if ($i < $numProductsToDiscount) {
@@ -100,19 +111,15 @@ for ($i = 0; $i < count($randomProducts); $i++) {
         $discountPercentage = 0; // No discount
     }
 
-    $randomProducts[$i]['discount_pct'] = $discountPercentage;
-    $randomProducts[$i]['final_adjusted'] = round($randomProducts[$i]['adjusted_initial'] * (1 - $discountPercentage/100), 2);
+    $randomProducts[$i]['discountedPrice'] = round($randomProducts[$i]['regularPrice'] * (1 - $discountPercentage/100), 2);
 }
 
-//Create the new table and insert the new products array into it
-$createTableQuery = "CREATE TABLE IF NOT EXISTS $tableName (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+$createTableQuery = "CREATE TABLE IF NOT EXISTS `$tableName` (
     product_id INT NOT NULL,
-    original_initial_price DECIMAL(10, 2) NOT NULL,
-    adjusted_initial_price DECIMAL(10, 2) NOT NULL,
-    discount_percentage INT NOT NULL,
-    final_price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES $prodTableName($productID)
+    regularPrice DECIMAL(10, 2) NOT NULL,
+    discountedPrice DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (product_id),
+    CONSTRAINT `fk_{$tableName}_product_id` FOREIGN KEY (product_id) REFERENCES `$prodTableName`(`$productID`)
 )";
 
 if (!mysqli_query($conn, $createTableQuery)) {
@@ -120,7 +127,7 @@ if (!mysqli_query($conn, $createTableQuery)) {
 }
 
 // Insert products into the new table
-$insertQuery = "INSERT INTO $tableName (product_id, original_initial_price, adjusted_initial_price, discount_percentage, final_price) VALUES (?, ?, ?, ?, ?)";
+$insertQuery = "INSERT INTO $tableName (product_id, regularPrice, discountedPrice) VALUES (?, ?, ?)";
 $stmt = mysqli_prepare($conn, $insertQuery);
 
 if (!$stmt) {
@@ -129,12 +136,10 @@ if (!$stmt) {
 
 // Insert each product
 foreach ($randomProducts as $product) {
-    mysqli_stmt_bind_param($stmt, "iddid",
+    mysqli_stmt_bind_param($stmt, "idd",
         $product[$productID],
-        $product[$initialPrice],
-        $product['adjusted_initial'],
-        $product['discount_pct'],
-        $product['final_adjusted']
+        $product['regularPrice'],
+        $product['discountedPrice']
     );
 
     if (!mysqli_stmt_execute($stmt)) {
