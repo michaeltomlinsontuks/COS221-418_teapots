@@ -1,0 +1,186 @@
+.headingBar {
+    width: 100%;
+    height: 10vh;
+    font-size: 25pt;
+    text-align: center;
+    border: solid black 3px;
+    border-bottom: 0;
+    position: relative;
+    align-content: center;
+    z-index: 0;
+}
+
+.filterOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    z-index: 1;
+    outline: solid black 3px;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    justify-content: center;
+    align-content: center;
+}
+
+@keyframes overlayGrow {
+    from {
+        width: 64px;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes overlayShrink {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 64px;
+    }
+}
+
+.titleUnder {
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    top: 0;
+}
+
+.headingBar input:not(#CHID) {
+    position: absolute;
+    left: 20px;
+    top: 30%;
+    width: 32px;
+    z-index: 1;
+}
+
+.contentContainer {
+    border: solid black 3px;
+    height: 85vh;
+    width: 100%;
+}
+
+.menu {
+    width: 32px;
+    height: 64;
+}
+
+.scrollDiv {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.productsTable {
+    height: 100%;
+    width: 100%;
+}
+
+.productsTable td {
+    outline: solid black 3px;
+    height: 33vh !important;
+    width: 33%;
+}
+
+.productImageDiv {
+
+    width: 50%;
+    height: 100%;
+}
+
+.productImageDiv input {
+    width: 98%;
+    height: 98%;
+    text-align: center;
+    align-content: center;
+    outline: dotted black 5px;
+    margin-left: 2%;
+}
+
+.productsText {
+    width: 50%;
+    height: 100%;
+}
+
+.productsText div {
+    outline: dotted black 5px;
+    width: 90%;
+    height: 30%;
+    text-align: center;
+    align-content: center;
+    margin: 3%;
+    margin-left: 4%;
+}
+
+.productContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.login,
+.signup {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    font-size: 20pt;
+}
+
+.login input,
+select,
+.signup input,
+select {
+    width: 40%;
+    height: 8%;
+    font-size: 20pt;
+    text-align: center;
+    margin-bottom: 50px;
+    border-radius: 10px;
+    border: solid black;
+}
+
+.login #confirmLogin {
+    width: 30%;
+    height: 8%;
+}
+
+.login #confirmLogin:hover {
+    cursor: pointer;
+}
+
+.signup #confirmLogin {
+    width: 30%;
+    height: 8%;
+}
+
+.signup #confirmLogin:hover {
+    cursor: pointer;
+}
+
+.changeDir {
+    position: absolute;
+    z-index: 0;
+    right: 32px;
+    top: 30%;
+    background-color: white;
+    font-size: 20pt;
+    border: 0;
+    text-decoration: underline;
+}
+
+.changeDir:hover {
+    cursor: pointer;
+}
