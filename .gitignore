@@ -1,6 +1,6 @@
 # Ignore all `.config` files
 *.config
-config.php
+**/config.php
 
 # Ignore IntelliJ IDEA/JetBrains IDE files
 .idea/
