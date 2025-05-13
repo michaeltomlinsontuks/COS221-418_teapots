@@ -47,34 +47,28 @@ const SingleRequestController = (function() {
             { name: 'order', type: 'select', required: false, options: ['asc', 'desc'], default: 'asc' }
         ],
         getProduct: [
-            { name: 'productID', type: 'number', required: true }
+            { name: 'product_id', type: 'number', required: true }
         ],
         getProductComparisons: [
-            { name: 'productID', type: 'number', required: true }
+            { name: 'product_id', type: 'number', required: true }
         ],
 
         // Review Management
         addReview: [
-            { name: 'productID', type: 'number', required: true },
-            { name: 'reviewTitle', type: 'text', required: true },
-            { name: 'reviewDescription', type: 'textarea', required: true },
-            { name: 'reviewRating', type: 'number', required: true, min: 1, max: 5 }
+            { name: 'product_id', type: 'number', required: true },
+            { name: 'rating', type: 'number', required: true, min: 1, max: 5 },
+            { name: 'review_text', type: 'textarea', required: true }
         ],
         removeReview: [
-            { name: 'reviewID', type: 'number', required: true }
+            { name: 'review_id', type: 'number', required: true }
         ],
         editReview: [
-            { name: 'reviewID', type: 'number', required: true },
-            { name: 'reviewTitle', type: 'text', required: false },
-            { name: 'reviewDescription', type: 'textarea', required: false },
-            { name: 'reviewRating', type: 'number', required: false, min: 1, max: 5 }
+            { name: 'review_id', type: 'number', required: true },
+            { name: 'rating', type: 'number', required: true, min: 1, max: 5 },
+            { name: 'review_text', type: 'textarea', required: true }
         ],
         getReviews: [
-            { name: 'productID', type: 'number', required: true },
-            { name: 'page', type: 'number', required: false, default: 1 },
-            { name: 'limit', type: 'number', required: false, default: 10 },
-            { name: 'sort', type: 'select', required: false, options: ['reviewDate', 'reviewRating', 'reviewTitle'], default: 'reviewDate' },
-            { name: 'order', type: 'select', required: false, options: ['asc', 'desc'], default: 'desc' }
+            { name: 'product_id', type: 'number', required: true }
         ],
 
         // Filter Management
@@ -185,10 +179,11 @@ const SingleRequestController = (function() {
             }
         });
 
+        // Create proper request structure matching API expectations
         const requestData = {
             type: state.endpoint,
-            key: apiKey,
-            parameters: parameters
+            api_key: apiKey,  // Changed from key to api_key
+            ...parameters    // Flatten parameters directly into request
         };
 
         // Update state
@@ -302,28 +297,32 @@ const SingleRequestController = (function() {
         };
     };
 
-    // Replay a request from history
+// Replay a request from history
     const replayRequest = function(requestData) {
         // Set the endpoint
         DOM.apiEndpoint.value = requestData.type;
         state.endpoint = requestData.type;
 
-        // Set API key
-        DOM.apiKey.value = requestData.key;
+        // Set API key (handle both old and new format)
+        DOM.apiKey.value = requestData.api_key || requestData.key || '';
 
         // Generate parameter fields
         generateParameterFields();
 
         // Wait for fields to be generated
         setTimeout(() => {
-            // Fill in parameter values
-            const parameters = requestData.parameters;
-            for (const key in parameters) {
-                const input = document.getElementById(`param-${key}`);
-                if (input) {
-                    input.value = parameters[key];
+            // Fill in parameter values (handle both formats)
+            const parameters = requestData.parameters || requestData;
+
+            // Loop through all potential parameter fields
+            const paramInputs = DOM.parameterFields.querySelectorAll('input, select, textarea');
+            paramInputs.forEach(input => {
+                const paramName = input.name;
+                // Check if parameter exists in the request
+                if (parameters[paramName] !== undefined) {
+                    input.value = parameters[paramName];
                 }
-            }
+            });
 
             // Generate request JSON
             DOM.requestBody.value = JSON.stringify(requestData, null, 2);

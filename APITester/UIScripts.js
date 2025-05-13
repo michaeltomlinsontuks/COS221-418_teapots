@@ -7,7 +7,7 @@
 const UIController = (function() {
     // Shared state for the application
     let state = {
-        apiUrl: 'api.php',
+        apiUrl: 'http://localhost/api.php',
         defaultApiKey: '',
         history: [],
         selectedTab: 'single-test',
@@ -173,6 +173,23 @@ const UIController = (function() {
 
         getHistory: function() {
             return state.history;
+        },
+
+        displayResponse: function(data) {
+            const responseStatus = document.getElementById('responseStatus');
+            const responseStatusContainer = document.getElementById('responseStatusContainer');
+
+            // Show the status container
+            responseStatusContainer.style.display = 'block';
+
+            // Set status style based on response
+            if (data.status === 'success') {
+                responseStatus.className = 'response-status status-success';
+                responseStatus.textContent = 'Success';
+            } else {
+                responseStatus.className = 'response-status status-error';
+                responseStatus.textContent = 'Error: ' + data.message;
+            }
         },
 
         // Add to history and expose for other controllers
