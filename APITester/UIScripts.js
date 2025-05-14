@@ -2,12 +2,10 @@
  * CompareIt API Tester - Main Controller
  * This file coordinates the initialization of all sub-controllers and handles shared functionality
  */
-
-// Main UI Controller
 const UIController = (function() {
     // Shared state for the application
     let state = {
-        apiUrl: 'http://localhost/api.php',
+        apiUrl: 'http://localhost/COS221/api.php',
         defaultApiKey: '',
         history: [],
         selectedTab: 'single-test',
