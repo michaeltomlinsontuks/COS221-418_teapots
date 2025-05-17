@@ -1,5 +1,5 @@
 <?php
-//api.php
+//The new api.php file - decided to start over and bring stuff across because the new database is quite different
 //Will need to disable these headers on the production code, needed for testing though
 header("Access-Control-Allow-Origin: *");  // Allows access from any origin
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
@@ -230,7 +230,7 @@ class API {
                 return $this->login();
             case 'register':
                 return $this->register();
-                
+
             // Product Management
             case 'getproductpage':
                 return $this->getProductPage();
@@ -245,19 +245,21 @@ class API {
                 return $this->editReview();
             case 'getreviews':
                 return $this->getReviews();
-                
+
             // Filter Management
             case 'getcategories':
                 return $this->getCategories();
             case 'getbrands':
                 return $this->getBrands();
-                
+            case 'getcompanies':
+                return $this->getCompanies();
+
             default:
                 $this->response['message'] = 'Invalid request type';
                 return $this->response;
         }
     }
-    
+
     // User Management Functions
     private function login() {
         // Check if username and password are provided
@@ -362,369 +364,86 @@ class API {
 
         return $this->response;
     }
-    
-    // Product Management Functions
 
-    private function getProductPage()
-    {
-        // Validate required parameters
-        $required = ['type', 'api_key'];
-        foreach ($required as $field)
-        {
-            if (!isset($this->requestData[$field]))
-            {
-                $this->response['status'] = 'error';
-                $this->response['timestamp'] = time();
-                $this->response['data'] = [];
-                $this->response['message'] = "Missing $field parameter";
-                return $this->response;
-            }
-        }
+    //Get Product Page function needs to be reworked for the new database
 
-        // Validate API key
-        $apiKey = trim($this->requestData['api_key']);
-        if (!$this->validateAPIKey()) {
-            $this->response['status'] = 'error';
-            $this->response['timestamp'] = time();
-            $this->response['data'] = [];
-            $this->response['message'] = "Invalid API key";
-            return $this->response;
-        }
+    //Get Product function needs to be reworked for the new database
 
-        // Get parameters
-        $page = isset($this->requestData['parameters']['page']) ? (int)$this->requestData['parameters']['page'] : 1;
-        $limit = isset($this->requestData['parameters']['limit']) ? (int)$this->requestData['parameters']['limit'] : 10;
-        $offset = ($page - 1) * $limit;
-        $search = isset($this->requestData['parameters']['search']) ? $this->requestData['parameters']['search'] : '';
-        $categoryName = isset($this->requestData['parameters']['category']) ? $this->requestData['parameters']['category'] : '';
-        $brandName = isset($this->requestData['parameters']['brand']) ? $this->requestData['parameters']['brand'] : '';
-        $minPrice = isset($this->requestData['parameters']['minPrice']) && is_numeric($this->requestData['parameters']['minPrice']) ? (float)$this->requestData['parameters']['minPrice'] : null;
-        $maxPrice = isset($this->requestData['parameters']['maxPrice']) && is_numeric($this->requestData['parameters']['maxPrice']) ? (float)$this->requestData['parameters']['maxPrice'] : null;
-        $sortBy = isset($this->requestData['parameters']['sortBy']) ? $this->requestData['parameters']['sortBy'] : 'Name';
-        $sortOrder = isset($this->requestData['parameters']['sortOrder']) && strtoupper($this->requestData['parameters']['sortOrder']) === 'DESC' ? 'DESC' : 'ASC';
+    //Get Product Comparisons needs to be reworked for the new database
 
-        // query from db
-        $query = "SELECT p.productID, p.Name, p.Description, p.ThumbnailImage, p.ReviewAverage, p.ReviewCount, p.CarouselImages, p.Type, p.AddToCartURL, p.SalePrice, p.OnlineAvailability,
-                     fp.BestCompany, fp.BestPrice, fp.DiscountPercent, fp.RegularPrice, fp.AddToCartURL AS fpAddToCartURL, fp.OnlineAvailability AS fpOnlineAvailability,
-                     c.categoryID, c.categoryName, b.brandID, b.brandName
-              FROM product p
-              LEFT JOIN finalproduct fp ON p.productID = fp.productID
-              LEFT JOIN category c ON p.CategoryName = c.categoryName
-              LEFT JOIN brand b ON p.BrandName = b.brandName";
-        $whereClauses = [];
-        $params = [];
-        $paramTypes = '';
+    //Review functionality is broken needs to work with the database
 
-        // Handle search(fuzzy from 216 attempt)
-        $fuzzy = true;
-        if ($search !== '')
-        {
-            $whereClauses[] = "(p.Name LIKE ? OR p.Description LIKE ?)";
-            $params[] = "%$search%";
-            $params[] = "%$search%";
-            $paramTypes .= 'ss';
-        }
+    //GetCategories function needs to be reworked for the new database
 
-        // Handle category
-        if ($categoryName !== '') {
-            $whereClauses[] = "c.categoryName = ?";
-            $params[] = $categoryName;
-            $paramTypes .= 's';
-        }
+    //GetBrands function needs to be reworked for the new database
 
-        // Handle brand
-        if ($brandName !== '') {
-            $whereClauses[] = "b.brandName = ?";
-            $params[] = $brandName;
-            $paramTypes .= 's';
-        }
+    //New GetCompanies function needs to be made for the new database
 
-        // Handle price range (using BestPrice from finalproduct from what readme says)
-        if ($minPrice !== null)
-        {
-            $whereClauses[] = "fp.BestPrice >= ?";
-            $params[] = $minPrice;
-            $paramTypes .= 'd';
-        }
-
-        if ($maxPrice !== null)
-        {
-            $whereClauses[] = "fp.BestPrice <= ?";
-            $params[] = $maxPrice;
-            $paramTypes .= 'd';
-        }
-
-        //where clauses
-        if (!empty($whereClauses))
-        {
-            $query .= " WHERE " . implode(' AND ', $whereClauses);
-        }
-
-        // Handle sort
-        $validSorts = ['Name', 'SalePrice', 'ReviewAverage', 'BestPrice'];
-        if (!in_array($sortBy, $validSorts))
-        {
-            $sortBy = 'Name';
-        }
-        $query .= " ORDER BY $sortBy $sortOrder";
-
-        // Handle pagination (never done pagination so not sure if this works fully)
-        $query .= " LIMIT ? OFFSET ?";
-        $params[] = $limit;
-        $params[] = $offset;
-        $paramTypes .= 'ii';
-
-        // Get total count for pagination
-        $countQuery = "SELECT COUNT(*) as total
-                   FROM product p
-                   LEFT JOIN finalproduct fp ON p.productID = fp.productID
-                   LEFT JOIN category c ON p.CategoryName = c.categoryName
-                   LEFT JOIN brand b ON p.BrandName = b.brandName";
-        if (!empty($whereClauses))
-        {
-            $countQuery .= " WHERE " . implode(' AND ', $whereClauses);
-        }
-        $countStmt = $this->conn->prepare($countQuery);
-        if (!empty($params))
-        {
-            $countStmt->bind_param(substr($paramTypes, 0, -2), ...array_slice($params, 0, -2));
-        }
-        $countStmt->execute();
-        $totalProducts = $countStmt->get_result()->fetch_assoc()['total'];
-        $totalPages = ceil($totalProducts / $limit);
-
-        // Execute query
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt)
-        {
-            error_log("Prepare failed (getProductPage): " . $this->conn->error);
-            $this->response['status'] = 'error';
-            $this->response['timestamp'] = time();
-            $this->response['data'] = [];
-            $this->response['message'] = "Database error";
-            return $this->response;
-        }
-
-        if (!empty($params))
-        {
-            $stmt->bind_param($paramTypes, ...$params);
-        }
-
-        if (!$stmt->execute())
-        {
-            error_log("Execute failed (getProductPage): " . $stmt->error);
-            $stmt->close();
-            $this->response['status'] = 'error';
-            $this->response['timestamp'] = time();
-            $this->response['data'] = [];
-            $this->response['message'] = "Database error";
-            return $this->response;
-        }
-        $result = $stmt->get_result();
-        $products = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        //Readme compliance attempt
-        $formattedProducts = [];
-        foreach ($products as $product) {
-            $formattedProducts[] = [
-                'productID' => $product['productID'],
-                'productName' => $product['Name'],
-                'productDescription' => $product['Description'],
-                'thumbnailImage' => $product['ThumbnailImage'],
-                'customerReviewAverage' => $product['ReviewAverage'],
-                'customerReviewCount' => $product['ReviewCount'],
-                'manufacturer' => $product['brandName'],
-                'bestPrice' => $product['BestPrice'] ?? $product['SalePrice'],
-                'bestCompany' => $product['BestCompany'],
-                'categoryID' => $product['categoryID'],
-                'categoryName' => $product['categoryName']
-            ];
-        }
-
-        $this->response['status'] = 'success';
-        $this->response['timestamp'] = time();
-        $this->response['data'] = [
-            'products' => $formattedProducts,
-            'pagination' =>
-                [
-                    'currentPage' => $page,
-                    'totalPages' => $totalPages,
-                    'totalProducts' => $totalProducts,
-                    'limit' => $limit
-                ]
-        ];
-        $this->response['message'] = 'Products retrieved successfully';
-        return $this->response;
-    }
-
-    // Filter Management Functions
-    private function getCategories()
-    {
-
-        // $parent = isset($this->requestData['parameters']['parent']) ? $this->requestData['parameters']['parent'] : null;
-        // if ($parent !== null)
-        // {
-        //     error_log("getCategories: 'parent' parameter provided but ignored - category table has no parentID field");
-        // }
-
-        // Fetch all categories
-        $query = "SELECT categoryID, categoryName FROM category ORDER BY categoryName";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    private function getCategories() {
+        $query = "SELECT CategoryID, CategoryName FROM Category ORDER BY CategoryName";
+        $result = $this->conn->query($query);
 
         $categories = [];
-        while ($row = $result->fetch_assoc())
-        {
-            $categories[] =
-                [
-                    'categoryID' => $row['categoryID'],
-                    'categoryName' => $row['categoryName'],
-                    'categoryEquivalents' => [] // Placeholder, expand if equivalents exist,not sure if this is fully right
-                ];
-        }
-
-        $this->response['status'] = 'success';
-        $this->response['timestamp'] = time();
-        $this->response['data'] = $categories;
-        $this->response['message'] = 'Categories retrieved successfully';
-        return $this->response;
-    }
-
-    private function getBrands()
-    {
-        // Get categoryID parameter
-        $categoryID = isset($this->requestData['parameters']['categoryID']) ? (int)$this->requestData['parameters']['categoryID'] : null;
-
-        // Initialize query
-        $query = "SELECT DISTINCT b.brandID, b.brandName
-              FROM brand b
-              INNER JOIN product p ON p.BrandName = b.brandName";
-        if ($categoryID !== null)
-        {
-            $query .= " INNER JOIN category c ON p.CategoryName = c.categoryName";
-        }
-        $whereClauses = [];
-        $params = [];
-        $paramTypes = '';
-
-        // filter
-        if ($categoryID !== null)
-        {
-            $whereClauses[] = "c.categoryID = ?";
-            $params[] = $categoryID;
-            $paramTypes .= 'i';
-        }
-
-        // where clause
-        if (!empty($whereClauses))
-        {
-            $query .= " WHERE " . implode(' AND ', $whereClauses);
-        }
-        $query .= " ORDER BY b.brandName";
-
-        $stmt = $this->conn->prepare($query);
-        if (!empty($params))
-        {
-            $stmt->bind_param($paramTypes, ...$params);
-        }
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $brands = [];
-        while ($row = $result->fetch_assoc())
-        {
-            $brands[] =
-                [
-                    'brandID' => $row['brandID'],
-                    'brandName' => $row['brandName']
-                ];
-        }
-
-        $this->response['status'] = 'success';
-        $this->response['timestamp'] = time();
-        $this->response['data'] = $brands;
-        $this->response['message'] = 'Brands retrieved successfully';
-        return $this->response;
-    }
-
-    private function getProduct() {
-        // Check if product ID is provided
-        if (!isset($this->requestData['product_id'])) {
-            $this->response['message'] = 'Product ID is required';
-            return $this->response;
-        }
-
-        $productId = (int)$this->requestData['product_id'];
-
-        // Get product details
-        $query = "SELECT * FROM Product WHERE ProductID = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("i", $productId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 0) {
-            $this->response['message'] = 'Product not found';
-            return $this->response;
-        }
-
-        $productData = $result->fetch_assoc();
-
-        // Get price comparisons
-        $priceComparisons = $this->getProductComparisons($productId);
-
-        // Format the response
-        $this->response['status'] = 'success';
-        $this->response['data'] = [
-            'product' => $productData,
-            'price_comparisons' => $priceComparisons
-        ];
-        $this->response['message'] = 'Product details retrieved successfully';
-
-        return $this->response;
-    }
-
-    private function getProductComparisons($productId) {
-        // List of retailers
-        $retailers = [
-            'Bitify', 'ByteCrate', 'ByteMart', 'ChipCart', 'CoreBay',
-            'FuseBasket', 'Nexonic', 'TechNova', 'VoltEdge', 'ZapNest'
-        ];
-
-        $comparisons = [];
-
-        foreach ($retailers as $retailer) {
-            $query = "SELECT regularPrice, discountedPrice FROM {$retailer} WHERE product_id = ?";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("i", $productId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $priceData = $result->fetch_assoc();
-                $comparisons[$retailer] = [
-                    'regularPrice' => $priceData['regularPrice'],
-                    'discountedPrice' => $priceData['discountedPrice'],
-                    'discountPercentage' => $priceData['regularPrice'] > 0 ?
-                        round((($priceData['regularPrice'] - $priceData['discountedPrice']) / $priceData['regularPrice']) * 100, 2) : 0
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $categories[] = [
+                    'category_id' => $row['CategoryID'],
+                    'category_name' => $row['CategoryName']
                 ];
             }
         }
 
-        // Sort by discounted price (lowest first)
-        uasort($comparisons, function($a, $b) {
-            return $a['discountedPrice'] <=> $b['discountedPrice'];
-        });
+        $this->response['status'] = 'success';
+        $this->response['data'] = $categories;
 
-        return $comparisons;
+        return $this->response;
     }
-// Review Management Functions
+
+    private function getBrands() {
+        $query = "SELECT BrandID, BrandName FROM Brand ORDER BY BrandName";
+        $result = $this->conn->query($query);
+
+        $brands = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $brands[] = [
+                    'brand_id' => $row['BrandID'],
+                    'brand_name' => $row['BrandName']
+                ];
+            }
+        }
+
+        $this->response['status'] = 'success';
+        $this->response['data'] = $brands;
+
+        return $this->response;
+    }
+
+    private function getCompanies() {
+        $query = "SELECT CompanyID, Name FROM Company ORDER BY Name";
+        $result = $this->conn->query($query);
+
+        $companies = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $companies[] = [
+                    'company_id' => $row['CompanyID'],
+                    'company_name' => $row['Name']
+                ];
+            }
+        }
+
+        $this->response['status'] = 'success';
+        $this->response['data'] = $companies;
+
+        return $this->response;
+    }
+
     private function addReview() {
         // Check required fields
-        if (!isset($this->requestData['product_id']) || !isset($this->requestData['rating']) || !isset($this->requestData['review_text'])) {
-            $this->response['message'] = 'Product ID, rating, and review text are required';
+        if (!isset($this->requestData['product_id']) || !isset($this->requestData['rating']) ||
+            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])) {
+            $this->response['message'] = 'Product ID, rating, title and description are required';
             return $this->response;
         }
 
@@ -735,17 +454,18 @@ class API {
         }
 
         $productId = (int)$this->requestData['product_id'];
-        $rating = (int)$this->requestData['rating']; // Cast to integer instead of float
-        $reviewText = trim($this->requestData['review_text']);
+        $rating = (int)$this->requestData['rating']; // Cast to integer
+        $reviewTitle = trim($this->requestData['review_title']);
+        $reviewDescription = trim($this->requestData['review_description']);
 
-        // Validate rating (between 0 and 5)
-        if ($rating < 0 || $rating > 5) {
-            $this->response['message'] = 'Rating must be between 0 and 5';
+        // Validate rating (between 1 and 5)
+        if ($rating < 1 || $rating > 5) {
+            $this->response['message'] = 'Rating must be between 1 and 5';
             return $this->response;
         }
 
         // Check if product exists
-        $query = "SELECT ProductID FROM Product WHERE ProductID = ?";
+        $query = "SELECT ProductID FROM BestProduct WHERE ProductID = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $productId);
         $stmt->execute();
@@ -764,16 +484,16 @@ class API {
             return $this->response;
         }
 
-        // Add review - use integer (i) for rating instead of double (d)
-        $query = "INSERT INTO Review (ProductID, UserID, Rating, ReviewText, CreatedAt) 
-              VALUES (?, ?, ?, ?, NOW())";
+        // Add review
+        $query = "INSERT INTO Review (ProductID, UserID, ReviewTitle, ReviewDescription, ReviewRating, Timestamp)
+              VALUES (?, ?, ?, ?, ?, NOW())";
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
             $this->response['message'] = 'Database error: ' . $this->conn->error;
             return $this->response;
         }
 
-        $stmt->bind_param("iiis", $productId, $userID, $rating, $reviewText);
+        $stmt->bind_param("iissi", $productId, $userID, $reviewTitle, $reviewDescription, $rating);
 
         if ($stmt->execute()) {
             // Update product rating
@@ -788,10 +508,10 @@ class API {
         return $this->response;
     }
 
-    private function editReview() {
+    private function removeReview() {
         // Check required fields
-        if (!isset($this->requestData['review_id']) || !isset($this->requestData['rating']) || !isset($this->requestData['review_text'])) {
-            $this->response['message'] = 'Review ID, rating, and review text are required';
+        if (!isset($this->requestData['review_id'])) {
+            $this->response['message'] = 'Review ID is required';
             return $this->response;
         }
 
@@ -802,12 +522,61 @@ class API {
         }
 
         $reviewId = (int)$this->requestData['review_id'];
-        $rating = (int)$this->requestData['rating']; // Cast to integer instead of float
-        $reviewText = trim($this->requestData['review_text']);
+
+        // Get product ID from review for updating later
+        $query = "SELECT ProductID FROM Review WHERE ReviewID = ? AND UserID = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ii", $reviewId, $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            $this->response['message'] = 'Review not found or you do not have permission to delete it';
+            return $this->response;
+        }
+
+        $productId = $result->fetch_assoc()['ProductID'];
+
+        // Delete the review
+        $query = "DELETE FROM Review WHERE ReviewID = ? AND UserID = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ii", $reviewId, $userID);
+
+        if ($stmt->execute()) {
+            // Update product rating
+            $this->updateProductRating($productId);
+
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'Review deleted successfully';
+        } else {
+            $this->response['message'] = 'Error deleting review: ' . $stmt->error;
+        }
+
+        return $this->response;
+    }
+
+    private function editReview() {
+        // Check required fields
+        if (!isset($this->requestData['review_id']) || !isset($this->requestData['rating']) ||
+            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])) {
+            $this->response['message'] = 'Review ID, rating, title and description are required';
+            return $this->response;
+        }
+
+        // Get user ID from API key
+        $userID = $this->getUserID();
+        if (!$userID) {
+            return $this->response; // Message already set in getUserID
+        }
+
+        $reviewId = (int)$this->requestData['review_id'];
+        $rating = (int)$this->requestData['rating'];
+        $reviewTitle = trim($this->requestData['review_title']);
+        $reviewDescription = trim($this->requestData['review_description']);
 
         // Validate rating
-        if ($rating < 0 || $rating > 5) {
-            $this->response['message'] = 'Rating must be between 0 and 5';
+        if ($rating < 1 || $rating > 5) {
+            $this->response['message'] = 'Rating must be between 1 and 5';
             return $this->response;
         }
 
@@ -830,8 +599,8 @@ class API {
 
         $productId = $result->fetch_assoc()['ProductID'];
 
-        // Update review - use integer (i) for rating instead of double (d)
-        $query = "UPDATE Review SET Rating = ?, ReviewText = ?, UpdatedAt = NOW() 
+        // Update review
+        $query = "UPDATE Review SET ReviewRating = ?, ReviewTitle = ?, ReviewDescription = ?, Timestamp = NOW()
               WHERE ReviewID = ? AND UserID = ?";
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
@@ -839,7 +608,7 @@ class API {
             return $this->response;
         }
 
-        $stmt->bind_param("isii", $rating, $reviewText, $reviewId, $userID);
+        $stmt->bind_param("issii", $rating, $reviewTitle, $reviewDescription, $reviewId, $userID);
 
         if ($stmt->execute()) {
             // Update product rating
@@ -854,10 +623,50 @@ class API {
         return $this->response;
     }
 
-// Also update the updateProductRating function to properly handle conversion
+    private function getReviews() {
+        // Check required fields
+        if (!isset($this->requestData['product_id'])) {
+            $this->response['message'] = 'Product ID is required';
+            return $this->response;
+        }
+
+        $productId = (int)$this->requestData['product_id'];
+
+        // Get reviews for the product
+        $query = "SELECT r.ReviewID, r.UserID, u.Username, r.ReviewRating, r.ReviewTitle, r.ReviewDescription,
+              r.Timestamp
+              FROM Review r
+              JOIN Users u ON r.UserID = u.UserID
+              WHERE r.ProductID = ?
+              ORDER BY r.Timestamp DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $reviews = [];
+        while ($row = $result->fetch_assoc()) {
+            $reviews[] = [
+                'review_id' => $row['ReviewID'],
+                'user_id' => $row['UserID'],
+                'username' => $row['Username'],
+                'rating' => (int)$row['ReviewRating'],
+                'title' => $row['ReviewTitle'],
+                'description' => $row['ReviewDescription'],
+                'timestamp' => $row['Timestamp']
+            ];
+        }
+
+        $this->response['status'] = 'success';
+        $this->response['data'] = $reviews;
+
+        return $this->response;
+    }
+
     private function updateProductRating($productId) {
         // Calculate new review average and count
-        $query = "SELECT AVG(Rating) AS average, COUNT(*) AS count FROM Review WHERE ProductID = ?";
+        $query = "SELECT AVG(ReviewRating) AS average, COUNT(*) AS count FROM Review WHERE ProductID = ?";
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
             error_log("Error preparing statement in updateProductRating: " . $this->conn->error);
@@ -868,32 +677,353 @@ class API {
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
 
-        // Calculate average with proper rounding - reviews are integers but average should be decimal
+        // Calculate average with proper rounding
         $reviewAverage = $result['average'] ? round($result['average'], 2) : 0;
         $reviewCount = (int)$result['count'];
 
         // Update product review stats
-        $query = "UPDATE Product SET ReviewAverage = ?, ReviewCount = ? WHERE ProductID = ?";
+        $query = "UPDATE BestProduct SET ReviewAverage = ?, ReviewCount = ? WHERE ProductID = ?";
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
-            error_log("Error preparing statement in updateProductRating (Product): " . $this->conn->error);
-            return;
-        }
-
-        $stmt->bind_param("dii", $reviewAverage, $reviewCount, $productId);
-        $stmt->execute();
-
-        // Also update the FinalProduct table if it has a record for this product
-        $query = "UPDATE FinalProduct SET ReviewAverage = ?, ReviewCount = ? WHERE ProductID = ?";
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt) {
-            error_log("Error preparing statement in updateProductRating (FinalProduct): " . $this->conn->error);
+            error_log("Error preparing statement in updateProductRating: " . $this->conn->error);
             return;
         }
 
         $stmt->bind_param("dii", $reviewAverage, $reviewCount, $productId);
         $stmt->execute();
     }
+
+    private function getProduct() {
+        // Check if product ID is provided
+        if (!isset($this->requestData['product_id'])) {
+            $this->response['message'] = 'Product ID is required';
+            return $this->response;
+        }
+
+        $productId = (int)$this->requestData['product_id'];
+
+        // Get product details
+        $query = "SELECT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.ReviewAverage, 
+                     bp.ReviewCount, bp.CarouselImages, bp.BestPrice AS SalePrice, 
+                     bp.OnlineAvailability, bp.AddToCartURL, 'HardGood' AS Type, 
+                     b.BrandName, c.CategoryName
+               FROM BestProduct bp
+               LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+               LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+               WHERE bp.ProductID = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            $this->response['message'] = 'Product not found';
+            return $this->response;
+        }
+
+        $productData = $result->fetch_assoc();
+
+        // Format ReviewAverage to have 2 decimal places
+        if (isset($productData['ReviewAverage'])) {
+            $productData['ReviewAverage'] = number_format($productData['ReviewAverage'], 2);
+        }
+
+        // Format SalePrice to have 2 decimal places
+        if (isset($productData['SalePrice'])) {
+            $productData['SalePrice'] = number_format($productData['SalePrice'], 2);
+        }
+
+        // Get price comparisons
+        $priceComparisons = $this->getProductComparisons($productId);
+
+        // Format the response
+        $this->response['status'] = 'success';
+        $this->response['timestamp'] = time();
+        $this->response['data'] = [
+            'product' => $productData,
+            'price_comparisons' => $priceComparisons
+        ];
+        $this->response['message'] = 'Product details retrieved successfully';
+
+        return $this->response;
+    }
+
+    private function getProductComparisons($productId) {
+        // List of retailers
+        $retailers = [
+            'Bitify', 'ByteCrate', 'ByteMart', 'ChipCart', 'CoreBay',
+            'FuseBasket', 'Nexonic', 'TechNova', 'VoltEdge', 'ZapNest'
+        ];
+
+        $comparisons = [];
+
+        foreach ($retailers as $retailer) {
+            $query = "SELECT RegularPrice, DiscountedPrice, OnlineAvailability 
+                  FROM $retailer WHERE ProductID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $priceData = $result->fetch_assoc();
+                $regularPrice = $priceData['RegularPrice'];
+                $discountedPrice = $priceData['DiscountedPrice'];
+
+                // Calculate discount percentage
+                $discountPercentage = 0;
+                if ($regularPrice > 0 && $regularPrice > $discountedPrice) {
+                    $discountPercentage = round(
+                        (($regularPrice - $discountedPrice) / $regularPrice) * 100,
+                        2
+                    );
+                }
+
+                // Only include retailer if they have the product
+                if ($priceData['OnlineAvailability']) {
+                    $comparisons[$retailer] = [
+                        'regularPrice' => number_format($regularPrice, 2),
+                        'discountedPrice' => number_format($discountedPrice, 2),
+                        'discountPercentage' => $discountPercentage
+                    ];
+                }
+            }
+        }
+
+        // Sort by discounted price (lowest first)
+        uasort($comparisons, function($a, $b) {
+            return floatval($a['discountedPrice']) <=> floatval($b['discountedPrice']);
+        });
+
+        return $comparisons;
+    }
+
+    private function getProductPage() {
+        // Default parameters
+        $limit = isset($this->requestData['limit']) ? (int)$this->requestData['limit'] : 51;
+        $offset = isset($this->requestData['offset']) ? (int)$this->requestData['offset'] : 0;
+        $sort = isset($this->requestData['sort']) ? $this->requestData['sort'] : 'price-low';
+        $inStockOnly = isset($this->requestData['in_stock_only']) &&
+            ($this->requestData['in_stock_only'] === true ||
+                $this->requestData['in_stock_only'] === 'true' ||
+                $this->requestData['in_stock_only'] === 1 ||
+                $this->requestData['in_stock_only'] === '1');
+        $search = isset($this->requestData['search']) ? trim($this->requestData['search']) : '';
+
+        $parameters = [];
+        $whereConditions = [];
+        $joins = [];
+
+        // Search functionality
+        if (!empty($search)) {
+            $searchParam = '%' . $search . '%';
+            $searchFields = [
+                'bp.Name',
+                'bp.Description',
+                'b.BrandName',
+                'c.CategoryName'
+            ];
+
+            $searchConditions = [];
+            foreach ($searchFields as $field) {
+                $searchConditions[] = "$field LIKE ?";
+                $parameters[] = $searchParam;
+            }
+
+            $whereConditions[] = '(' . implode(' OR ', $searchConditions) . ')';
+        }
+
+        // In-stock filter
+        if ($inStockOnly) {
+            $whereConditions[] = "bp.OnlineAvailability = 1";
+        }
+
+        // Brand filter
+        if (isset($this->requestData['brands']) && is_array($this->requestData['brands'])) {
+            if (!in_array('all', $this->requestData['brands']) && !empty($this->requestData['brands'])) {
+                $brandPlaceholders = array_fill(0, count($this->requestData['brands']), '?');
+                $whereConditions[] = "b.BrandName IN (" . implode(',', $brandPlaceholders) . ")";
+                $parameters = array_merge($parameters, $this->requestData['brands']);
+            }
+        }
+
+        // Category filter
+        if (isset($this->requestData['categories']) && is_array($this->requestData['categories'])) {
+            if (!in_array('all', $this->requestData['categories']) && !empty($this->requestData['categories'])) {
+                $categoryPlaceholders = array_fill(0, count($this->requestData['categories']), '?');
+                $whereConditions[] = "c.CategoryName IN (" . implode(',', $categoryPlaceholders) . ")";
+                $parameters = array_merge($parameters, $this->requestData['categories']);
+            }
+        }
+
+        // Company filter
+        if (isset($this->requestData['companies']) && is_array($this->requestData['companies'])) {
+            if (!in_array('all', $this->requestData['companies']) && !empty($this->requestData['companies'])) {
+                $companyConditions = [];
+
+                // Map company names to their respective table names
+                $companyTables = [
+                    'Bitify' => 'Bitify',
+                    'ByteCrate' => 'ByteCrate',
+                    'ByteMart' => 'ByteMart',
+                    'ChipCart' => 'ChipCart',
+                    'CoreBay' => 'CoreBay',
+                    'FuseBasket' => 'FuseBasket',
+                    'Nexonic' => 'Nexonic',
+                    'TechNova' => 'TechNova',
+                    'VoltEdge' => 'VoltEdge',
+                    'ZapNest' => 'ZapNest'
+                ];
+
+                foreach ($this->requestData['companies'] as $company) {
+                    if (isset($companyTables[$company])) {
+                        $tableAlias = strtolower(substr($company, 0, 3)); // Create a short alias
+                        $joins[] = "JOIN {$companyTables[$company]} {$tableAlias} ON bp.ProductID = {$tableAlias}.ProductID";
+
+                        if ($inStockOnly) {
+                            $companyConditions[] = "{$tableAlias}.OnlineAvailability = 1";
+                        } else {
+                            $companyConditions[] = "{$tableAlias}.ProductID IS NOT NULL";
+                        }
+                    }
+                }
+
+                if (!empty($companyConditions)) {
+                    $whereConditions[] = '(' . implode(' OR ', $companyConditions) . ')';
+                }
+            }
+        }
+
+        // Price range filter
+        if (isset($this->requestData['min_price']) && is_numeric($this->requestData['min_price'])) {
+            $whereConditions[] = "bp.BestPrice >= ?";
+            $parameters[] = (float)$this->requestData['min_price'];
+        }
+
+        if (isset($this->requestData['max_price']) && is_numeric($this->requestData['max_price'])) {
+            $whereConditions[] = "bp.BestPrice <= ?";
+            $parameters[] = (float)$this->requestData['max_price'];
+        }
+
+        // Base query
+        $query = "SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage,
+             bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
+             bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
+          FROM BestProduct bp
+          LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+          LEFT JOIN Category c ON bp.CategoryID = c.CategoryID";
+
+        // Add joins for company filters
+        if (!empty($joins)) {
+            $query .= " " . implode(" ", $joins);
+        }
+
+        // Count query for pagination
+        $countQuery = "SELECT COUNT(DISTINCT bp.ProductID) as total
+              FROM BestProduct bp
+              LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+              LEFT JOIN Category c ON bp.CategoryID = c.CategoryID";
+
+        // Add joins to count query too
+        if (!empty($joins)) {
+            $countQuery .= " " . implode(" ", $joins);
+        }
+
+        // Apply WHERE conditions
+        if (!empty($whereConditions)) {
+            $whereClause = " WHERE " . implode(' AND ', $whereConditions);
+            $query .= $whereClause;
+            $countQuery .= $whereClause;
+        }
+
+        // Sorting
+        switch ($sort) {
+            case 'price-high':
+                $query .= " ORDER BY bp.BestPrice DESC";
+                break;
+            case 'name':
+                $query .= " ORDER BY bp.Name ASC";
+                break;
+            case 'newest':
+                $query .= " ORDER BY bp.LastUpdated DESC";
+                break;
+            case 'best-rated':
+                $query .= " ORDER BY bp.ReviewAverage DESC, bp.ReviewCount DESC";
+                break;
+            case 'price-low':
+            default:
+                $query .= " ORDER BY bp.BestPrice ASC";
+                break;
+        }
+
+        // Pagination
+        $query .= " LIMIT ? OFFSET ?";
+
+        // Get total count for pagination
+        $countStmt = $this->conn->prepare($countQuery);
+        if (!empty($parameters)) {
+            $types = str_repeat('s', count($parameters));
+            $countStmt->bind_param($types, ...$parameters);
+        }
+        $countStmt->execute();
+        $totalCount = $countStmt->get_result()->fetch_assoc()['total'];
+
+        // Execute main query
+        $stmt = $this->conn->prepare($query);
+        if (!empty($parameters)) {
+            $allParams = array_merge($parameters, [$limit, $offset]);
+            $types = str_repeat('s', count($parameters)) . 'ii';
+            $stmt->bind_param($types, ...$allParams);
+        } else {
+            $stmt->bind_param('ii', $limit, $offset);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $products = [];
+
+        // Process results
+        while ($row = $result->fetch_assoc()) {
+            // Calculate discount percentage if not already available
+            $discountPercent = $row['DiscountPercent'];
+            if ($discountPercent === null && $row['RegularPrice'] > 0 && $row['RegularPrice'] > $row['BestPrice']) {
+                $discountPercent = round(
+                    (($row['RegularPrice'] - $row['BestPrice']) / $row['RegularPrice']) * 100
+                );
+            }
+
+            $product = [
+                'id' => $row['ProductID'],
+                'name' => $row['Name'],
+                'brand' => $row['BrandName'],
+                'category' => $row['CategoryName'],
+                'thumbnail' => $row['ThumbnailImage'],
+                'reviewAverage' => number_format((float)$row['ReviewAverage'], 2),
+                'reviewCount' => $row['ReviewCount'],
+                'regularPrice' => number_format((float)$row['RegularPrice'], 2),
+                'salePrice' => number_format((float)$row['BestPrice'], 2),
+                'discountPercent' => $discountPercent,
+                'inStock' => (bool)$row['OnlineAvailability'],
+                'bestCompany' => $row['BestCompany']
+            ];
+
+            $products[] = $product;
+        }
+
+        $this->response['status'] = 'success';
+        $this->response['data'] = $products;
+        $this->response['pagination'] = [
+            'total' => $totalCount,
+            'offset' => $offset,
+            'limit' => $limit,
+            'has_more' => ($offset + $limit) < $totalCount
+        ];
+
+        return $this->response;
+    }
+
 }
 
 // Create API instance and handle the request
