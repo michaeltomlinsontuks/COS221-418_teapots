@@ -9,14 +9,16 @@
     <br>
     password
     <br>
-    <input type="password" value="" placeholder="..." id="passwordID">
+    <input class="passwordText" type="password" value="" placeholder="..." id="passwordID">
+    <input style="width: 64px;" type="button" value="👁️" onclick="revealPassword()">
     <br>
     confirm password
     <br>
-    <input type="password" value="" placeholder="..." id="confirmPasswordID">
-
+    <input class="passwordText" type="password" value="" placeholder="..." id="confirmPasswordID">
+    <input style="width: 64px;" type="button" value="👁️" onclick="revealPasswordConfirm()">
     <br>
     <input type="button" value="confirm" id="confirmLoginID">
 
 
 </div>
+<script src="pages/jsFiles/signup.js"></script>

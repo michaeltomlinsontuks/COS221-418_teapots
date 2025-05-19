@@ -1,6 +1,3 @@
-
-
-
 <div class="login">
     username
     <br>
@@ -10,6 +7,7 @@
     password
     <br>
     <input type="password" value="" placeholder="..." id="passwordID">
+
 
     <br>
     <input type="button" value="confirm" id="confirmLoginID">

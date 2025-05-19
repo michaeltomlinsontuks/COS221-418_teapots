@@ -184,3 +184,13 @@ select {
 .changeDir:hover {
     cursor: pointer;
 }
+
+.passwordText {
+    width: 35% !important;
+    height: 8%;
+    font-size: 20pt;
+    text-align: center;
+    margin-bottom: 50px;
+    border-radius: 10px;
+    border: solid black;
+}
