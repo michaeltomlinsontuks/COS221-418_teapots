@@ -1,11 +1,17 @@
 
 //### var initialization ###
+
+//~~~~~~~~~~~~~//
+// classes //
 var currentRequestState;
+var productHandler;
+var user;
+// classes //
+//~~~~~~~~~~~~~//
 var table;
 var menuBtn;
 var overlay;
 var overlayExtended;
-var user;
 var searchHtml;
 var categoryHtml;
 var brandHtml;
@@ -21,7 +27,8 @@ function initialiseVar() {
     overlay = document.getElementById("overlay");
     overlayExtended = false;
     user = userClass();
-    currentRequestState = requestStateHandler();
+    currentRequestState = RequestStateHandler();
+    productHandler = ProductHandler();
     menuBtn.addEventListener("click", function () {
 
         if (overlayExtended === false) {
@@ -39,7 +46,7 @@ function initialiseVar() {
 
 // inserts the td into the table pre / post  request
 function insertTd() {
-    for (var i = 0; i < 20; i++) {
+    for (var i = productHandler.newProductsAt; i < newProductsStop; i++) {
         tr = document.createElement("tr");
         for (var cols = 0; cols < 3; cols++) {
             td = document.createElement("td");
@@ -54,13 +61,13 @@ function insertTd() {
             // text div is further broken into 3 divs
             //title , price , rating
             var titleDiv = document.createElement("div");
-            titleDiv.appendChild(document.createTextNode("title"));
+            titleDiv.appendChild(document.createTextNode(productHandler.products[i].name));
 
             var priceDiv = document.createElement("div");
-            priceDiv.appendChild(document.createTextNode("price"));
+            priceDiv.appendChild(document.createTextNode(productHandler.products[i].salePrice));
 
             var ratingDiv = document.createElement("div");
-            ratingDiv.appendChild(document.createTextNode("⭐⭐⭐**"));
+            ratingDiv.appendChild(document.createTextNode(productHandler.products[i].printStars()));
 
             textDiv.appendChild(titleDiv);
             textDiv.appendChild(priceDiv);
@@ -71,10 +78,11 @@ function insertTd() {
 
             var imgInput = document.createElement("input");
             imgInput.type = "image";
-            imgInput.src = "";
+            imgInput.src = productHandler.products[i].thumbnail;
             imgInput.alt = "Image goes here";
             imgInput.className = "productImage";
             imgDiv.className = "productImageDiv";
+            productHandler.products[i].setImgPointer(imgDiv);
 
             imgDiv.appendChild(imgInput);
             containerDiv.appendChild(imgDiv);
@@ -93,7 +101,7 @@ function requestProducts() {
 
     request.onreadystatechange = stateProductRequest;
 
-    var requestData = 
+    var requestData = currentRequestState.requestData;
 
     var requestHeaderData = getLocalCredentials();
 
@@ -107,6 +115,23 @@ function requestProducts() {
 }
 function stateProductRequest() {
 
+    if (this.readyState === 4) {
+        if (this.status === 200) {
+            var requestResponse = this.responseText;
+            requestResponse = JSON.parse(requestResponse);
+            console.log(requestResponse);
+            if (requestResponse.status === "error") {
+                alert("something went wrong...");
+            }
+            else {
+                var data = requestResponse.data;
+                productHandler.addProducts(data);
+            }
+        }
+        else {
+            alert("An error occurred on our side...")
+        }
+    }
 }
 var Product = function (data) {
     this.id = data.id;
@@ -123,19 +148,34 @@ var Product = function (data) {
     this.bestCompany = data.bestCompany;
 
     this.ImgPointer = null;
-
-    function setImgPointer(imgPointer) {
+    // used to keep track exactly which 
+    this.setImgPointer = function (imgPointer) {
         this.imgPointer = imgPointer;
+    }
+    this.printStars = function () {
+        var toNumber = Number(this.reviewAvg);
+        var output = "";
+        while (toNumber >= 1) {
+            output += "⭐";
+            toNumber--;
+        }
+        return output;
     }
 }
 // holds an array of all the products   
 var ProductHandler = function () {
+    // data sent in should already be the data array
+    this.newProductsAt = 0;
+    this.newProductsStop = 54;
     this.products = [];
-    this.constructor = function (data) {
+    this.addProducts = function (data) {
         // data should be an array
+        this.newProductsAt = this.products.length;
+        this.newProductsStop = this.newProductsAt + data.length;
         for (var i = 0; i < data.length; i++) {
             this.products.push(Product(data[i]));
         }
+        insertTd();
     }
 }
 // a class made for sending requests
@@ -151,7 +191,7 @@ var requestDataClass = function () {
         api_key: user.api_key,
         parameters: this.parameter,
         limit: 54,
-        offset: 
+        offset: currentRequestState.offset,
 
     }
     // set it to the value of the search box
@@ -220,7 +260,7 @@ var offsetHandler = function () {
         this.offset += 54;
     }
 }
-var requestStateHandler = function () {
+var RequestStateHandler = function () {
     this.requestData = requestDataClass();
     this.offset = offsetHandler();
 
