@@ -1,6 +1,7 @@
 
 //### var initialization ###
 //~~~~~~~~~~~~~//
+
 // classes //
 var currentRequestState;
 var productHandler;
@@ -46,9 +47,10 @@ function initialiseVar() {
 
 // inserts the td into the table pre / post  request
 function insertTd() {
-    for (var i = productHandler.newProductsAt; i < newProductsStop; i++) {
+    var index = productHandler.newProductsAt;
+    for (var i = 0; i < 54 / 3; i++) {
         tr = document.createElement("tr");
-        for (var cols = 0; cols < 3; cols++) {
+        for (var cols = 0; cols < 3; cols++, index++) {
             td = document.createElement("td");
             // each td made up of 2 divs a div for the image (half the td in width()
             // and the other half split in 3 
@@ -61,28 +63,25 @@ function insertTd() {
             // text div is further broken into 3 divs
             //title , price , rating
             var titleDiv = document.createElement("div");
-            titleDiv.appendChild(document.createTextNode(productHandler.products[i].name));
+            titleDiv.appendChild(document.createTextNode(productHandler.products[index].name));
 
             var priceDiv = document.createElement("div");
-            priceDiv.appendChild(document.createTextNode(productHandler.products[i].salePrice));
+            priceDiv.appendChild(document.createTextNode(productHandler.products[index].salePrice));
 
             var ratingDiv = document.createElement("div");
-            ratingDiv.appendChild(document.createTextNode(productHandler.products[i].printStars()));
+            ratingDiv.appendChild(document.createTextNode(productHandler.products[index].printStars()));
 
             textDiv.appendChild(titleDiv);
             textDiv.appendChild(priceDiv);
             textDiv.appendChild(ratingDiv);
             textDiv.className = "productsText";
 
-
-
             var imgInput = document.createElement("input");
             imgInput.type = "image";
-            imgInput.src = productHandler.products[i].thumbnail;
+            imgInput.src = productHandler.products[index].thumbnail;
             imgInput.alt = "Image goes here";
-            imgInput.className = "productImage";
             imgDiv.className = "productImageDiv";
-            productHandler.products[i].setImgPointer(imgDiv);
+            productHandler.products[index].setImgPointer(imgDiv);
 
             imgDiv.appendChild(imgInput);
             containerDiv.appendChild(imgDiv);
@@ -101,7 +100,7 @@ function requestProducts() {
 
     request.onreadystatechange = stateProductRequest;
 
-    var requestData = currentRequestState.requestData;
+    var requestData = currentRequestState.getRequestData();
 
     var requestHeaderData = getLocalCredentials();
 
@@ -268,6 +267,10 @@ var RequestStateHandler = function () {
     this.createNewRequestState = function () {
         this.requestData = new requestDataClass();
         offsetHandler = new offsetClass();
+    }
+    this.getRequestData = function () {
+
+        return this.requestData.requestData;
     }
 
 }

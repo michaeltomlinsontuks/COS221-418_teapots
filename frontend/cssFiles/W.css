@@ -92,23 +92,18 @@
 }
 
 .productImageDiv {
-
     width: 50%;
     height: 100%;
+    align-content: center;
+    text-align: center;
 }
 
-.productImage {
-    width: 100%;
-    height: 100%;
-}
 
 .productImageDiv input {
-    width: 98%;
-    height: 98%;
-    text-align: center;
-    align-content: center;
+    width: 100px;
+    height: 100px;
     outline: dotted black 5px;
-    margin-left: 2%;
+
 }
 
 .productsText {

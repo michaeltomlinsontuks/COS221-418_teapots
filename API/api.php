@@ -241,7 +241,6 @@ class API
                 return $this->login();
             case 'register':
                 return $this->register();
-
             // Product Management
             case 'getproductpage':
                 return $this->getProductPage();
