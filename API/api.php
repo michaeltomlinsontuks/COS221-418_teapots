@@ -791,7 +791,6 @@ class API {
                 }
             }
         }
-
         // Sort by discounted price (lowest first)
         uasort($comparisons, function($a, $b) {
             return floatval($a['discountedPrice']) <=> floatval($b['discountedPrice']);

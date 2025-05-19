@@ -1,10 +1,17 @@
-//### var initialization ###
 
+//### var initialization ###
+var currentRequestState;
 var table;
 var menuBtn;
 var overlay;
 var overlayExtended;
 var user;
+var searchHtml;
+var categoryHtml;
+var brandHtml;
+var minPriceHtml;
+var maxPriceHtml;
+var sortByHtml;
 //### var initialization ###
 document.addEventListener("DOMContentLoaded", initialiseVar);
 
@@ -14,6 +21,7 @@ function initialiseVar() {
     overlay = document.getElementById("overlay");
     overlayExtended = false;
     user = userClass();
+    currentRequestState = requestStateHandler();
     menuBtn.addEventListener("click", function () {
 
         if (overlayExtended === false) {
@@ -85,12 +93,7 @@ function requestProducts() {
 
     request.onreadystatechange = stateProductRequest;
 
-    var requestData =
-    {
-        type: "login",
-        username: usernameHtml.value,
-        password: passwordHtml.value,
-    };
+    var requestData = 
 
     var requestHeaderData = getLocalCredentials();
 
@@ -105,8 +108,6 @@ function requestProducts() {
 function stateProductRequest() {
 
 }
-
-
 var Product = function (data) {
     this.id = data.id;
     this.name = data.name;
@@ -140,44 +141,101 @@ var ProductHandler = function () {
 // a class made for sending requests
 // will build a JSON based on the current values of the page
 
-var requestData = function (searchParam, categoryParam, brandPram, minPriceParam, maxPriceParam, sortByParam, sortOrderParam) {
+var requestDataClass = function () {
     // gets built at every request 
-    this.parameter =
+    this.parameterBuilder = parameterBuilderClass();
+    this.
+        this.requestData =
     {
-        limit: 50,
-    }
-    // set it to the value of the search box
-    if (searchParam) {
-        this.parameter.searchParam = "";
-    }
-    if (categoryParam) {
-        this.parameter.category = "";
-    }
-    if (brandPram) {
-        this.parameter.brand = "";
-    }
-    if (maxPriceParam) {
-        this.parameter.maxPrice = "";
-    }
-    if (minPriceParam) {
-        this.parameter.minPrice = "";
-    }
-    if (sortByParam) {
-        this.parameter.sortBy = "";
-    }
-    if (sortOrderParam) {
-        this.parameter.sortOrder = "";
-    }
-
-    this.requestData = {
         type: "getproductpage",
         api_key: user.api_key,
         parameters: this.parameter,
-    }
+        limit: 54,
+        offset: 
 
+    }
+    // set it to the value of the search box
+    if (this.parameterBuilder.searchParam) {
+        this.parameter.searchParam = "";
+    }
+    if (this.parameterBuilder.categoryParam) {
+        this.parameter.category = "";
+    }
+    if (this.parameterBuilder.brandParam) {
+        this.parameter.brand = "";
+    }
+    if (this.parameterBuilder.maxPriceParam) {
+        this.parameter.maxPrice = "";
+    }
+    if (this.parameterBuilder.minPriceParam) {
+        this.parameter.minPrice = "";
+    }
+    if (this.parameterBuilder.sortByParam) {
+        this.parameter.sortBy = "";
+    }
 }
 var userClass = function () {
     this.cookieData = getLoginCookie();
     this.api_key = this.cookieData.api_key;
     this.username = this.cookieData.username;
 }
+var parameterBuilderClass = function () {
+    // creates the parameters, such that the request does not need to be manually altered 
+    if (searchHtml != null && searchHtml != undefined && searchHtml.value != "")
+        this.searchParam = true;
+    else
+        this.searchParam = false;
+
+    // will likely be a sortbox 
+    if (categoryHtml != null && categoryHtml != undefined && categoryHtml.selectedIndex != 0)
+        this.categoryParam = true;
+    else
+        this.categoryParam = false;
+
+    if (brandHtml != null && brandHtml != undefined && brandHtml.selectedIndex != 0)
+        this.brandPram = true;
+    else
+        this.brandPram = false;
+
+    if (maxPriceHtml != null && maxPriceHtml != undefined && maxPriceHtml.value != "")
+        this.maxPriceParam = true;
+    else
+        this.maxPriceParam = false;
+
+    if (minPriceHtml != null && minPriceHtml != undefined && minPriceHtml.value != "")
+        this.minPriceParam = true;
+    else
+        this.minPriceParam = false;
+
+    if (sortByHtml != null && sortByHtml != undefined && searchHtml.selectedIndex != 0)
+        this.sortByParam = true;
+    else
+        this.sortByParam = false;
+}
+var offsetHandler = function () {
+    this.offset = 0;
+
+    this.updateOffset()
+    {
+        this.offset += 54;
+    }
+}
+var requestStateHandler = function () {
+    this.requestData = requestDataClass();
+    this.offset = offsetHandler();
+
+    this.createNewRequestState()
+    {
+        this.requestData = requestDataClass();
+        this.offset = offsetHandler();
+    }
+}
+/*
+assumed indexes for sortByHtml
+0 == sort-by (nothing)
+1 == name
+2 == newest
+3 == best-rated
+4 == price-high
+5 == price-low
+*/
