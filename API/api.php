@@ -908,7 +908,7 @@ class API {
         }
 
         // Base query
-        $query = "SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.CarouselImages,
+        $query = "SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.CarouselImages,
              bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
              bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
           FROM BestProduct bp
@@ -999,6 +999,7 @@ class API {
                 'name' => $row['Name'],
                 'brand' => $row['BrandName'],
                 'category' => $row['CategoryName'],
+                'ThumbnailImage' => $row['ThumbnailImage'],
                 'CarouselImages' => $row['CarouselImages'],
                 'reviewAverage' => number_format((float)$row['ReviewAverage'], 2),
                 'reviewCount' => $row['ReviewCount'],
