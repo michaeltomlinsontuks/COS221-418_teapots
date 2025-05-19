@@ -2,6 +2,7 @@
 require_once("header.php");
 include_once 'config.php';
 // if necessary to user at some stage for http requests
+
 $EnvJson = array(
     "host" => DB_HOST,
     'username' => DB_USER,
@@ -20,7 +21,6 @@ $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
 setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=")
     // only add the part after page =
-
     ?>
 
 <body>

@@ -3,7 +3,10 @@
     <br>
     <input type="text" value="" placeholder="..." id="usernameID">
     <br>
-
+    email
+    <br>
+    <input type="text" value="" placeholder="...@gmail.com" id="emailID">
+    <br>
     password
     <br>
     <input type="password" value="" placeholder="..." id="passwordID">
