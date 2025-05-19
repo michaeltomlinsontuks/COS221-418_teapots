@@ -6,4 +6,5 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="cssFiles/W.css">
     <link rel="stylesheet" href="cssFiles/D.css">
+    <script src="pages/jsFiles/cookies.js"></script>
 </head>

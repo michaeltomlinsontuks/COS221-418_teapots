@@ -15,3 +15,4 @@
     <input type="button" id="confirmLogin" value="confirm" id="confirmLoginID">
 
 </div>
+<script src="pages/jsFiles/login.js"></script>

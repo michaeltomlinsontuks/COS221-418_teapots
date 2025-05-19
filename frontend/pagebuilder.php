@@ -9,6 +9,15 @@ $EnvJson = array(
 );
 $cookieData = json_encode($EnvJson);
 setcookie('wheateleyAuthentication', $cookieData);
+
+$localEnvJson = array(
+    "host" => "http://localhost/teapots/API/api.php",
+    'username' => "root",
+    'password' => "",
+);
+
+$cookieData = json_encode($localEnvJson);
+setcookie('localAuthentication', $cookieData);
 ?>
 
 <body>
