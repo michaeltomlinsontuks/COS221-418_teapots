@@ -1,13 +1,20 @@
 
 // this page is used for cookie managing
-function setLoginCookie(apikey, username) {
+function setLoginCookie(api_key, username) {
     data =
     {
-        apikey: apikey,
+        api_key: api_key,
         username: username,
     }
     data = encodeURIComponent(JSON.stringify(data));
     document.cookie = 'userdata=' + data + "path=/; Secure; HttpOnly; SameSite=Strict";
+}
+function getLoginCookie() {
+    var result = getCookie("userdata");
+    if (result != null) {
+        var data = JSON.parse(result);
+        return data;
+    }
 }
 function getLocalCredentials() {
     var result = getCookie('localAuthentication');
