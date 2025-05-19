@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 
 // this page is used for cookie managing
 function setLoginCookie(apikey, username) {
@@ -11,7 +10,12 @@ function setLoginCookie(apikey, username) {
     document.cookie = 'userdata=' + data + "path=/; Secure; HttpOnly; SameSite=Strict";
 }
 function getLocalCredentials() {
-    data = JSON.parse(getCookie('localAuthentication'));
+    var result = getCookie('localAuthentication');
+    if (result != null) {
+        var data = JSON.parse(result);
+        return data;
+    }
+
 }
 function getCookie(name) {
     var cookies = document.cookie.split('; ');
@@ -22,4 +26,7 @@ function getCookie(name) {
         }
     }
     return null;
+}
+function getLocalRoute() {
+    return getCookie("localRoute");
 }

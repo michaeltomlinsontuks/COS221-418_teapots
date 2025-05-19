@@ -8,6 +8,7 @@ $EnvJson = array(
     'password' => DB_PASS,
 );
 $cookieData = json_encode($EnvJson);
+//$cookieData = urlencode($cookieData);
 setcookie('wheateleyAuthentication', $cookieData);
 
 $localEnvJson = array(
@@ -17,8 +18,13 @@ $localEnvJson = array(
 );
 
 $cookieData = json_encode($localEnvJson);
+//$cookieData = urlencode($cookieData);
 setcookie('localAuthentication', $cookieData);
-?>
+
+setcookie("localRoute", urlencode("http://localhost/teapots/frontend/pagebuilder.php?page="))
+    // only add the part after page =
+
+    ?>
 
 <body>
 
