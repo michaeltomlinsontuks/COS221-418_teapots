@@ -7,7 +7,7 @@ require_once("header.php")
     <div class="headingBar">
 
         <?php
-
+    
 
 
         if (isset($_GET['page']) && $_GET['page'] == "products") {
