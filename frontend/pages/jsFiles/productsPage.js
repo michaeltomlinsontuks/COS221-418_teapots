@@ -1,6 +1,5 @@
 
 //### var initialization ###
-
 //~~~~~~~~~~~~~//
 // classes //
 var currentRequestState;
@@ -26,9 +25,10 @@ function initialiseVar() {
     menuBtn = document.getElementById("menu");
     overlay = document.getElementById("overlay");
     overlayExtended = false;
-    user = userClass();
-    currentRequestState = RequestStateHandler();
-    productHandler = ProductHandler();
+    user = new userClass();
+    offsetHandler = new offsetClass();
+    currentRequestState = new RequestStateHandler();
+    productHandler = new ProductHandler();
     menuBtn.addEventListener("click", function () {
 
         if (overlayExtended === false) {
@@ -173,7 +173,7 @@ var ProductHandler = function () {
         this.newProductsAt = this.products.length;
         this.newProductsStop = this.newProductsAt + data.length;
         for (var i = 0; i < data.length; i++) {
-            this.products.push(Product(data[i]));
+            this.products.push(new Product(data[i]));
         }
         insertTd();
     }
@@ -183,16 +183,15 @@ var ProductHandler = function () {
 
 var requestDataClass = function () {
     // gets built at every request 
-    this.parameterBuilder = parameterBuilderClass();
-    this.
-        this.requestData =
+    this.parameterBuilder = new parameterBuilderClass();
+    console.log(currentRequestState);
+    this.requestData =
     {
         type: "getproductpage",
         api_key: user.api_key,
         parameters: this.parameter,
         limit: 54,
-        offset: currentRequestState.offset,
-
+        offset: offsetHandler.getOffset(),
     }
     // set it to the value of the search box
     if (this.parameterBuilder.searchParam) {
@@ -215,9 +214,9 @@ var requestDataClass = function () {
     }
 }
 var userClass = function () {
-    this.cookieData = getLoginCookie();
-    this.api_key = this.cookieData.api_key;
-    this.username = this.cookieData.username;
+    var cookieData = getLoginCookie();
+    this.api_key = cookieData.api_key;
+    this.username = cookieData.username;
 }
 var parameterBuilderClass = function () {
     // creates the parameters, such that the request does not need to be manually altered 
@@ -252,23 +251,25 @@ var parameterBuilderClass = function () {
     else
         this.sortByParam = false;
 }
-var offsetHandler = function () {
+var offsetClass = function () {
     this.offset = 0;
 
-    this.updateOffset()
-    {
+    this.updateOffset = function () {
         this.offset += 54;
+    }
+    this.getOffset = function () {
+        console.log(this.offset);
+        return this.offset;
     }
 }
 var RequestStateHandler = function () {
-    this.requestData = requestDataClass();
-    this.offset = offsetHandler();
+    this.requestData = new requestDataClass();
 
-    this.createNewRequestState()
-    {
-        this.requestData = requestDataClass();
-        this.offset = offsetHandler();
+    this.createNewRequestState = function () {
+        this.requestData = new requestDataClass();
+        offsetHandler = new offsetClass();
     }
+
 }
 /*
 assumed indexes for sortByHtml

@@ -7,12 +7,14 @@ function setLoginCookie(api_key, username) {
         username: username,
     }
     data = encodeURIComponent(JSON.stringify(data));
-    document.cookie = 'userdata=' + data + "path=/; Secure; HttpOnly; SameSite=Strict";
+    console.log(data);
+    document.cookie = 'userdata=' + data;
 }
 function getLoginCookie() {
     var result = getCookie("userdata");
     if (result != null) {
         var data = JSON.parse(result);
+        console.log(data);
         return data;
     }
 }
