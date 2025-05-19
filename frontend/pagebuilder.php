@@ -46,12 +46,15 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 
                 $page = $_GET['page'];
                 if ($page == "signup" || $page == "login") {
-                    if ($page == "signup")
+                    if ($page == "signup") {
                         $page = "login?";
-                    else
+                        echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToLogin()\"  class = \"changeDir\">";
+                    } else {
                         $page = "signup?";
+                        echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToRegister()\"  class = \"changeDir\">";
+                    }
 
-                    echo "<input type=\"button\" id = \"CHID\" value =$page  class = \"changeDir\">";
+
                 }
 
             } else

@@ -1,26 +1,19 @@
 <div class="signup">
     username
     <br>
-    <input type="text" value="" placeholder="..." #UID>
+    <input type="text" value="" placeholder="..." id="usernameID">
     <br>
 
     password
     <br>
-    <input type="password" value="" placeholder="..." #PID>
+    <input type="password" value="" placeholder="..." id="passwordID">
     <br>
     confirm password
     <br>
-    <input type="password" value="" placeholder="..." #PID>
+    <input type="password" value="" placeholder="..." id="confirmPasswordID">
+
     <br>
-
-    <select #SID>
-        <option value="customer">customer</option>
-        <option value="courier">seller</option>
-    </select>
-    <br>
-
-    <input type="button" id="confirmLogin" value="confirm">
-
+    <input type="button" value="confirm" id="confirmLoginID">
 
 
 </div>

@@ -7,4 +7,5 @@
     <link rel="stylesheet" href="cssFiles/W.css">
     <link rel="stylesheet" href="cssFiles/D.css">
     <script src="pages/jsFiles/cookies.js"></script>
+    <script src="pages/jsFiles/pgbuilder.js"></script>
 </head>
