@@ -66,7 +66,7 @@ function insertTd() {
             titleDiv.appendChild(document.createTextNode(productHandler.products[index].name));
 
             var priceDiv = document.createElement("div");
-            priceDiv.appendChild(document.createTextNode(productHandler.products[index].salePrice));
+            priceDiv.appendChild(document.createTextNode( "$ "+productHandler.products[index].salePrice));
 
             var ratingDiv = document.createElement("div");
             ratingDiv.appendChild(document.createTextNode(productHandler.products[index].printStars()));
@@ -78,7 +78,7 @@ function insertTd() {
 
             var imgInput = document.createElement("input");
             imgInput.type = "image";
-            imgInput.src = productHandler.products[index].thumbnail;
+            imgInput.src = productHandler.products[index].mainImg;
             imgInput.alt = "Image goes here";
             imgDiv.className = "productImageDiv";
             productHandler.products[index].setImgPointer(imgDiv);
@@ -133,11 +133,12 @@ function stateProductRequest() {
     }
 }
 var Product = function (data) {
+    // console.log(data);
     this.id = data.id;
     this.name = data.name;
     this.brand = data.brand;
     this.category = data.category;
-    this.thumbnail = data.thumbnail;
+
     this.reviewAvg = data.reviewAverage;
     this.reviewCount = data.reviewCount;
     this.regularPrice = data.regularPrice;
@@ -145,7 +146,9 @@ var Product = function (data) {
     this.discountPercent = data.discountPercent;
     this.inStock = data.inStock;
     this.bestCompany = data.bestCompany;
-
+    this.productCarousel = JSON.parse(data.CarouselImages);
+    this.mainImg = this.productCarousel[0].image;
+    // console.log(this.productCarousel[0].image)
     this.ImgPointer = null;
     // used to keep track exactly which 
     this.setImgPointer = function (imgPointer) {
