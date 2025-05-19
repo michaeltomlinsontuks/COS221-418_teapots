@@ -1,13 +1,22 @@
 <?php
-require_once("header.php")
-    ?>
+require_once("header.php");
+include_once 'config.php';
+// if necessary to user at some stage for http requests
+$EnvJson = array(
+    "host" => DB_HOST,
+    'username' => DB_USER,
+    'password' => DB_PASS,
+);
+$cookieData = json_encode($EnvJson);
+setcookie('wheateleyAuthentication', $cookieData);
+?>
 
 <body>
 
     <div class="headingBar">
 
         <?php
-    
+
 
 
         if (isset($_GET['page']) && $_GET['page'] == "products") {

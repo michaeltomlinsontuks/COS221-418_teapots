@@ -1,14 +1,17 @@
+
+
+
 <div class="login">
     username
     <br>
-    <input type="text" value="" placeholder="..." #UID>
+    <input type="text" value="" placeholder="..." id="usernameID">
     <br>
 
     password
     <br>
-    <input type="password" value="" placeholder="..." #PID>
-    
+    <input type="password" value="" placeholder="..." id="passwordID">
+
     <br>
-    <input type="button" id="confirmLogin" value="confirm">
+    <input type="button" id="confirmLogin" value="confirm" id="confirmLoginID">
 
 </div>
