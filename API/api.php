@@ -11,13 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 require_once 'connection.php';
 
-class API {
+class API
+{
     private static $instance = null;
     private $conn;
     private $requestData;
     private $response;
 
-    private function __construct() {
+    private function __construct()
+    {
         $this->conn = getConnection();
         // Ensure proper character encoding
         $this->conn->set_charset("utf8mb4");
@@ -37,14 +39,16 @@ class API {
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance == null) {
             self::$instance = new API();
         }
         return self::$instance;
     }
 
-    private function validateAPIKey() {
+    private function validateAPIKey()
+    {
         // Check if API key is provided
         if (!isset($this->requestData['api_key']) || empty($this->requestData['api_key'])) {
             $this->response['message'] = 'API key is required';
@@ -68,7 +72,8 @@ class API {
         return true;
     }
 
-    private function generateAPIKey() {
+    private function generateAPIKey()
+    {
         // Generate a random string for API key
         $apiKey = bin2hex(random_bytes(32));
 
@@ -86,7 +91,8 @@ class API {
         return $apiKey;
     }
 
-    private function hashPassword($password) {
+    private function hashPassword($password)
+    {
         // Generate a random salt
         $salt = bin2hex(random_bytes(32));
 
@@ -99,7 +105,8 @@ class API {
         ];
     }
 
-    private function verifyPassword($password, $storedHash, $salt) {
+    private function verifyPassword($password, $storedHash, $salt)
+    {
         // Hash the input password with the stored salt
         $hashedPassword = hash('sha512', $password . $salt);
 
@@ -107,7 +114,8 @@ class API {
         return $hashedPassword === $storedHash;
     }
 
-    private function getUserID() {
+    private function getUserID()
+    {
         // Check if API key is provided in the request
         if (!isset($this->requestData['api_key']) || empty($this->requestData['api_key'])) {
             $this->response['message'] = 'API key is required';
@@ -141,7 +149,8 @@ class API {
         return true;
     }
 
-    private function validateUsername() {
+    private function validateUsername()
+    {
         if (!isset($this->requestData['username']) || empty($this->requestData['username'])) {
             $this->response['message'] = 'Username is required';
             return false;
@@ -169,7 +178,8 @@ class API {
         return true;
     }
 
-    private function validatePassword() {
+    private function validatePassword()
+    {
         if (!isset($this->requestData['password']) || empty($this->requestData['password'])) {
             $this->response['message'] = 'Password is required';
             return false;
@@ -210,7 +220,8 @@ class API {
         return true;
     }
 
-    public function handleRequest() {
+    public function handleRequest()
+    {
         if (!isset($this->requestData['type'])) {
             $this->response['message'] = 'Request type is required';
             return $this->response;
@@ -261,7 +272,8 @@ class API {
     }
 
     // User Management Functions
-    private function login() {
+    private function login()
+    {
         // Check if username and password are provided
         if (!isset($this->requestData['username']) || empty($this->requestData['username'])) {
             $this->response['message'] = 'Username is required';
@@ -308,7 +320,8 @@ class API {
         return $this->response;
     }
 
-    private function register() {
+    private function register()
+    {
         // Check if required fields are provided
         $requiredFields = ['username', 'password', 'email'];
         foreach ($requiredFields as $field) {
@@ -347,10 +360,10 @@ class API {
         $apiKey = $this->generateAPIKey();
 
         // Insert user into database
-        $query = "INSERT INTO Users (Username, PasswordHash, Salt, APIKey, CreatedAt) 
-              VALUES (?, ?, ?, ?, NOW())";
+        $query = "INSERT INTO Users (Email,Username, PasswordHash, Salt, APIKey, CreatedAt) 
+              VALUES (?,?, ?, ?, ?, NOW())";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ssss", $username, $passwordHash, $salt, $apiKey);
+        $stmt->bind_param("sssss", $email, $username, $passwordHash, $salt, $apiKey);
 
         if ($stmt->execute()) {
             $this->response['status'] = 'success';
@@ -379,7 +392,8 @@ class API {
 
     //New GetCompanies function needs to be made for the new database
 
-    private function getCategories() {
+    private function getCategories()
+    {
         $query = "SELECT CategoryID, CategoryName FROM Category ORDER BY CategoryName";
         $result = $this->conn->query($query);
 
@@ -399,7 +413,8 @@ class API {
         return $this->response;
     }
 
-    private function getBrands() {
+    private function getBrands()
+    {
         $query = "SELECT BrandID, BrandName FROM Brand ORDER BY BrandName";
         $result = $this->conn->query($query);
 
@@ -419,7 +434,8 @@ class API {
         return $this->response;
     }
 
-    private function getCompanies() {
+    private function getCompanies()
+    {
         $query = "SELECT CompanyID, Name FROM Company ORDER BY Name";
         $result = $this->conn->query($query);
 
@@ -439,10 +455,13 @@ class API {
         return $this->response;
     }
 
-    private function addReview() {
+    private function addReview()
+    {
         // Check required fields
-        if (!isset($this->requestData['product_id']) || !isset($this->requestData['rating']) ||
-            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])) {
+        if (
+            !isset($this->requestData['product_id']) || !isset($this->requestData['rating']) ||
+            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])
+        ) {
             $this->response['message'] = 'Product ID, rating, title and description are required';
             return $this->response;
         }
@@ -453,8 +472,8 @@ class API {
             return $this->response; // Message already set in getUserID
         }
 
-        $productId = (int)$this->requestData['product_id'];
-        $rating = (int)$this->requestData['rating']; // Cast to integer
+        $productId = (int) $this->requestData['product_id'];
+        $rating = (int) $this->requestData['rating']; // Cast to integer
         $reviewTitle = trim($this->requestData['review_title']);
         $reviewDescription = trim($this->requestData['review_description']);
 
@@ -508,7 +527,8 @@ class API {
         return $this->response;
     }
 
-    private function removeReview() {
+    private function removeReview()
+    {
         // Check required fields
         if (!isset($this->requestData['review_id'])) {
             $this->response['message'] = 'Review ID is required';
@@ -521,7 +541,7 @@ class API {
             return $this->response; // Message already set in getUserID
         }
 
-        $reviewId = (int)$this->requestData['review_id'];
+        $reviewId = (int) $this->requestData['review_id'];
 
         // Get product ID from review for updating later
         $query = "SELECT ProductID FROM Review WHERE ReviewID = ? AND UserID = ?";
@@ -555,10 +575,13 @@ class API {
         return $this->response;
     }
 
-    private function editReview() {
+    private function editReview()
+    {
         // Check required fields
-        if (!isset($this->requestData['review_id']) || !isset($this->requestData['rating']) ||
-            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])) {
+        if (
+            !isset($this->requestData['review_id']) || !isset($this->requestData['rating']) ||
+            !isset($this->requestData['review_title']) || !isset($this->requestData['review_description'])
+        ) {
             $this->response['message'] = 'Review ID, rating, title and description are required';
             return $this->response;
         }
@@ -569,8 +592,8 @@ class API {
             return $this->response; // Message already set in getUserID
         }
 
-        $reviewId = (int)$this->requestData['review_id'];
-        $rating = (int)$this->requestData['rating'];
+        $reviewId = (int) $this->requestData['review_id'];
+        $rating = (int) $this->requestData['rating'];
         $reviewTitle = trim($this->requestData['review_title']);
         $reviewDescription = trim($this->requestData['review_description']);
 
@@ -623,14 +646,15 @@ class API {
         return $this->response;
     }
 
-    private function getReviews() {
+    private function getReviews()
+    {
         // Check required fields
         if (!isset($this->requestData['product_id'])) {
             $this->response['message'] = 'Product ID is required';
             return $this->response;
         }
 
-        $productId = (int)$this->requestData['product_id'];
+        $productId = (int) $this->requestData['product_id'];
 
         // Get reviews for the product
         $query = "SELECT r.ReviewID, r.UserID, u.Username, r.ReviewRating, r.ReviewTitle, r.ReviewDescription,
@@ -651,7 +675,7 @@ class API {
                 'review_id' => $row['ReviewID'],
                 'user_id' => $row['UserID'],
                 'username' => $row['Username'],
-                'rating' => (int)$row['ReviewRating'],
+                'rating' => (int) $row['ReviewRating'],
                 'title' => $row['ReviewTitle'],
                 'description' => $row['ReviewDescription'],
                 'timestamp' => $row['Timestamp']
@@ -664,7 +688,8 @@ class API {
         return $this->response;
     }
 
-    private function updateProductRating($productId) {
+    private function updateProductRating($productId)
+    {
         // Calculate new review average and count
         $query = "SELECT AVG(ReviewRating) AS average, COUNT(*) AS count FROM Review WHERE ProductID = ?";
         $stmt = $this->conn->prepare($query);
@@ -679,7 +704,7 @@ class API {
 
         // Calculate average with proper rounding
         $reviewAverage = $result['average'] ? round($result['average'], 2) : 0;
-        $reviewCount = (int)$result['count'];
+        $reviewCount = (int) $result['count'];
 
         // Update product review stats
         $query = "UPDATE BestProduct SET ReviewAverage = ?, ReviewCount = ? WHERE ProductID = ?";
@@ -693,14 +718,15 @@ class API {
         $stmt->execute();
     }
 
-    private function getProduct() {
+    private function getProduct()
+    {
         // Check if product ID is provided
         if (!isset($this->requestData['product_id'])) {
             $this->response['message'] = 'Product ID is required';
             return $this->response;
         }
 
-        $productId = (int)$this->requestData['product_id'];
+        $productId = (int) $this->requestData['product_id'];
 
         // Get product details
         $query = "SELECT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.ReviewAverage, 
@@ -749,11 +775,20 @@ class API {
         return $this->response;
     }
 
-    private function getProductComparisons($productId) {
+    private function getProductComparisons($productId)
+    {
         // List of retailers
         $retailers = [
-            'Bitify', 'ByteCrate', 'ByteMart', 'ChipCart', 'CoreBay',
-            'FuseBasket', 'Nexonic', 'TechNova', 'VoltEdge', 'ZapNest'
+            'Bitify',
+            'ByteCrate',
+            'ByteMart',
+            'ChipCart',
+            'CoreBay',
+            'FuseBasket',
+            'Nexonic',
+            'TechNova',
+            'VoltEdge',
+            'ZapNest'
         ];
 
         $comparisons = [];
@@ -792,17 +827,18 @@ class API {
             }
         }
         // Sort by discounted price (lowest first)
-        uasort($comparisons, function($a, $b) {
+        uasort($comparisons, function ($a, $b) {
             return floatval($a['discountedPrice']) <=> floatval($b['discountedPrice']);
         });
 
         return $comparisons;
     }
 
-    private function getProductPage() {
+    private function getProductPage()
+    {
         // Default parameters
-        $limit = isset($this->requestData['limit']) ? (int)$this->requestData['limit'] : 51;
-        $offset = isset($this->requestData['offset']) ? (int)$this->requestData['offset'] : 0;
+        $limit = isset($this->requestData['limit']) ? (int) $this->requestData['limit'] : 51;
+        $offset = isset($this->requestData['offset']) ? (int) $this->requestData['offset'] : 0;
         $sort = isset($this->requestData['sort']) ? $this->requestData['sort'] : 'price-low';
         $inStockOnly = isset($this->requestData['in_stock_only']) &&
             ($this->requestData['in_stock_only'] === true ||
@@ -898,12 +934,12 @@ class API {
         // Price range filter
         if (isset($this->requestData['min_price']) && is_numeric($this->requestData['min_price'])) {
             $whereConditions[] = "bp.BestPrice >= ?";
-            $parameters[] = (float)$this->requestData['min_price'];
+            $parameters[] = (float) $this->requestData['min_price'];
         }
 
         if (isset($this->requestData['max_price']) && is_numeric($this->requestData['max_price'])) {
             $whereConditions[] = "bp.BestPrice <= ?";
-            $parameters[] = (float)$this->requestData['max_price'];
+            $parameters[] = (float) $this->requestData['max_price'];
         }
 
         // Base query
@@ -999,12 +1035,12 @@ class API {
                 'brand' => $row['BrandName'],
                 'category' => $row['CategoryName'],
                 'thumbnail' => $row['ThumbnailImage'],
-                'reviewAverage' => number_format((float)$row['ReviewAverage'], 2),
+                'reviewAverage' => number_format((float) $row['ReviewAverage'], 2),
                 'reviewCount' => $row['ReviewCount'],
-                'regularPrice' => number_format((float)$row['RegularPrice'], 2),
-                'salePrice' => number_format((float)$row['BestPrice'], 2),
+                'regularPrice' => number_format((float) $row['RegularPrice'], 2),
+                'salePrice' => number_format((float) $row['BestPrice'], 2),
                 'discountPercent' => $discountPercent,
-                'inStock' => (bool)$row['OnlineAvailability'],
+                'inStock' => (bool) $row['OnlineAvailability'],
                 'bestCompany' => $row['BestCompany']
             ];
 

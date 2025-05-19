@@ -40,7 +40,7 @@ function initialiseVar() {
             overlayExtended = false;
         }
     })
-
+    requestProducts();
     // insertTd();
 }
 
