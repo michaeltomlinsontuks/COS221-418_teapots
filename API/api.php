@@ -1033,17 +1033,10 @@ class API
                 'name' => $row['Name'],
                 'brand' => $row['BrandName'],
                 'category' => $row['CategoryName'],
-<<<<<<< HEAD
-<<<<<<< HEAD
                 'thumbnail' => $row['ThumbnailImage'],
                 'reviewAverage' => number_format((float) $row['ReviewAverage'], 2),
-=======
-=======
                 'ThumbnailImage' => $row['ThumbnailImage'],
->>>>>>> origin/main
                 'CarouselImages' => $row['CarouselImages'],
-                'reviewAverage' => number_format((float)$row['ReviewAverage'], 2),
->>>>>>> main
                 'reviewCount' => $row['ReviewCount'],
                 'regularPrice' => number_format((float) $row['RegularPrice'], 2),
                 'salePrice' => number_format((float) $row['BestPrice'], 2),
