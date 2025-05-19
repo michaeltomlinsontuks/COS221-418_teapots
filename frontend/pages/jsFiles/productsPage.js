@@ -77,3 +77,33 @@ function insertTd() {
         table.appendChild(tr);
     }
 }
+var Product = function (data) {
+    this.id = data.id;
+    this.name = data.name;
+    this.brand = data.brand;
+    this.category = data.category;
+    this.thumbnail = data.thumbnail;
+    this.reviewAvg = data.reviewAverage;
+    this.reviewCount = data.reviewCount;
+    this.regularPrice = data.regularPrice;
+    this.salePrice = data.salePrice;
+    this.discountPercent = data.discountPercent;
+    this.inStock = data.inStock;
+    this.bestCompany = data.bestCompany;
+
+    this.ImgPointer = null;
+
+    function setImgPointer(imgPointer) {
+        this.imgPointer = imgPointer;
+    }
+}
+// holds an array of all the products   
+var ProductHandler = function () {
+    this.products = [];
+    this.constructor = function (data) {
+        // data should be an array
+        for (var i = 0; i < data.length; i++) {
+            this.products.push(Product(data[i]));
+        }
+    }
+}
