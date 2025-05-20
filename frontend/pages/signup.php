@@ -10,12 +10,12 @@
     password
     <br>
     <input class="passwordText" type="password" value="" placeholder="..." id="passwordID">
-    <input style="width: 64px;" type="button" value="👁️" onclick="revealPassword()">
+    <input class="eyeButton"  type="button" value="👁️" onclick="revealPassword()">
     <br>
     confirm password
     <br>
     <input class="passwordText" type="password" value="" placeholder="..." id="confirmPasswordID">
-    <input style="width: 64px;" type="button" value="👁️" onclick="revealPasswordConfirm()">
+    <input class="eyeButton"  type="button" value="👁️" onclick="revealPasswordConfirm()">
     <br>
     <input type="button" value="confirm" id="confirmLoginID">
 

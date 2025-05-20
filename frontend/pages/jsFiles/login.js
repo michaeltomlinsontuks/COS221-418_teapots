@@ -81,3 +81,9 @@ function stateChangeLogin() {
         }
     }
 }
+function revealPassword() {
+    if (passwordHtml.type === "password")
+        passwordHtml.type = "text";
+    else
+        passwordHtml.type = "password";
+}

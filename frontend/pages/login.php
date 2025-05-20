@@ -6,8 +6,8 @@
 
     password
     <br>
-    <input type="password" value="" placeholder="..." id="passwordID">
-
+    <input class="passwordText" type="password" value="" placeholder="..." id="passwordID">
+    <input class="eyeButton" type="button" value="👁️" onclick="revealPassword()">
 
     <br>
     <input type="button" value="confirm" id="confirmLoginID">
