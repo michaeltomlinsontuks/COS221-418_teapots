@@ -44,7 +44,9 @@ function initialiseVar() {
             overlayExtended = true;
             setTimeout(function () {
                 buildFilterbar();
-            }, 250);
+            }, 500);
+            // initialise the vars for it here
+
 
         }
         else {
@@ -52,8 +54,10 @@ function initialiseVar() {
             overlayExtended = false;
             setTimeout(function () {
                 destroyFilterbar();
-                1
-            }, 1000);
+                
+            }, 500);
+
+            //set the vars here as null
 
         }
     })

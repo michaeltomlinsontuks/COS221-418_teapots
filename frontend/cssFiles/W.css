@@ -26,30 +26,41 @@
     align-content: center;
 }
 
-.filterOverlay div {
-    display: flex;
-    justify-content: space-evenly;
+.filterOverlay table {
     position: absolute;
+    table-layout: fixed;
     right: 0;
-    top: 30%;
+    top: 0;
     width: 90%;
+    max-height: 100% !important;
     height: 100%;
-
+    font-size: 18pt;
 }
-
-.filterOverlay div input {
-    width: 10% ;
-    height: 30%;
-    justify-content: center;
-    align-content: center;
+.filterOverlay table td
+{
+    vertical-align: middle;
     text-align: center;
 }
-.filterOverlay div select {
-    width: 10% ;
-    height: 30%;
-    justify-content: center;
-    align-content: center;
+
+
+.filterOverlay table input {
+    margin-top: 0;
+    width: 50%;
+    height: 50%;
     text-align: center;
+    border-radius: 10px;
+    background-color: white;
+    border: solid black 3px;
+}
+
+.filterOverlay table select {
+    width: 50%;
+    height: 70%;
+    text-align: center;
+    align-self: center;
+    justify-content: center;
+    margin: auto;
+    display: block;
 }
 
 
@@ -171,7 +182,7 @@
 .login input,
 select,
 .signup input,
-select {
+.signup select {
     width: 40%;
     height: 8%;
     font-size: 20pt;
