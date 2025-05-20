@@ -6,12 +6,31 @@ function routeToLogin() {
 }
 function buildFilterbar() {
     var overlay = document.getElementById("overlay");
+
     var searchHtml = document.createElement("input");
+    searchHtml.id = "searchID";
+    searchHtml.type = "text";
     var categoryHtml = document.createElement("select");
+    categoryHtml.id = "categoryID";
+    addOptionTo(categoryHtml, "No category", 0);
+
+
     var brandHtml = document.createElement("select");
+    brandHtml.id = "brandID";
+    addOptionTo(brandHtml, "No brand", 0);
+
     var minPriceHtml = document.createElement("input");
+    minPriceHtml.id = "minPriceID";
+    minPriceHtml.type = "number";
+
     var maxPriceHtml = document.createElement("input");
+    maxPriceHtml.id = "maxPriceID";
+    maxPriceHtml.type = "number";
+
     var sortByHtml = document.createElement("select");
+    sortByHtml.id = "sortByID";
+    addOptionTo(sortByHtml, "sort-by :", 0);
+
     var trFilters = document.createElement('tr');
     var tableFilters = document.createElement('table');
     tableFilters.id = "filtersRowID"
@@ -26,7 +45,6 @@ function buildFilterbar() {
     tableFilters.appendChild(trHead);
 
 
-    console.log(newTD(searchHtml));
     trFilters.appendChild(newTD(searchHtml));
     trFilters.appendChild(newTD(categoryHtml));
     trFilters.appendChild(newTD(brandHtml));
@@ -47,10 +65,17 @@ function newTD(element) {
     td.appendChild(element);
     return td;
 }
-function newTH(text)
-{
+function newTH(text) {
     var th = document.createElement('th')
     th.textContent = text;
     return th;
 
+}
+function addOptionTo(selectElement, OptionText, value) {
+    //optiontext is the displayed text
+    // value is something like an id that might be stored
+    var option = document.createElement('option');
+    option.value = value;
+    option.text = OptionText;
+    selectElement.appendChild(option);
 }

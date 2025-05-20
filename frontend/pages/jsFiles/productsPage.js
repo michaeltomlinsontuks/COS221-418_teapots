@@ -44,9 +44,22 @@ function initialiseVar() {
             overlayExtended = true;
             setTimeout(function () {
                 buildFilterbar();
-            }, 500);
-            // initialise the vars for it here
 
+                searchHtml = document.getElementById('searchID');
+                categoryHtml = document.getElementById('categoryID');
+                brandHtml = document.getElementById("brandID");
+                maxPriceHtml = document.getElementById('maxPriceID');
+                minPriceHtml = document.getElementById('minPriceID');
+                sortByHtml = document.getElementById('sortByID');
+
+                searchHtml.addEventListener('change', currentRequestState.createNewRequestState);
+                categoryHtml.addEventListener('change', currentRequestState.createNewRequestState);
+                brandHtml.addEventListener('change', currentRequestState.createNewRequestState);
+                maxPriceHtml.addEventListener('change', currentRequestState.createNewRequestState);
+                minPriceHtml.addEventListener('change', currentRequestState.createNewRequestState);
+                sortByHtml.addEventListener('change', currentRequestState.createNewRequestState);
+            }, 800);
+            // initialise the vars for it here
 
         }
         else {
@@ -55,8 +68,19 @@ function initialiseVar() {
             setTimeout(function () {
                 destroyFilterbar();
 
-            }, 500);
-
+            }, 700);
+            searchHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            categoryHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            brandHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            maxPriceHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            minPriceHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            sortByHtml.removeEventListener('change', currentRequestState.createNewRequestState);
+            searchHtml = null;
+            categoryHtml = null;
+            brandHtml = null;
+            maxPriceHtml = null;
+            minPriceHtml = null;
+            sortByHtml = null;
             //set the vars here as null
 
         }
@@ -190,14 +214,13 @@ var ProductHandler = function () {
     this.products = [];
     this.addProducts = function (data) {
         // data should be an array
-      //  console.log(data);
+        //  console.log(data);
         this.newProductsAt = this.products.length;
         this.newProductsStop = this.newProductsAt + data.length;
         for (var i = 0; i < data.length; i++) {
             this.products.push(new Product(data[i]));
         }
         //console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
-        console.log(this.newProductsAt, this.newProductsStop);
         if (this.newProductsAt !== this.newProductsStop)
             insertTd();
 
@@ -219,22 +242,28 @@ var requestDataClass = function () {
     }
     // set it to the value of the search box
     if (this.parameterBuilder.searchParam) {
-        this.requestData.search = "";
+        this.requestData.search = searchHtml.value;
     }
     if (this.parameterBuilder.categoryParam) {
         this.requestData.category = "";
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
     }
     if (this.parameterBuilder.brandParam) {
         this.requestData.brand = "";
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
     }
     if (this.parameterBuilder.maxPriceParam) {
-        this.requestData.maxPrice = "";
+        this.requestData.max_price = maxPriceHtml.value;
     }
     if (this.parameterBuilder.minPriceParam) {
-        this.requestData.minPrice = "";
+        this.requestData.min_price = minPriceHtml.value;
     }
     if (this.parameterBuilder.sortByParam) {
         this.requestData.sortBy = "";
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
     }
 }
 var userClass = function () {
@@ -270,7 +299,7 @@ var parameterBuilderClass = function () {
     else
         this.minPriceParam = false;
 
-    if (sortByHtml != null && sortByHtml != undefined && searchHtml.selectedIndex != 0)
+    if (sortByHtml != null && sortByHtml != undefined && sortByHtml.selectedIndex != 0)
         this.sortByParam = true;
     else
         this.sortByParam = false;
@@ -292,6 +321,10 @@ var RequestStateHandler = function () {
 
     this.createNewRequestState = function () {
         offsetHandler = new offsetClass();
+        productHandler = new ProductHandler();
+        scrollHandler = new scrollManagerClass();
+        clearTD();
+        requestProducts();
     }
 
     this.getRequestData = function () {
@@ -336,4 +369,9 @@ function updateScrollTop() {
         scrollHandler.blockRequest = true;
     }
 
+}
+function clearTD() {
+    while (table.firstChild) {
+        table.removeChild(table.firstChild)
+    }
 }
