@@ -54,7 +54,7 @@ function initialiseVar() {
             overlayExtended = false;
             setTimeout(function () {
                 destroyFilterbar();
-                
+
             }, 500);
 
             //set the vars here as null
@@ -68,7 +68,7 @@ function initialiseVar() {
 // inserts the td into the table pre / post  request
 function insertTd() {
     var index = productHandler.newProductsAt;
-    for (var i = 0; i < 54 / 3; i++) {
+    for (var i = 0; i < (productHandler.newProductsStop - productHandler.newProductsAt) / 3; i++) {
         tr = document.createElement("tr");
         for (var cols = 0; cols < 3; cols++, index++) {
             td = document.createElement("td");
@@ -190,13 +190,17 @@ var ProductHandler = function () {
     this.products = [];
     this.addProducts = function (data) {
         // data should be an array
+      //  console.log(data);
         this.newProductsAt = this.products.length;
         this.newProductsStop = this.newProductsAt + data.length;
         for (var i = 0; i < data.length; i++) {
             this.products.push(new Product(data[i]));
         }
         //console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
-        insertTd();
+        console.log(this.newProductsAt, this.newProductsStop);
+        if (this.newProductsAt !== this.newProductsStop)
+            insertTd();
+
     }
 }
 // a class made for sending requests
@@ -322,7 +326,8 @@ function updateScrollTop() {
 
         scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
         if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
-            requestProducts();
+            if (productHandler.newProductsAt !== productHandler.newProductsStop)
+                requestProducts();
         }
 
         var intervalBeforeRequest = setTimeout(function () {
