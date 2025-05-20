@@ -33,7 +33,7 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 
         if (isset($_GET['page']) && $_GET['page'] == "products") {
             echo "<div class=\"filterOverlay\" id=\"overlay\">";
-            echo "<input type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
+            echo "<input  type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
             echo "</div>";
         }
         ?>

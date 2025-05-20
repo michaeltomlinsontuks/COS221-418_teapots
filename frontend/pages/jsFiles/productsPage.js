@@ -42,10 +42,19 @@ function initialiseVar() {
         if (overlayExtended === false) {
             overlay.style.animation = "overlayGrow 1.5s ease-in-out forwards"
             overlayExtended = true;
+            setTimeout(function () {
+                buildFilterbar();
+            }, 250);
+
         }
         else {
             overlay.style.animation = "overlayShrink 1.5s ease-in-out forwards"
             overlayExtended = false;
+            setTimeout(function () {
+                destroyFilterbar();
+                1
+            }, 1000);
+
         }
     })
     requestProducts();
@@ -182,7 +191,7 @@ var ProductHandler = function () {
         for (var i = 0; i < data.length; i++) {
             this.products.push(new Product(data[i]));
         }
-        console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
+        //console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
         insertTd();
     }
 }
