@@ -182,6 +182,7 @@ var ProductHandler = function () {
         for (var i = 0; i < data.length; i++) {
             this.products.push(new Product(data[i]));
         }
+        console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
         insertTd();
     }
 }
@@ -277,7 +278,7 @@ var RequestStateHandler = function () {
     }
 
     this.getRequestData = function () {
-    
+
         var requestData = new requestDataClass();
         console.log(requestData);
         return requestData.requestData;
