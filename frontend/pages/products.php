@@ -1,4 +1,4 @@
-<div class="scrollDiv">
+<div class="scrollDiv" id="scrollDivID">
     <table class="productsTable" id="PTID">
 
     </table>

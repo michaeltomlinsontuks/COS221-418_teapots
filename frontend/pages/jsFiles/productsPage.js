@@ -8,6 +8,8 @@ var productHandler;
 var user;
 // classes //
 //~~~~~~~~~~~~~//
+
+
 var table;
 var menuBtn;
 var overlay;
@@ -26,10 +28,15 @@ function initialiseVar() {
     menuBtn = document.getElementById("menu");
     overlay = document.getElementById("overlay");
     overlayExtended = false;
+
+    scrollHandler = new scrollManagerClass();
+    document.getElementById('scrollDivID').addEventListener('scroll', scrollHandler.updateScrollTop);
     user = new userClass();
     offsetHandler = new offsetClass();
     currentRequestState = new RequestStateHandler();
     productHandler = new ProductHandler();
+
+
     menuBtn.addEventListener("click", function () {
 
         if (overlayExtended === false) {
@@ -66,7 +73,7 @@ function insertTd() {
             titleDiv.appendChild(document.createTextNode(productHandler.products[index].name));
 
             var priceDiv = document.createElement("div");
-            priceDiv.appendChild(document.createTextNode( "$ "+productHandler.products[index].salePrice));
+            priceDiv.appendChild(document.createTextNode("$ " + productHandler.products[index].salePrice));
 
             var ratingDiv = document.createElement("div");
             ratingDiv.appendChild(document.createTextNode(productHandler.products[index].printStars()));
@@ -88,8 +95,6 @@ function insertTd() {
             containerDiv.appendChild(textDiv);
             td.appendChild(containerDiv);
             tr.appendChild(td);
-
-
         }
         table.appendChild(tr);
     }
@@ -186,7 +191,6 @@ var ProductHandler = function () {
 var requestDataClass = function () {
     // gets built at every request 
     this.parameterBuilder = new parameterBuilderClass();
-    console.log(currentRequestState);
     this.requestData =
     {
         type: "getproductpage",
@@ -197,22 +201,22 @@ var requestDataClass = function () {
     }
     // set it to the value of the search box
     if (this.parameterBuilder.searchParam) {
-        this.parameter.searchParam = "";
+        this.requestData.search = "";
     }
     if (this.parameterBuilder.categoryParam) {
-        this.parameter.category = "";
+        this.requestData.category = "";
     }
     if (this.parameterBuilder.brandParam) {
-        this.parameter.brand = "";
+        this.requestData.brand = "";
     }
     if (this.parameterBuilder.maxPriceParam) {
-        this.parameter.maxPrice = "";
+        this.requestData.maxPrice = "";
     }
     if (this.parameterBuilder.minPriceParam) {
-        this.parameter.minPrice = "";
+        this.requestData.minPrice = "";
     }
     if (this.parameterBuilder.sortByParam) {
-        this.parameter.sortBy = "";
+        this.requestData.sortBy = "";
     }
 }
 var userClass = function () {
@@ -260,20 +264,23 @@ var offsetClass = function () {
         this.offset += 54;
     }
     this.getOffset = function () {
-        console.log(this.offset);
-        return this.offset;
+        var storedOffset = this.offset;
+        this.updateOffset();
+        return storedOffset;
     }
 }
 var RequestStateHandler = function () {
-    this.requestData = new requestDataClass();
+
 
     this.createNewRequestState = function () {
-        this.requestData = new requestDataClass();
         offsetHandler = new offsetClass();
     }
-    this.getRequestData = function () {
 
-        return this.requestData.requestData;
+    this.getRequestData = function () {
+    
+        var requestData = new requestDataClass();
+        console.log(requestData);
+        return requestData.requestData;
     }
 
 }
@@ -286,3 +293,28 @@ assumed indexes for sortByHtml
 4 == price-high
 5 == price-low
 */
+// class may not be necessary
+var scrollManagerClass = function () {
+
+    this.scrolldivElement = document.getElementById('scrollDivID');
+    this.scrollTop = this.scrolldivElement.scrollTop;
+    this.blockRequest = false;
+    this.updateScrollTop = updateScrollTop;
+
+
+}
+function updateScrollTop() {
+    if (scrollHandler.blockRequest == false) {
+
+        scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
+        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
+            requestProducts();
+        }
+
+        var intervalBeforeRequest = setTimeout(function () {
+            scrollHandler.blockRequest = false;
+        }, 1000);
+        scrollHandler.blockRequest = true;
+    }
+
+}
