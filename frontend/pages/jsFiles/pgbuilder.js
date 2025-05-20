@@ -10,14 +10,13 @@ function buildFilterbar() {
     var searchHtml = document.createElement("input");
     searchHtml.id = "searchID";
     searchHtml.type = "text";
-    var categoryHtml = document.createElement("select");
+
+    var categoryHtml = document.createElement("input");
     categoryHtml.id = "categoryID";
-    addOptionTo(categoryHtml, "No category", 0);
 
 
-    var brandHtml = document.createElement("select");
+    var brandHtml = document.createElement("input");
     brandHtml.id = "brandID";
-    addOptionTo(brandHtml, "No brand", 0);
 
     var minPriceHtml = document.createElement("input");
     minPriceHtml.id = "minPriceID";
@@ -30,6 +29,11 @@ function buildFilterbar() {
     var sortByHtml = document.createElement("select");
     sortByHtml.id = "sortByID";
     addOptionTo(sortByHtml, "sort-by :", 0);
+    addOptionTo(sortByHtml, "price high-low", 'price-high');
+    addOptionTo(sortByHtml, "price low-high", 'price-low');
+    addOptionTo(sortByHtml, "name ", 'name');
+    addOptionTo(sortByHtml, "newest ", 'newest');
+    addOptionTo(sortByHtml, "best rated ", 'best-rated');
 
     var trFilters = document.createElement('tr');
     var tableFilters = document.createElement('table');
@@ -48,9 +52,9 @@ function buildFilterbar() {
     trFilters.appendChild(newTD(searchHtml));
     trFilters.appendChild(newTD(categoryHtml));
     trFilters.appendChild(newTD(brandHtml));
-    trFilters.appendChild(newTD(sortByHtml));
     trFilters.appendChild(newTD(minPriceHtml));
     trFilters.appendChild(newTD(maxPriceHtml));
+    trFilters.appendChild(newTD(sortByHtml));
     tableFilters.appendChild(trFilters);
     overlay.appendChild(tableFilters);
 }

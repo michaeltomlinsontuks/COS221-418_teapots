@@ -236,7 +236,6 @@ var requestDataClass = function () {
     {
         type: "getproductpage",
         api_key: user.api_key,
-        parameters: this.parameter,
         limit: 54,
         offset: offsetHandler.getOffset(),
     }
@@ -245,12 +244,12 @@ var requestDataClass = function () {
         this.requestData.search = searchHtml.value;
     }
     if (this.parameterBuilder.categoryParam) {
-        this.requestData.category = "";
+        this.requestData.categories = [categoryHtml.value];
         // depends on the selected index will configure now
         // likely will store the text of the category in the option
     }
     if (this.parameterBuilder.brandParam) {
-        this.requestData.brand = "";
+        this.requestData.brands = [brandHtml.value];
         // depends on the selected index will configure now
         // likely will store the text of the category in the option
     }
@@ -261,7 +260,7 @@ var requestDataClass = function () {
         this.requestData.min_price = minPriceHtml.value;
     }
     if (this.parameterBuilder.sortByParam) {
-        this.requestData.sortBy = "";
+        this.requestData.sort = sortByHtml.options[sortByHtml.selectedIndex].value;
         // depends on the selected index will configure now
         // likely will store the text of the category in the option
     }
@@ -279,15 +278,15 @@ var parameterBuilderClass = function () {
         this.searchParam = false;
 
     // will likely be a sortbox 
-    if (categoryHtml != null && categoryHtml != undefined && categoryHtml.selectedIndex != 0)
+    if (categoryHtml != null && categoryHtml != undefined && categoryHtml.value != "")
         this.categoryParam = true;
     else
         this.categoryParam = false;
 
-    if (brandHtml != null && brandHtml != undefined && brandHtml.selectedIndex != 0)
-        this.brandPram = true;
+    if (brandHtml != null && brandHtml != undefined && brandHtml.value != "")
+        this.brandParam = true;
     else
-        this.brandPram = false;
+        this.brandParam = false;
 
     if (maxPriceHtml != null && maxPriceHtml != undefined && maxPriceHtml.value != "")
         this.maxPriceParam = true;
@@ -335,16 +334,6 @@ var RequestStateHandler = function () {
     }
 
 }
-/*
-assumed indexes for sortByHtml
-0 == sort-by (nothing)
-1 == name
-2 == newest
-3 == best-rated
-4 == price-high
-5 == price-low
-*/
-// class may not be necessary
 var scrollManagerClass = function () {
 
     this.scrolldivElement = document.getElementById('scrollDivID');
