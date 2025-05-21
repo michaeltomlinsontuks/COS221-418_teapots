@@ -108,7 +108,7 @@ function insertTd() {
         tr = document.createElement("tr");
 
 
-        for (var cols = 0; cols < 3 && productsNeeded > 0 ; cols++, index++,productsNeeded--) {
+        for (var cols = 0; cols < 3 && productsNeeded > 0; cols++, index++, productsNeeded--) {
 
             td = document.createElement("td");
             // each td made up of 2 divs a div for the image (half the td in width()
@@ -352,15 +352,19 @@ var scrollManagerClass = function () {
     this.scrollTop = this.scrolldivElement.scrollTop;
     this.blockRequest = false;
     this.updateScrollTop = updateScrollTop;
-
-
+    this.divisor = 0.5;
+    this.half = 0.5;
 }
 function updateScrollTop() {
     if (scrollHandler.blockRequest == false) {
 
         scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
         // use a divisor that will increase the needed size of where the scrolltop must be to do a request,
-        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
+        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight * scrollHandler.divisor) {
+            if (scrollHandler.divisor <= 0.9) {
+                scrollHandler.half *= 0.5;
+                scrollHandler.divisor = scrollHandler.divisor + scrollHandler.half;
+            }
             if (productHandler.newProductsAt !== productHandler.newProductsStop)
                 requestProducts();
         }
