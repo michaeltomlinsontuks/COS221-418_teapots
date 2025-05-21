@@ -2,6 +2,7 @@
 //### var initialization ###
 //~~~~~~~~~~~~~//
 
+
 // classes //
 var currentRequestState;
 var productHandler;
@@ -92,9 +93,23 @@ function initialiseVar() {
 // inserts the td into the table pre / post  request
 function insertTd() {
     var index = productHandler.newProductsAt;
-    for (var i = 0; i < (productHandler.newProductsStop - productHandler.newProductsAt) / 3; i++) {
+
+    var rowsNeeded = Math.floor((productHandler.newProductsStop - productHandler.newProductsAt) / 3);
+
+    var productsNeeded = (productHandler.newProductsStop - productHandler.newProductsAt);
+    // insures that remainders are handled 
+
+    if ((productHandler.newProductsStop - productHandler.newProductsAt) % 3 !== 0) {
+        rowsNeeded++;
+    }
+
+
+    for (var i = 0; i < rowsNeeded; i++) {
         tr = document.createElement("tr");
-        for (var cols = 0; cols < 3; cols++, index++) {
+
+
+        for (var cols = 0; cols < 3 && productsNeeded > 0 ; cols++, index++,productsNeeded--) {
+
             td = document.createElement("td");
             // each td made up of 2 divs a div for the image (half the td in width()
             // and the other half split in 3 
@@ -132,6 +147,7 @@ function insertTd() {
             containerDiv.appendChild(textDiv);
             td.appendChild(containerDiv);
             tr.appendChild(td);
+
         }
         table.appendChild(tr);
     }
@@ -175,7 +191,6 @@ function stateProductRequest() {
     }
 }
 var Product = function (data) {
-    // console.log(data);
     this.id = data.id;
     this.name = data.name;
     this.brand = data.brand;
@@ -190,7 +205,6 @@ var Product = function (data) {
     this.bestCompany = data.bestCompany;
     this.productCarousel = JSON.parse(data.CarouselImages);
     this.mainImg = this.productCarousel[0].image;
-    // console.log(this.productCarousel[0].image)
     this.ImgPointer = null;
     // used to keep track exactly which 
     this.setImgPointer = function (imgPointer) {
@@ -214,13 +228,11 @@ var ProductHandler = function () {
     this.products = [];
     this.addProducts = function (data) {
         // data should be an array
-        //  console.log(data);
         this.newProductsAt = this.products.length;
         this.newProductsStop = this.newProductsAt + data.length;
         for (var i = 0; i < data.length; i++) {
             this.products.push(new Product(data[i]));
         }
-        //console.log("from ",this.newProductsAt,"to ",this.newProductsStop)
         if (this.newProductsAt !== this.newProductsStop)
             insertTd();
 
@@ -347,6 +359,7 @@ function updateScrollTop() {
     if (scrollHandler.blockRequest == false) {
 
         scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
+        // use a divisor that will increase the needed size of where the scrolltop must be to do a request,
         if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
             if (productHandler.newProductsAt !== productHandler.newProductsStop)
                 requestProducts();

@@ -43,9 +43,9 @@ function buildFilterbar() {
     trHead.appendChild(newTH("search"));
     trHead.appendChild(newTH("category"));
     trHead.appendChild(newTH("brand"));
-    trHead.appendChild(newTH('sort-by'));
     trHead.appendChild(newTH('min-price'));
     trHead.appendChild(newTH("max-price"));
+    trHead.appendChild(newTH('sort-by'));
     tableFilters.appendChild(trHead);
 
 
