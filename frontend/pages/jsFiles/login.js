@@ -5,6 +5,7 @@ var confirmLoginHtml;
 document.addEventListener('DOMContentLoaded', startUp);
 
 function initialiseVariables() {
+    
     usernameHtml = document.getElementById('usernameID');
     passwordHtml = document.getElementById('passwordID');
     confirmLoginHtml = document.getElementById('confirmLoginID');

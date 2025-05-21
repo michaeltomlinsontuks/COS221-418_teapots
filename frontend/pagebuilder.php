@@ -42,6 +42,8 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 
             <?php
             if (isset($_GET['page'])) {
+
+
                 echo $_GET['page'];
 
                 $page = $_GET['page'];
@@ -57,8 +59,8 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 
                 }
 
-            } else
-                echo "products";
+            }
+
             ?>
         </div>
 

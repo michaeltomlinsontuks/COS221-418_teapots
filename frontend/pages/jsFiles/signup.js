@@ -44,7 +44,7 @@ function passwordValidation() {
 }
 function passwordConfirmValidation() {
     // regex for password length
-    if (passwordHtml.value !== confirmLoginHtml.value)
+    if (passwordHtml.value !== confirmPassHtml.value)
         alert("passwords do not match");
     return passwordHtml.value === confirmPassHtml.value;
 }
