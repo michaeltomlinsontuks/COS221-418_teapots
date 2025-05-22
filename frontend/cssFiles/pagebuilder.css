@@ -3,14 +3,13 @@
     height: 10vh;
     font-size: 25pt;
     text-align: center;
-    border: solid black 3px;
-    border-bottom: 0;
+    border: solid rgb(0, 0, 0) 3px;
     position: relative;
     align-content: center;
     z-index: 0;
 }
-#headingRowID
-{
+
+#headingRowID {
     height: 20px !important;
 }
 
@@ -75,6 +74,9 @@
     z-index: -10;
 }
 
+
+
+
 .changeDir {
     position: absolute;
     z-index: 0;
@@ -100,10 +102,14 @@
 }
 
 .contentContainer {
-    border: solid black 3px;
-    height: 85vh;
+    border: solid rgba(0, 0, 0, 0) 3px;
+    height: 90vh;
     width: 100%;
+    background-color: rgba(255, 0, 0, 0);
+
 }
+
+
 
 .menu {
     width: 32px;
@@ -112,12 +118,16 @@
 
 body {
     overflow-x: hidden;
+    background-color: #11a9a9;
+    margin: 0;
+    height: 100vh;
+    overflow-y: hidden;
+   
 }
 
 * {
-
-  font-family: "Oswald", sans-serif;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 
 }

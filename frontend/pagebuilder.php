@@ -96,6 +96,8 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
             include_once "pages/products.php";
         ?>
         <?php
+
+
         require_once("footer.php")
             ?>
     </div>
