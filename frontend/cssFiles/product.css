@@ -112,7 +112,7 @@
 .scrollDiv {
     overflow-y: scroll;
     height: 100%;
-        overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 .productsTable {
@@ -122,12 +122,12 @@
 }
 
 .productsTable td {
-  
+
     height: 33vh !important;
-    width: 32%;
-    background-color:#11a9a9 ;
+    width: 30%;
+    background-color: #11a9a9;
     outline: white solid 2px;
-   
+
 }
 
 
@@ -145,16 +145,16 @@
     height: 100%;
     max-height: 200px;
     object-fit: scale-down;
-  border-radius: 20px;
-  background-color: white;
-  margin-left: 2%;
-border: solid black 2px;
+    border-radius: 20px;
+    background-color: white;
+    margin-left: 1%;
+    border: solid black 2px;
 }
 
 .productsText {
-    width: 50%;
+    width: 45%;
     height: 100%;
-    font-size: 15pt;
+    font-size: 14pt;
 }
 
 .productsText div {
@@ -165,7 +165,7 @@ border: solid black 2px;
     align-content: center;
     margin: 3%;
     margin-left: 4%;
-    overflow-y:scroll;
+    overflow-y: scroll;
     scrollbar-width: none;
 }
 
