@@ -1,0 +1,8 @@
+look through the structure of everything to get a feeling of how everything is places i, dont know how different its going to be 
+for you to get it runnng becasue of file structures what not but try get it to work on your side, probably make a branch for it etc
+i put a bunch of ids in the view i thought youd need everything is kinda colour coded so you can see which element is which in 
+the css based on the background, 
+there is a cookie js that will be accessable throughout and a pagebuilder js with the classes i used to construct the products on products 
+use it abuse it to get the data for the view product like just put the data of the product in the constructor and you can access all it holds 
+
+goodspeed
