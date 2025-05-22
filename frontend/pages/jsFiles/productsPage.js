@@ -194,7 +194,7 @@ function updateScrollTop() {
     if (scrollHandler.blockRequest == false) {
 
         scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
-        
+
         if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight * scrollHandler.divisor) {
             if (scrollHandler.divisor <= 0.9) {
                 scrollHandler.divisor = scrollHandler.divisor + (scrollHandler.half / 2);
@@ -224,4 +224,9 @@ var scrollManagerClass = function () {
     this.updateScrollTop = updateScrollTop;
 
 
+}
+function clearTD() {
+    while (table.firstChild) {
+        table.removeChild(table.firstChild)
+    }
 }

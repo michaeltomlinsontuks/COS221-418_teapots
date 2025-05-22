@@ -251,8 +251,3 @@ var RequestStateHandler = function () {
 }
 
 
-function clearTD() {
-    while (table.firstChild) {
-        table.removeChild(table.firstChild)
-    }
-}
