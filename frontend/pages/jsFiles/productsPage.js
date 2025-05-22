@@ -190,3 +190,38 @@ function stateProductRequest() {
         }
     }
 }
+function updateScrollTop() {
+    if (scrollHandler.blockRequest == false) {
+
+        scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
+        
+        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight * scrollHandler.divisor) {
+            if (scrollHandler.divisor <= 0.9) {
+                scrollHandler.divisor = scrollHandler.divisor + (scrollHandler.half / 2);
+
+                scrollHandler.half /= 2;
+            }
+            if (productHandler.newProductsAt !== productHandler.newProductsStop) {
+                requestProducts();
+                var intervalBeforeRequest = setTimeout(function () {
+                    scrollHandler.blockRequest = false;
+                }, 1000);
+                scrollHandler.blockRequest = true;
+            }
+        }
+
+
+    }
+
+}
+var scrollManagerClass = function () {
+
+    this.divisor = 0.5;
+    this.half = 0.5;
+    this.scrolldivElement = document.getElementById('scrollDivID');
+    this.scrollTop = this.scrolldivElement.scrollTop;
+    this.blockRequest = false;
+    this.updateScrollTop = updateScrollTop;
+
+
+}
