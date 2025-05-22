@@ -113,3 +113,25 @@
     width: 32px;
     height: 64;
 }
+
+body {
+    overflow-x: hidden;
+    background-color: #11a9a9;
+    margin: 0;
+    height: 100vh;
+    overflow-y: hidden;
+   
+}
+
+* {
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+
+}
+.wave
+{
+position: absolute;
+bottom: -5%;
+z-index: -5 ;
+}
