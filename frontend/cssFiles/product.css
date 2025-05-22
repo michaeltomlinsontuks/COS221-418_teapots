@@ -1,6 +1,6 @@
 .filterOverlay {
     position: absolute;
-    top: 0;
+    top: -2%;
     left: 0;
     width: 64px;
     height: 100%;
@@ -11,8 +11,9 @@
     border-bottom-left-radius: 0;
     justify-content: center;
     align-content: center;
-    border-right: solid black 3px;
-    border-bottom: solid black 3px;
+    border: solid black 3px;
+    background-color: white;
+
 }
 
 .filterOverlay table {
@@ -98,11 +99,7 @@
     z-index: 1;
 }
 
-.contentContainer {
-    border: solid black 3px;
-    height: 85vh;
-    width: 100%;
-}
+
 
 .menu {
     width: 32px;
@@ -113,23 +110,28 @@
     overflow-y: scroll;
     height: 100%;
     overflow-x: hidden;
+    border: solid black 3px;
 }
 
 .productsTable {
     height: 100%;
     width: 100%;
-
+    background-color: #12c5c5;
 }
+
+
 
 .productsTable td {
 
     height: 33vh !important;
     width: 30%;
-    background-color: #11a9a9;
-    outline: white solid 2px;
 
 }
 
+.productsTable tr {
+    outline: solid black 3px;
+
+}
 
 
 .productImageDiv {
