@@ -83,3 +83,193 @@ function addOptionTo(selectElement, OptionText, value) {
     option.text = OptionText;
     selectElement.appendChild(option);
 }
+
+//product handling classes use but dont change// 
+
+var Product = function (data) {
+    this.id = data.id;
+    this.name = data.name;
+    this.brand = data.brand;
+    this.category = data.category;
+
+    this.reviewAvg = data.reviewAverage;
+    this.reviewCount = data.reviewCount;
+    this.regularPrice = data.regularPrice;
+    this.salePrice = data.salePrice;
+    this.discountPercent = data.discountPercent;
+    this.inStock = data.inStock;
+    this.bestCompany = data.bestCompany;
+    this.productCarousel = JSON.parse(data.CarouselImages);
+    this.mainImg = this.productCarousel[0].image;
+    this.ImgPointer = null;
+    // used to keep track exactly which 
+    this.setImgPointer = function (imgPointer) {
+        this.imgPointer = imgPointer;
+    }
+    this.printStars = function () {
+        var toNumber = Number(this.reviewAvg);
+        var output = "";
+        while (toNumber >= 1) {
+            output += "⭐";
+            toNumber--;
+        }
+        return output;
+    }
+}
+// holds an array of all the products   
+var ProductHandler = function () {
+    // data sent in should already be the data array
+    this.newProductsAt = 0;
+    this.newProductsStop = 54;
+    this.products = [];
+    this.addProducts = function (data) {
+        // data should be an array
+        this.newProductsAt = this.products.length;
+        this.newProductsStop = this.newProductsAt + data.length;
+        for (var i = 0; i < data.length; i++) {
+            this.products.push(new Product(data[i]));
+        }
+        if (this.newProductsAt !== this.newProductsStop)
+            insertTd();
+
+    }
+}
+// a class made for sending requests
+// will build a JSON based on the current values of the page
+
+var requestDataClass = function () {
+    // gets built at every request 
+    this.parameterBuilder = new parameterBuilderClass();
+    this.requestData =
+    {
+        type: "getproductpage",
+        api_key: user.api_key,
+        limit: 54,
+        offset: offsetHandler.getOffset(),
+    }
+    // set it to the value of the search box
+    if (this.parameterBuilder.searchParam) {
+        this.requestData.search = searchHtml.value;
+    }
+    if (this.parameterBuilder.categoryParam) {
+        this.requestData.categories = [categoryHtml.value];
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
+    }
+    if (this.parameterBuilder.brandParam) {
+        this.requestData.brands = [brandHtml.value];
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
+    }
+    if (this.parameterBuilder.maxPriceParam) {
+        this.requestData.max_price = maxPriceHtml.value;
+    }
+    if (this.parameterBuilder.minPriceParam) {
+        this.requestData.min_price = minPriceHtml.value;
+    }
+    if (this.parameterBuilder.sortByParam) {
+        this.requestData.sort = sortByHtml.options[sortByHtml.selectedIndex].value;
+        // depends on the selected index will configure now
+        // likely will store the text of the category in the option
+    }
+}
+var userClass = function () {
+    var cookieData = getLoginCookie();
+    this.api_key = cookieData.api_key;
+    this.username = cookieData.username;
+}
+var parameterBuilderClass = function () {
+    // creates the parameters, such that the request does not need to be manually altered 
+    if (searchHtml != null && searchHtml != undefined && searchHtml.value != "")
+        this.searchParam = true;
+    else
+        this.searchParam = false;
+
+    // will likely be a sortbox 
+    if (categoryHtml != null && categoryHtml != undefined && categoryHtml.value != "")
+        this.categoryParam = true;
+    else
+        this.categoryParam = false;
+
+    if (brandHtml != null && brandHtml != undefined && brandHtml.value != "")
+        this.brandParam = true;
+    else
+        this.brandParam = false;
+
+    if (maxPriceHtml != null && maxPriceHtml != undefined && maxPriceHtml.value != "")
+        this.maxPriceParam = true;
+    else
+        this.maxPriceParam = false;
+
+    if (minPriceHtml != null && minPriceHtml != undefined && minPriceHtml.value != "")
+        this.minPriceParam = true;
+    else
+        this.minPriceParam = false;
+
+    if (sortByHtml != null && sortByHtml != undefined && sortByHtml.selectedIndex != 0)
+        this.sortByParam = true;
+    else
+        this.sortByParam = false;
+}
+var offsetClass = function () {
+    this.offset = 0;
+
+    this.updateOffset = function () {
+        this.offset += 54;
+    }
+    this.getOffset = function () {
+        var storedOffset = this.offset;
+        this.updateOffset();
+        return storedOffset;
+    }
+}
+var RequestStateHandler = function () {
+
+
+    this.createNewRequestState = function () {
+        offsetHandler = new offsetClass();
+        productHandler = new ProductHandler();
+        scrollHandler = new scrollManagerClass();
+        clearTD();
+        requestProducts();
+    }
+
+    this.getRequestData = function () {
+
+        var requestData = new requestDataClass();
+        console.log(requestData);
+        return requestData.requestData;
+    }
+
+}
+var scrollManagerClass = function () {
+
+    this.scrolldivElement = document.getElementById('scrollDivID');
+    this.scrollTop = this.scrolldivElement.scrollTop;
+    this.blockRequest = false;
+    this.updateScrollTop = updateScrollTop;
+
+
+}
+function updateScrollTop() {
+    if (scrollHandler.blockRequest == false) {
+
+        scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
+        // use a divisor that will increase the needed size of where the scrolltop must be to do a request,
+        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
+            if (productHandler.newProductsAt !== productHandler.newProductsStop)
+                requestProducts();
+        }
+
+        var intervalBeforeRequest = setTimeout(function () {
+            scrollHandler.blockRequest = false;
+        }, 1000);
+        scrollHandler.blockRequest = true;
+    }
+
+}
+function clearTD() {
+    while (table.firstChild) {
+        table.removeChild(table.firstChild)
+    }
+}

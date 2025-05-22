@@ -8,9 +8,10 @@
     <?php
     if (isset($_GET['page']) && ($_GET['page'] == 'login' || $_GET['page'] == 'signup'))
         echo "<link rel=\"stylesheet\" href=\"cssFiles/LoginRegister.css\">";
-    else {
+    else if (isset($_GET['page']) && $_GET['page'] == 'products') {
         echo "<link rel=\"stylesheet\" href=\"cssFiles/product.css\">";
-    }
+    } else if (isset($_GET['page']))
+        echo "<link rel=\"stylesheet\" href=\"cssFiles/view.css\">";
     ?>
     <link rel="stylesheet" href="cssFiles/pagebuilder.css">
     <link rel="stylesheet" href="cssFiles/D.css">
