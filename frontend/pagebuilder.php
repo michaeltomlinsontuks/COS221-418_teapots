@@ -11,6 +11,7 @@ $EnvJson = array(
 $cookieData = json_encode($EnvJson);
 setcookie('wheateleyAuthentication', $cookieData);
 
+// comment out host and set it to your route to the api.php
 $localEnvJson = array(
     "host" => "http://localhost/teapots/API/api.php",
     'username' => "root",
@@ -20,7 +21,7 @@ $localEnvJson = array(
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
 setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=")
-    // only add the part after page =
+    //comment out and change it to be your local route 
     ?>
 
 <body>
