@@ -40,6 +40,7 @@ function buildFilterbar() {
     tableFilters.id = "filtersRowID"
 
     var trHead = document.createElement('tr');
+    trHead.id = "headingRowID";
     trHead.appendChild(newTH("search"));
     trHead.appendChild(newTH("category"));
     trHead.appendChild(newTH("brand"));

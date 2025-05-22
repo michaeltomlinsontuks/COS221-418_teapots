@@ -27,7 +27,7 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 <body>
 
     <div class="headingBar">
-
+        <div class="curve"></div>
         <?php
 
 
@@ -66,6 +66,7 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
         </div>
 
     </div>
+
 
     <div class="contentContainer">
         <?php

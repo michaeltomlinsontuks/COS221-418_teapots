@@ -22,16 +22,18 @@
     width: 90%;
     max-height: 100% !important;
     height: 100%;
-    font-size: 18pt;
+    font-size: 15pt;
 }
 
 .filterOverlay table td {
     vertical-align: middle;
     text-align: center;
+    justify-items: center;
 }
 
 
 .filterOverlay table input {
+    display: block;
     margin-top: 0;
     width: 80% !important;
     height: 70% !important;
@@ -44,7 +46,7 @@
 
 .filterOverlay table select {
     width: 80% !important;
-    height: 80% !important;
+    height: 90% !important;
     text-align: center;
     align-self: center;
     justify-content: center;
