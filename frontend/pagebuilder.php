@@ -2,7 +2,6 @@
 require_once("header.php");
 include_once 'config.php';
 // if necessary to user at some stage for http requests
-
 $EnvJson = array(
     "host" => DB_HOST,
     'username' => DB_USER,
@@ -20,9 +19,10 @@ $localEnvJson = array(
 
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
-setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=")
-    //comment out and change it to be your local route 
-    ?>
+setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
+//comment out and change it to be your local route 
+$loggedInStatus = isset($_COOKIE['userdata']);
+?>
 
 <body>
 
@@ -56,11 +56,9 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                         $page = "signup?";
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToRegister()\"  class = \"changeDir\">";
                     }
-                }
-                else
-                {
+                } else {
                     $page = "sign_Out?";
-                     echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"signOut()\"  class = \"changeDir\">"; 
+                    echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"signOut()\"  class = \"changeDir\">";
                 }
 
             }
@@ -86,18 +84,27 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                     include_once("pages/signup.php");
                     break;
                 case ("products"):
-                    include_once("pages/products.php");
+                    if ($loggedInStatus) {
+                        include_once("pages/products.php");
+                    } else {
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    }
                     break;
                 case ("view"):
-                    include_once("pages/view.php");
+                    if ($loggedInStatus && isset($_GET['prodID'])) {
+                        include_once("pages/view.php");
+                    } else if ($loggedInStatus)
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=products");
+                    else {
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    }
                     break;
                 case ('logout'):
                     setcookie("userdata", "slur", time() - 3600, "/");
                     header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
                     exit;
-                    break;
                 default:
-                    include_once("pages/products.php");
+                    header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
                     break;
             }
         else
