@@ -88,3 +88,4 @@ function revealPassword() {
     else
         passwordHtml.type = "password";
 }
+console.log(document.cookie);

@@ -140,7 +140,12 @@ function insertTd() {
             imgInput.src = productHandler.products[index].mainImg;
             imgInput.alt = "Image goes here";
             imgDiv.className = "productImageDiv";
-            productHandler.products[index].setImgPointer(imgDiv);
+            productHandler.products[index].setImgPointer(imgInput);
+            if (productHandler.products.length <3)
+            {
+                imgInput.style.height="70%";
+                imgInput.style.maxHeight ="none";
+            }
 
             imgDiv.appendChild(imgInput);
             containerDiv.appendChild(imgDiv);

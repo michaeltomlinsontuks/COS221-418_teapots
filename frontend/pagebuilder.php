@@ -56,8 +56,11 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                         $page = "signup?";
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToRegister()\"  class = \"changeDir\">";
                     }
-
-
+                }
+                else
+                {
+                    $page = "sign_Out?";
+                     echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"signOut()\"  class = \"changeDir\">"; 
                 }
 
             }
@@ -87,6 +90,11 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                     break;
                 case ("view"):
                     include_once("pages/view.php");
+                    break;
+                case ('logout'):
+                    setcookie("userdata", "slur", time() - 3600, "/");
+                    header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    exit;
                     break;
                 default:
                     include_once("pages/products.php");

@@ -104,8 +104,8 @@ var Product = function (data) {
     this.mainImg = this.productCarousel[0].image;
     this.ImgPointer = null;
     // used to keep track exactly which 
-    this.setImgPointer = function (imgPointer) {
-        this.imgPointer = imgPointer;
+    this.setImgPointer = function (ImgPointer) {
+        this.ImgPointer = ImgPointer;
     }
     this.printStars = function () {
         var toNumber = Number(this.reviewAvg);
@@ -122,6 +122,7 @@ var Product = function (data) {
         }
         return output;
     }
+
 }
 // holds an array of all the products   
 var ProductHandler = function () {
@@ -249,5 +250,4 @@ var RequestStateHandler = function () {
     }
 
 }
-
 
