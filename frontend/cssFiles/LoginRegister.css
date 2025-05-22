@@ -44,20 +44,7 @@ select,
     cursor: pointer;
 }
 
-.changeDir {
-    position: absolute;
-    z-index: 0;
-    right: 32px;
-    top: 30%;
-    background-color: white;
-    font-size: 20pt;
-    border: 0;
-    text-decoration: underline;
-}
 
-.changeDir:hover {
-    cursor: pointer;
-}
 
 .passwordText {
     width: 35% !important;

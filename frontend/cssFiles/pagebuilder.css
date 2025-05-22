@@ -3,66 +3,15 @@
     height: 10vh;
     font-size: 25pt;
     text-align: center;
-    border: solid black 3px;
-    border-bottom: 0;
+    border: solid rgb(0, 0, 0) 3px;
     position: relative;
     align-content: center;
     z-index: 0;
 }
 
-.filterOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 64px;
-    height: 100%;
-    background-color: rgb(255, 255, 255);
-    z-index: 1;
-    outline: solid black 3px;
-    border-radius: 10px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    justify-content: center;
-    align-content: center;
+#headingRowID {
+    height: 20px !important;
 }
-
-.filterOverlay table {
-    position: absolute;
-    table-layout: fixed;
-    right: 0;
-    top: 0;
-    width: 90%;
-    max-height: 100% !important;
-    height: 100%;
-    font-size: 18pt;
-}
-
-.filterOverlay table td {
-    vertical-align: middle;
-    text-align: center;
-}
-
-
-.filterOverlay table input {
-    margin-top: 0;
-    width: 50%;
-    height: 50%;
-    text-align: center;
-    border-radius: 10px;
-    background-color: white;
-    border: solid black 3px;
-}
-
-.filterOverlay table select {
-    width: 50%;
-    height: 70%;
-    text-align: center;
-    align-self: center;
-    justify-content: center;
-    margin: auto;
-    display: block;
-}
-
 
 @keyframes overlayGrow {
     from {
@@ -94,6 +43,55 @@
     top: 0;
 }
 
+.curve {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+}
+
+.curve::before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 100% 0%;
+    width: 70%;
+    height: 100%;
+    transform: translate(20%, 0%);
+    background-color: #ffffff;
+    z-index: -5;
+}
+
+.curve::after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 0% 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #11a9a9;
+    transform: translate(0%, 0%);
+    z-index: -10;
+}
+
+
+
+
+.changeDir {
+    position: absolute;
+    z-index: 0;
+    right: 32px;
+    top: 30%;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 20pt;
+    border: 0;
+    text-decoration: underline;
+    color: white;
+}
+
+.changeDir:hover {
+    cursor: pointer;
+}
 
 #menu {
     position: absolute;
@@ -104,10 +102,14 @@
 }
 
 .contentContainer {
-    border: solid black 3px;
-    height: 85vh;
+    border: solid rgba(0, 0, 0, 0) 3px;
+    height: 90vh;
     width: 100%;
+    background-color: rgba(255, 0, 0, 0);
+
 }
+
+
 
 .menu {
     width: 32px;

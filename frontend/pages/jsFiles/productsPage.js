@@ -140,7 +140,12 @@ function insertTd() {
             imgInput.src = productHandler.products[index].mainImg;
             imgInput.alt = "Image goes here";
             imgDiv.className = "productImageDiv";
-            productHandler.products[index].setImgPointer(imgDiv);
+            productHandler.products[index].setImgPointer(imgInput);
+            if (productHandler.products.length <3)
+            {
+                imgInput.style.height="70%";
+                imgInput.style.maxHeight ="none";
+            }
 
             imgDiv.appendChild(imgInput);
             containerDiv.appendChild(imgDiv);
@@ -188,5 +193,45 @@ function stateProductRequest() {
         else {
             alert("An error occurred on our side...")
         }
+    }
+}
+function updateScrollTop() {
+    if (scrollHandler.blockRequest == false) {
+
+        scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
+
+        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight * scrollHandler.divisor) {
+            if (scrollHandler.divisor <= 0.9) {
+                scrollHandler.divisor = scrollHandler.divisor + (scrollHandler.half / 2);
+
+                scrollHandler.half /= 2;
+            }
+            if (productHandler.newProductsAt !== productHandler.newProductsStop) {
+                requestProducts();
+                var intervalBeforeRequest = setTimeout(function () {
+                    scrollHandler.blockRequest = false;
+                }, 1000);
+                scrollHandler.blockRequest = true;
+            }
+        }
+
+
+    }
+
+}
+var scrollManagerClass = function () {
+
+    this.divisor = 0.5;
+    this.half = 0.5;
+    this.scrolldivElement = document.getElementById('scrollDivID');
+    this.scrollTop = this.scrolldivElement.scrollTop;
+    this.blockRequest = false;
+    this.updateScrollTop = updateScrollTop;
+
+
+}
+function clearTD() {
+    while (table.firstChild) {
+        table.removeChild(table.firstChild)
     }
 }

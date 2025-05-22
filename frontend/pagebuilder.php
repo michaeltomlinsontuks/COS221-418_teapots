@@ -2,7 +2,6 @@
 require_once("header.php");
 include_once 'config.php';
 // if necessary to user at some stage for http requests
-
 $EnvJson = array(
     "host" => DB_HOST,
     'username' => DB_USER,
@@ -20,14 +19,15 @@ $localEnvJson = array(
 
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
-setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=")
-    //comment out and change it to be your local route 
-    ?>
+setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
+//comment out and change it to be your local route 
+$loggedInStatus = isset($_COOKIE['userdata']);
+?>
 
 <body>
 
     <div class="headingBar">
-
+        <div class="curve"></div>
         <?php
 
 
@@ -56,8 +56,9 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                         $page = "signup?";
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToRegister()\"  class = \"changeDir\">";
                     }
-
-
+                } else {
+                    $page = "sign_Out?";
+                    echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"signOut()\"  class = \"changeDir\">";
                 }
 
             }
@@ -67,8 +68,9 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 
     </div>
 
+
     <div class="contentContainer">
-        <?php
+       <?php
         // the get is all that is changed on links 
         //link pagebuilder.php?page="####"
         //onclick="location.href = 'pagebuilder.php?page=products'" />
@@ -82,20 +84,37 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
                     include_once("pages/signup.php");
                     break;
                 case ("products"):
-                    include_once("pages/products.php");
+                    if ($loggedInStatus) {
+                        include_once("pages/products.php");
+                    } else {
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    }
                     break;
                 case ("view"):
-                    include_once("pages/view.php");
+                    if ($loggedInStatus && isset($_GET['prodID'])) {
+                        include_once("pages/view.php");
+                    } else if ($loggedInStatus)
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=products");
+                    else {
+                        header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    }
                     break;
+                case ('logout'):
+                    setcookie("userdata", "slur", time() - 3600, "/");
+                    header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
+                    exit;
                 default:
-                    include_once("pages/products.php");
+                    header("Location: http://localhost/teapots/frontend/pagebuilder.php?page=login");
                     break;
             }
         else
             include_once "pages/products.php";
         ?>
         <?php
+
+
         require_once("footer.php")
             ?>
+<svg class = "wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#f3f4f5" fill-opacity="1" d="M0,32L34.3,69.3C68.6,107,137,181,206,197.3C274.3,213,343,171,411,160C480,149,549,171,617,160C685.7,149,754,107,823,117.3C891.4,128,960,192,1029,202.7C1097.1,213,1166,171,1234,160C1302.9,149,1371,171,1406,181.3L1440,192L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>
     </div>
 </body>

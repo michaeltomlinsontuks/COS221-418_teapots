@@ -8,7 +8,7 @@ function setLoginCookie(api_key, username) {
     }
     data = encodeURIComponent(JSON.stringify(data));
     console.log(data);
-    document.cookie = 'userdata=' + data;
+    document.cookie = 'userdata=' + data+"; path=/;";
 }
 function getLoginCookie() {
     var result = getCookie("userdata");
@@ -38,4 +38,9 @@ function getCookie(name) {
 }
 function getLocalRoute() {
     return getCookie("localRoute");
+}
+function signOut()
+{
+  document.cookie = "userdata=; max-age=0; path=/;";
+    window.location.replace(getLocalRoute() + "logout");
 }

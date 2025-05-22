@@ -6,12 +6,13 @@
     height: 100%;
     background-color: rgb(255, 255, 255);
     z-index: 1;
-    outline: solid black 3px;
     border-radius: 10px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     justify-content: center;
     align-content: center;
+    border-right: solid black 3px;
+    border-bottom: solid black 3px;
 }
 
 .filterOverlay table {
@@ -22,16 +23,17 @@
     width: 90%;
     max-height: 100% !important;
     height: 100%;
-    font-size: 18pt;
+    font-size: 15pt;
 }
 
 .filterOverlay table td {
     vertical-align: middle;
     text-align: center;
+    justify-items: center;
 }
 
-
 .filterOverlay table input {
+    display: block;
     margin-top: 0;
     width: 80% !important;
     height: 70% !important;
@@ -44,7 +46,7 @@
 
 .filterOverlay table select {
     width: 80% !important;
-    height: 80% !important;
+    height: 90% !important;
     text-align: center;
     align-self: center;
     justify-content: center;
@@ -110,18 +112,25 @@
 .scrollDiv {
     overflow-y: scroll;
     height: 100%;
+    overflow-x: hidden;
 }
 
 .productsTable {
     height: 100%;
     width: 100%;
+
 }
 
 .productsTable td {
-    outline: solid black 3px;
+
     height: 33vh !important;
-    width: 33%;
+    width: 30%;
+    background-color: #11a9a9;
+    outline: white solid 2px;
+
 }
+
+
 
 .productImageDiv {
     width: 50%;
@@ -130,28 +139,34 @@
     text-align: center;
 }
 
-
+/* will be modified if there are only 2 itmes of less in the whole table*/
 .productImageDiv input {
     width: 100%;
-    max-height: 300px;
+    height: 100%;
+    max-height: 200px;
     object-fit: scale-down;
-    outline: dotted black 5px;
-
+    border-radius: 20px;
+    background-color: white;
+    margin-left: 1%;
+    border: solid black 2px;
 }
 
 .productsText {
-    width: 50%;
+    width: 45%;
     height: 100%;
+    font-size: 14pt;
 }
 
 .productsText div {
-    outline: dotted black 5px;
-    width: 90%;
+
+    width: 100%;
     height: 30%;
     text-align: center;
     align-content: center;
     margin: 3%;
     margin-left: 4%;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .productContainer {

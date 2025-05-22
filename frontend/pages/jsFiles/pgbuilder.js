@@ -40,6 +40,7 @@ function buildFilterbar() {
     tableFilters.id = "filtersRowID"
 
     var trHead = document.createElement('tr');
+    trHead.id = "headingRowID";
     trHead.appendChild(newTH("search"));
     trHead.appendChild(newTH("category"));
     trHead.appendChild(newTH("brand"));
@@ -103,18 +104,25 @@ var Product = function (data) {
     this.mainImg = this.productCarousel[0].image;
     this.ImgPointer = null;
     // used to keep track exactly which 
-    this.setImgPointer = function (imgPointer) {
-        this.imgPointer = imgPointer;
+    this.setImgPointer = function (ImgPointer) {
+        this.ImgPointer = ImgPointer;
     }
     this.printStars = function () {
         var toNumber = Number(this.reviewAvg);
         var output = "";
+        var numStars = 0;
         while (toNumber >= 1) {
             output += "⭐";
             toNumber--;
+            numStars++;
+        }
+        while (numStars < 5) {
+            output += "✩";
+            numStars++;
         }
         return output;
     }
+
 }
 // holds an array of all the products   
 var ProductHandler = function () {
@@ -242,34 +250,4 @@ var RequestStateHandler = function () {
     }
 
 }
-var scrollManagerClass = function () {
 
-    this.scrolldivElement = document.getElementById('scrollDivID');
-    this.scrollTop = this.scrolldivElement.scrollTop;
-    this.blockRequest = false;
-    this.updateScrollTop = updateScrollTop;
-
-
-}
-function updateScrollTop() {
-    if (scrollHandler.blockRequest == false) {
-
-        scrollHandler.scrollTop = scrollHandler.scrolldivElement.scrollTop;
-        // use a divisor that will increase the needed size of where the scrolltop must be to do a request,
-        if (scrollHandler.scrollTop >= scrollHandler.scrolldivElement.scrollHeight / 2) {
-            if (productHandler.newProductsAt !== productHandler.newProductsStop)
-                requestProducts();
-        }
-
-        var intervalBeforeRequest = setTimeout(function () {
-            scrollHandler.blockRequest = false;
-        }, 1000);
-        scrollHandler.blockRequest = true;
-    }
-
-}
-function clearTD() {
-    while (table.firstChild) {
-        table.removeChild(table.firstChild)
-    }
-}
