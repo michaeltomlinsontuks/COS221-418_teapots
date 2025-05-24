@@ -5,7 +5,7 @@ var confirmLoginHtml;
 document.addEventListener('DOMContentLoaded', startUp);
 
 function initialiseVariables() {
-    
+
     usernameHtml = document.getElementById('usernameID');
     passwordHtml = document.getElementById('passwordID');
     confirmLoginHtml = document.getElementById('confirmLoginID');
@@ -83,9 +83,12 @@ function stateChangeLogin() {
     }
 }
 function revealPassword() {
-    if (passwordHtml.type === "password")
+    if (passwordHtml.type === "password") {
         passwordHtml.type = "text";
-    else
+        passwordHtml.placeholder = "abc";
+    }
+    else {
         passwordHtml.type = "password";
+        passwordHtml.placeholder = "..."
+    }
 }
-console.log(document.cookie);

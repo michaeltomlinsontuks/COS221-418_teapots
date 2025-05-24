@@ -102,14 +102,22 @@ function stateChangeRegister() {
     }
 }
 function revealPassword() {
-    if (passwordHtml.type === "password")
+    if (passwordHtml.type === "password") {
         passwordHtml.type = "text";
-    else
+        passwordHtml.placeholder = "abc";
+    }
+    else {
         passwordHtml.type = "password";
+        passwordHtml.placeholder = "..."
+    }
 }
 function revealPasswordConfirm() {
-    if (confirmPassHtml.type === "password")
+    if (confirmPassHtml.type === "password") {
         confirmPassHtml.type = "text";
-    else
+        confirmPassHtml.placeholder = "abc";
+    }
+    else {
         confirmPassHtml.type = "password";
+        confirmPassHtml.placeholder = "..."
+    }
 }

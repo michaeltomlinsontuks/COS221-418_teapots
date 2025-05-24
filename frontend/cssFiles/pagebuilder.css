@@ -69,7 +69,7 @@
 
 body {
     overflow-x: hidden;
-    background-color: #12c5c5;
+    background-color: rgb(9, 209, 209);
     margin: 0;
     height: 100vh;
     overflow-y: hidden;

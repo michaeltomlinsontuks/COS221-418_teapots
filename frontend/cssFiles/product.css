@@ -17,10 +17,10 @@
 .filterOverlay::after {
     background-image: repeating-linear-gradient(to right, aqua, #1489b4, aqua);
     position: absolute;
-    left: 0;
+    left: -100px;
     top: 0;
     content: '';
-    width: 100%;
+    width: 110%;
     height: 100%;
     z-index: -20;
     border-radius: 10px;
