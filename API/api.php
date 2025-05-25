@@ -815,7 +815,7 @@ class API
                     );
                 }
 
-                // Formatting the retailers product
+                // Formatting the retailers products
                     $comparisons[$retailer] = [
                         'regularPrice' => number_format($regularPrice, 2),
                         'discountedPrice' => number_format($discountedPrice, 2),
