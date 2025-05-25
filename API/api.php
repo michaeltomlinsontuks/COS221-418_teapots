@@ -815,7 +815,7 @@ class API
                     );
                 }
 
-                // Only include retailer if they have the product
+                // Formatting the retailers product
                     $comparisons[$retailer] = [
                         'regularPrice' => number_format($regularPrice, 2),
                         'discountedPrice' => number_format($discountedPrice, 2),
