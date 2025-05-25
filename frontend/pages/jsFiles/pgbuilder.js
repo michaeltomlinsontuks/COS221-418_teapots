@@ -148,6 +148,7 @@ var Product = function (data) {
     this.discountPercent = data.discountPercent;
     this.inStock = data.inStock;
     this.bestCompany = data.bestCompany;
+    this.description = data.description;
     this.productCarousel = JSON.parse(data.CarouselImages);
     this.mainImg = this.productCarousel[0].image;
     this.ImgPointer = null;

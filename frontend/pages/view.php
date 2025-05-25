@@ -1,6 +1,6 @@
 <div class="viewContainer">
 
-    <div class="carouselContainer">
+    <!-- <div class="carouselContainer">
         the img carousel goes here
         <table>
             <tr>
@@ -13,7 +13,15 @@
                 <td>img from carousel</td>
             </tr>
         </table>
+    </div> -->
+<div class="carouselContainer">
+    <div id="carouselWrapper">
+    <button id="prevBtn">&lt;</button>
+    <img id="carouselImage" src="" alt="Product image">
+    <button id="nextBtn">&gt;</button>
     </div>
+</div>
+
     <div class="infoContainer">
 
 
@@ -35,6 +43,7 @@
                 <tr>
                     <td>
                         <p id="DSCID">data + id goes here</p>
+                        <p id="description">No description available</p>
                     </td>
                 </tr>
                 <tr>
@@ -72,3 +81,4 @@
         </div>
     </div>
 </div>
+<script src="pages/jsFiles/viewPage.js"></script>
