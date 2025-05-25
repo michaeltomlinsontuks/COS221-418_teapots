@@ -97,3 +97,29 @@ body {
     z-index: -10;
     left: 0;
 }
+
+.popUp {
+    display: flex;
+    width: 30%;
+    height: 50%;
+    position: absolute;
+    left: 35%;
+    right: 35%;
+    top: 20%;
+    bottom: 20%;
+    background-color: white;
+    border: solid black 3px;
+    border-radius: 15px;
+    z-index: 200;
+}
+
+.popUpBackground {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(128, 128, 128, 0.67);
+    z-index: 100;
+}

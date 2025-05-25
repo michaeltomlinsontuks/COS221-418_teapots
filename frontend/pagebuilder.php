@@ -70,7 +70,7 @@ $loggedInStatus = isset($_COOKIE['userdata']);
     </div>
 
 
-    <div class="contentContainer">
+    <div class="contentContainer" id ="mainContainerContent">
         
         <svg class="waveHeading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#ffffff" fill-opacity="1"

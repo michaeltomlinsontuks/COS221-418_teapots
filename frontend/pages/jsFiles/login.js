@@ -5,7 +5,7 @@ var confirmLoginHtml;
 document.addEventListener('DOMContentLoaded', startUp);
 
 function initialiseVariables() {
-
+    popup.construct("LoggedIN");
     usernameHtml = document.getElementById('usernameID');
     passwordHtml = document.getElementById('passwordID');
     confirmLoginHtml = document.getElementById('confirmLoginID');
@@ -73,6 +73,7 @@ function stateChangeLogin() {
                 var data = requestResponse.data;
                 setLoginCookie(data.api_key, data.username);
                 alert("You have successfully logged in, please enjoy your visit");
+
                 window.location.replace(getLocalRoute() + "products");
             }
 

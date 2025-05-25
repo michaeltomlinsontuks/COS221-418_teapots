@@ -1,3 +1,23 @@
+var popupClass = function () {
+
+
+    this.construct = function (alertMessage) {
+        var div = document.createElement('div');
+        div.className = "popUp"
+        var alertMessage = alertMessage;
+        var paragraph = document.createElement('p');
+        div.appendChild(paragraph);
+        document.getElementById("mainContainerContent").appendChild(div);
+        var backgroundDiv = document.createElement('div');
+        backgroundDiv.className = 'popUpBackground';
+        document.getElementById('mainContainerContent').appendChild(backgroundDiv);
+        console.log("popup made");
+    }
+}
+
+var popup = new popupClass();
+
+
 function routeToRegister() {
     window.location.replace(getLocalRoute() + "signup");
 }
