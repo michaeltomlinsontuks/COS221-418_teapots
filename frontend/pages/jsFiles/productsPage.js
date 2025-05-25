@@ -141,7 +141,18 @@ function insertTd() {
             imgInput.alt = "Image goes here";
             imgDiv.className = "productImageDiv";
             productHandler.products[index].setImgPointer(imgInput);
-            if (productHandler.products.length < 3) {
+
+            //Event listerners on the product image
+            (function(product) 
+            {
+                imgDiv.addEventListener("click", function () {
+                localStorage.setItem("selectedProduct", JSON.stringify(product));
+                window.location.href = getLocalRoute() + "view&prodID=" + product.id;
+            });
+            })(productHandler.products[index]);
+
+            if (productHandler.products.length < 3) 
+            {
                 imgInput.style.height = "70%";
                 imgInput.style.maxHeight = "none";
             }
