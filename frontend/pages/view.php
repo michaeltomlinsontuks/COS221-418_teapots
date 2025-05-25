@@ -9,8 +9,6 @@
 </div>
 
     <div class="infoContainer">
-
-
         <div class="mainImg">
             <img src="pages/pageAssets/temp.gif" alt=" img">
         </div>
@@ -32,8 +30,6 @@
                     </td>
                 </tr>
                 <tr>
-
-
                     <td>
                         <table class="pricesTable">
                         </table>
