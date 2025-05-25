@@ -113,13 +113,28 @@ body {
     z-index: 200;
     text-align: center;
     align-content: center;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
+    font-size: 15pt;
 }
 
 .popUp input {
     width: 30%;
+    font-size: 15pt;
+    background-color: white;
+    border-radius: 10px;
+    border: solid black 3px;
+    position: absolute;
+    bottom: 5%;
+}
+
+.popUp img {
+    width: 50%;
+    height: 50%;
+}
+
+.popUp input:hover {
+    cursor: pointer;
 }
 
 .popUpBackground {
