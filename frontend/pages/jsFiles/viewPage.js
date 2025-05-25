@@ -81,12 +81,12 @@ var ratingCell = document.querySelector(".bottomInfo td:last-child");
 if (ratingCell) 
 {
     var stars = "";
-    var rating = parseFloat(product.reviewAvg);
+    var rating = Math.floor(parseFloat(product.reviewAvg));
     for (var i = 0; i < 5; i++) 
     {
         stars += i < rating ? "⭐" : "✩";
     }
-    ratingCell.textContent = `Rating: ${product.reviewAvg} (${stars})`;
+    ratingCell.textContent = `Rating: ${stars}`;
 }
 
 //Populating Best Price
