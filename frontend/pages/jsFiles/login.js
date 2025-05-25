@@ -65,7 +65,6 @@ function stateChangeLogin() {
         if (this.status === 200) {
             var requestResponse = this.responseText;
             requestResponse = JSON.parse(requestResponse);
-            console.log(requestResponse);
             if (requestResponse.status === "error") {
                 popup.construct("Login unsuccessful please insure that your password and username is correct", false);
             }

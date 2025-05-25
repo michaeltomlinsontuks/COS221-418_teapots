@@ -86,7 +86,6 @@ function stateChangeRegister() {
         if (this.status === 200) {
             var requestResponse = this.responseText;
             requestResponse = JSON.parse(requestResponse);
-            console.log(requestResponse);
             if (requestResponse.status === "error") {
                 popup.construct("This username already exists, please use a different username or login if you already have an account", false);
             }
