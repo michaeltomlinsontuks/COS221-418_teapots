@@ -23,7 +23,7 @@
                 <tr>
                     <td>
                         <p id="DSCID">No info available</p>
-                        <p style="overflow:auto;max-height: 300px;" id="description">No description available</p>
+                        <p style="overflow:auto;max-height: 300px; max-width: 90%;" id="description">No description available</p>
                     </td>
                 </tr>
                 <tr>
