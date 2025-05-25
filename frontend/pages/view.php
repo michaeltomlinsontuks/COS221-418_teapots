@@ -1,19 +1,5 @@
 <div class="viewContainer">
 
-    <!-- <div class="carouselContainer">
-        the img carousel goes here
-        <table>
-            <tr>
-                <td>img from carousel</td>
-            </tr>
-            <tr>
-                <td>img from carousel</td>
-            </tr>
-            <tr>
-                <td>img from carousel</td>
-            </tr>
-        </table>
-    </div> -->
 <div class="carouselContainer">
     <div id="carouselWrapper">
     <button id="prevBtn">&lt;</button>
@@ -26,7 +12,6 @@
 
 
         <div class="mainImg">
-            the main image goes here
             <img src="pages/pageAssets/temp.gif" alt=" img">
         </div>
 
@@ -37,12 +22,12 @@
 
 
                     <td>
-                        <p id="titleID"> title goes here</p>
+                        <p id="titleID">No title</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p id="DSCID">data + id goes here</p>
+                        <p id="DSCID">No info available</p>
                         <p id="description">No description available</p>
                     </td>
                 </tr>
@@ -51,19 +36,6 @@
 
                     <td>
                         <table class="pricesTable">
-                            <!-- fill the table dynamically with the prices and the companies remove this template -->
-                            <tr>
-                                <td>company</td>
-                                <td> price </td>
-                            </tr>
-                            <tr>
-                                <td>company</td>
-                                <td> price </td>
-                            </tr>
-                            <tr>
-                                <td>company</td>
-                                <td> price </td>
-                            </tr>
                         </table>
                     </td>
                 </tr>
@@ -74,8 +46,8 @@
         <div class="bottomInfo">
             <table>
                 <tr>
-                    <td> best price here</td>
-                    <td> ratings </td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
         </div>
