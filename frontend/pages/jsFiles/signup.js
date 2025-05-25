@@ -39,18 +39,20 @@ function passwordValidation() {
     var testLength = /.{8,}/
     var result = letterTest.test(passwordHtml.value) && upperLetterText.test(passwordHtml.value) && hasDigit.test(passwordHtml.value) && hasSymbol.test(passwordHtml.value) && testLength.test(passwordHtml.value);
     if (result === false)
-        alert('Please insure that your password has lowercase and uppercase letters, a symbol and a number to improve security');
+        popup.construct("Please ensure that your password has lowercase and uppercase letters, a symbol and a number to improve security", false);
     return result;
 }
 function passwordConfirmValidation() {
     // regex for password length
     if (passwordHtml.value !== confirmPassHtml.value)
-        alert("passwords do not match");
+        popup.construct("Passwords do not match", false);
     return passwordHtml.value === confirmPassHtml.value;
 }
 function emailValidation() {
     // regex for password length
     var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!pattern.test(emailHtml.value))
+        popup.construct("Please enter a valid email address", false);
     return pattern.test(emailHtml.value);
 }
 
@@ -84,20 +86,19 @@ function stateChangeRegister() {
         if (this.status === 200) {
             var requestResponse = this.responseText;
             requestResponse = JSON.parse(requestResponse);
-            console.log(requestResponse);
             if (requestResponse.status === "error") {
-                alert("This username already exists, please use a different username");
+                popup.construct("This username already exists, please use a different username or login if you already have an account", false);
             }
             else {
                 var data = requestResponse.data;
                 setLoginCookie(data.api_key, data.username);
-                alert("You have successfully created an account and have been logged in, please enjoy your visit");
-                window.location.replace(getLocalRoute() + "products");
+                popup.construct("You have successfully created an account and have been logged in, please enjoy your visit", true, true);
             }
 
         }
         else {
-            alert("An error occurred on our side...")
+
+            popup.construct("An error has occurred on our side", false);
         }
     }
 }

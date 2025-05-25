@@ -125,7 +125,7 @@ function insertTd() {
             titleDiv.appendChild(document.createTextNode(productHandler.products[index].name));
 
             var priceDiv = document.createElement("div");
-            priceDiv.appendChild(document.createTextNode("$ " + productHandler.products[index].salePrice));
+            priceDiv.appendChild(document.createTextNode("Best price: $ " + productHandler.products[index].salePrice));
 
             var ratingDiv = document.createElement("div");
             ratingDiv.appendChild(document.createTextNode(productHandler.products[index].printStars()));
@@ -141,10 +141,9 @@ function insertTd() {
             imgInput.alt = "Image goes here";
             imgDiv.className = "productImageDiv";
             productHandler.products[index].setImgPointer(imgInput);
-            if (productHandler.products.length <3)
-            {
-                imgInput.style.height="70%";
-                imgInput.style.maxHeight ="none";
+            if (productHandler.products.length < 3) {
+                imgInput.style.height = "70%";
+                imgInput.style.maxHeight = "none";
             }
 
             imgDiv.appendChild(imgInput);

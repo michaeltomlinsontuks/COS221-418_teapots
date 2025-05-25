@@ -45,8 +45,17 @@ $loggedInStatus = isset($_COOKIE['userdata']);
             <?php
             if (isset($_GET['page'])) {
 
-
-                echo $_GET['page'];
+                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout")
+                    echo $_GET['page'];
+                else if ($_GET['page'] == 'products' || $_GET['page'] == 'view') {
+                    echo "<img class=\"titleImg\" src =\"images/noBackgroundLogo.png\">";
+                } else {
+                    echo "Please be aware that we do not permit changing of the pages through the url";
+                    echo "<br>";
+                    echo "<img  src =\"images/thumbdown.png\">";
+                    echo "<br>";
+                    die("");
+                }
 
                 $page = $_GET['page'];
                 if ($page == "signup" || $page == "login") {
@@ -58,8 +67,8 @@ $loggedInStatus = isset($_COOKIE['userdata']);
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToRegister()\"  class = \"changeDir\">";
                     }
                 } else {
-                    $page = "sign_Out?";
-                    echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"signOut()\"  class = \"changeDir\">";
+
+                    echo "<input type=\"button\" id = \"CHID\" value =\"Sign Out\" onclick=\"signOut()\"  class = \"changeDir\">";
                 }
 
             }
@@ -70,8 +79,8 @@ $loggedInStatus = isset($_COOKIE['userdata']);
     </div>
 
 
-    <div class="contentContainer" id ="mainContainerContent">
-        
+    <div class="contentContainer" id="mainContainerContent">
+
         <svg class="waveHeading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#ffffff" fill-opacity="1"
                 d="M0,192L40,186.7C80,181,160,171,240,160C320,149,400,139,480,149.3C560,160,640,192,720,197.3C800,203,880,181,960,165.3C1040,149,1120,139,1200,128C1280,117,1360,107,1400,101.3L1440,96L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z">

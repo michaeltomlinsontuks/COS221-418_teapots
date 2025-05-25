@@ -5,7 +5,7 @@ var confirmLoginHtml;
 document.addEventListener('DOMContentLoaded', startUp);
 
 function initialiseVariables() {
-    popup.construct("LoggedIN");
+
     usernameHtml = document.getElementById('usernameID');
     passwordHtml = document.getElementById('passwordID');
     confirmLoginHtml = document.getElementById('confirmLoginID');
@@ -65,21 +65,18 @@ function stateChangeLogin() {
         if (this.status === 200) {
             var requestResponse = this.responseText;
             requestResponse = JSON.parse(requestResponse);
-            console.log(requestResponse);
             if (requestResponse.status === "error") {
-                alert("please insure that your username and password are valid");
+                popup.construct("Login unsuccessful please insure that your password and username is correct", false);
             }
             else {
                 var data = requestResponse.data;
                 setLoginCookie(data.api_key, data.username);
-                alert("You have successfully logged in, please enjoy your visit");
-
-                window.location.replace(getLocalRoute() + "products");
+                popup.construct("You have successfully logged in please enjoy your visit", true, true);
             }
 
         }
         else {
-            alert("An error occurred on our side...")
+            popup.construct("An error has occurred on our side...", false);
         }
     }
 }

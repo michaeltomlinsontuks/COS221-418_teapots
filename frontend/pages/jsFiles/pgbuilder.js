@@ -1,29 +1,42 @@
 var popupClass = function () {
 
 
-    this.construct = function (alertMessage, type) {
+    this.construct = function (alertMessage, type, loggingIn) {
         // type is either success or failure 
         // true is success false is failure 
-
+        // change page is the +"products" that gets added onto the link
         var div = document.createElement('div');
         div.className = "popUp"
         var alertMessage = alertMessage;
         var paragraph = document.createElement('p');
+        var img = document.createElement('img');
+        if (type == undefined || type == null)
+            type = true;
+        if (type === true) {
+            img.src = "images/thumbUp.png";
+        }
+        else {
+            img.src = "images/thumbDown.png";
+        }
+
 
         paragraph.textContent = alertMessage;
 
         div.appendChild(paragraph);
+        div.appendChild(img);
         document.getElementById("mainContainerContent").appendChild(div);
         var backgroundDiv = document.createElement('div');
         backgroundDiv.className = 'popUpBackground';
         document.getElementById('mainContainerContent').appendChild(backgroundDiv);
-        console.log("popup made");
         var buttonClose = document.createElement('input');
         buttonClose.type = 'button';
         buttonClose.addEventListener('click', function () {
             div.style.display = "none";
             document.getElementById('mainContainerContent').removeChild(div);
             document.getElementById('mainContainerContent').removeChild(backgroundDiv);
+            if (loggingIn === true) {
+                window.location.replace(getLocalRoute() + "products");
+            }
         });
         buttonClose.value = "close"
         div.appendChild(buttonClose);
@@ -76,12 +89,12 @@ function buildFilterbar() {
 
     var trHead = document.createElement('tr');
     trHead.id = "headingRowID";
-    trHead.appendChild(newTH("search"));
-    trHead.appendChild(newTH("category"));
-    trHead.appendChild(newTH("brand"));
-    trHead.appendChild(newTH('min-price'));
-    trHead.appendChild(newTH("max-price"));
-    trHead.appendChild(newTH('sort-by'));
+    trHead.appendChild(newTH("Search"));
+    trHead.appendChild(newTH("Category"));
+    trHead.appendChild(newTH("Brand"));
+    trHead.appendChild(newTH('Min-price'));
+    trHead.appendChild(newTH("Max-price"));
+    trHead.appendChild(newTH('Sort-by'));
     tableFilters.appendChild(trHead);
 
 
