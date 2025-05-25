@@ -1,18 +1,15 @@
 <div class="viewContainer">
 
-<div class="carouselContainer">
-    <div id="carouselWrapper">
-    <button id="prevBtn">&lt;</button>
-    <img id="carouselImage" src="" alt="Product image">
-    <button id="nextBtn">&gt;</button>
+    <div class="carouselContainer" id="carouselContainerID">
+
     </div>
-</div>
 
     <div class="infoContainer">
         <div class="mainImg">
-            <img src="pages/pageAssets/temp.gif" alt=" img">
-        </div>
+            <img id="mainImgId" src="images/teapotsLogoPot.png" alt=" img">
 
+        </div>
+        <!-- pages/pageAssets/temp.gif -->
         <div class="rightInfo">
 
             <table class="rightInfoTable">
@@ -26,7 +23,7 @@
                 <tr>
                     <td>
                         <p id="DSCID">No info available</p>
-                        <p id="description">No description available</p>
+                        <p style="overflow:auto;max-height: 300px;" id="description">No description available</p>
                     </td>
                 </tr>
                 <tr>
