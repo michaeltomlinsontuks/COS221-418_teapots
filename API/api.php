@@ -1040,7 +1040,8 @@ class API
                 'salePrice' => number_format((float) $row['BestPrice'], 2),
                 'discountPercent' => $discountPercent,
                 'inStock' => (bool) $row['OnlineAvailability'],
-                'bestCompany' => $row['BestCompany']
+                'bestCompany' => $row['BestCompany'],
+                'description' => $row['Description']
             ];
 
             $products[] = $product;
