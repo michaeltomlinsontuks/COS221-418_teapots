@@ -111,6 +111,15 @@ body {
     border: solid black 3px;
     border-radius: 15px;
     z-index: 200;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popUp input {
+    width: 30%;
 }
 
 .popUpBackground {
@@ -122,4 +131,5 @@ body {
     height: 100vh;
     background-color: rgba(128, 128, 128, 0.67);
     z-index: 100;
+
 }

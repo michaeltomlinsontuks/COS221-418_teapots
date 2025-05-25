@@ -1,17 +1,32 @@
 var popupClass = function () {
 
 
-    this.construct = function (alertMessage) {
+    this.construct = function (alertMessage, type) {
+        // type is either success or failure 
+        // true is success false is failure 
+
         var div = document.createElement('div');
         div.className = "popUp"
         var alertMessage = alertMessage;
         var paragraph = document.createElement('p');
+
+        paragraph.textContent = alertMessage;
+
         div.appendChild(paragraph);
         document.getElementById("mainContainerContent").appendChild(div);
         var backgroundDiv = document.createElement('div');
         backgroundDiv.className = 'popUpBackground';
         document.getElementById('mainContainerContent').appendChild(backgroundDiv);
         console.log("popup made");
+        var buttonClose = document.createElement('input');
+        buttonClose.type = 'button';
+        buttonClose.addEventListener('click', function () {
+            div.style.display = "none";
+            document.getElementById('mainContainerContent').removeChild(div);
+            document.getElementById('mainContainerContent').removeChild(backgroundDiv);
+        });
+        buttonClose.value = "close"
+        div.appendChild(buttonClose);
     }
 }
 
