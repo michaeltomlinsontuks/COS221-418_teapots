@@ -45,14 +45,16 @@ $loggedInStatus = isset($_COOKIE['userdata']);
             <?php
             if (isset($_GET['page'])) {
 
-                if ($_GET['page'] == 'login' || $_GET['page'] == 'products' || $_GET['page'] == 'view' || $_GET['page'] == 'signup' || $_GET['page'] = "logout")
+                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout")
                     echo $_GET['page'];
-                else {
-                    echo "No changing the pages yourself";
+                else if ($_GET['page'] == 'products' || $_GET['page'] == 'view') {
+                    echo "<img class=\"titleImg\" src =\"images/noBackgroundLogo.png\">";
+                } else {
+                    echo "Please be aware that we do not permit changing of the pages through the url";
                     echo "<br>";
-                    echo "<img src =\"images/thumbdown.png\">";
+                    echo "<img  src =\"images/thumbdown.png\">";
                     echo "<br>";
-                    die();
+                    die("");
                 }
 
                 $page = $_GET['page'];

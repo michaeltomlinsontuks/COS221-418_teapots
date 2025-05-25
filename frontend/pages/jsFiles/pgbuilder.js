@@ -89,12 +89,12 @@ function buildFilterbar() {
 
     var trHead = document.createElement('tr');
     trHead.id = "headingRowID";
-    trHead.appendChild(newTH("search"));
-    trHead.appendChild(newTH("category"));
-    trHead.appendChild(newTH("brand"));
-    trHead.appendChild(newTH('min-price'));
-    trHead.appendChild(newTH("max-price"));
-    trHead.appendChild(newTH('sort-by'));
+    trHead.appendChild(newTH("Search"));
+    trHead.appendChild(newTH("Category"));
+    trHead.appendChild(newTH("Brand"));
+    trHead.appendChild(newTH('Min-price'));
+    trHead.appendChild(newTH("Max-price"));
+    trHead.appendChild(newTH('Sort-by'));
     tableFilters.appendChild(trHead);
 
 
