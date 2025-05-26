@@ -190,8 +190,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var request = new XMLHttpRequest();
-    request.open("POST", "http://localhost/teapots/API/api.php", true);
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
 
     var apiKey = getLoginCookie().api_key;
     var productId = product.id;

@@ -12,14 +12,14 @@ setcookie('wheateleyAuthentication', $cookieData);
 
 // comment out host and set it to your route to the api.php
 $localEnvJson = array(
-    "host" => "http://localhost/teapots/API/api.php",
-    'username' => "root",
-    'password' => "",
+    "host" => "https://wheatley.cs.up.ac.za/u24584216/teapots/API/api.php",
+    'username' => "u24584216",
+    'password' => "Wilmarsmit2004",
 );
 
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
-setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
+setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
 //comment out and change it to be your local route 
 $loggedInStatus = isset($_COOKIE['userdata']);
 ?>

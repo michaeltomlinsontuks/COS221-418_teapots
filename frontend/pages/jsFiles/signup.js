@@ -76,8 +76,7 @@ function sendRegister() {
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
 
-    request.setRequestHeader("Authorization", "Basic" + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+ request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
 
     request.send(JSON.stringify(requestData));
 }
