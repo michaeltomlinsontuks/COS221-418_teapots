@@ -1,6 +1,6 @@
 var productHandler = new ProductHandler();
 var selectCompany;
-var arrayOfUpdates = [];
+
 document.addEventListener("DOMContentLoaded", setUpPage);
 
 
@@ -124,7 +124,7 @@ function insertIntoTableAdmin() {
         pData.type = "button";
         pData.value = "update";
         pData.id = i;
-        arrayOfUpdates.push(pData.id);
+
         pData.addEventListener('click', function () {
             sendUpdateToProdID(this.id);
         })
@@ -132,13 +132,72 @@ function insertIntoTableAdmin() {
         td.appendChild(pData);
         tr.appendChild(td);
 
+        td = document.createElement('td');
+        pData = document.createElement('input');
+        pData.type = "button";
+        pData.value = "delete";
+        pData.id = i;
 
+        pData.addEventListener('click', function () {
+            deleteProduct(this.id);
+        })
 
+        td.appendChild(pData);
+        tr.appendChild(td);
 
         table.appendChild(tr);
     }
+}
+function deleteProduct(index) {
+    if (selectCompany.selectedIndex === 0) {
+        alert("select a company to delete the product of")
+        return null;
+    }
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    alert("delete successful refresh to view result");
+
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "removeProduct",
+        api_key: api_key,
+        prodID: productHandler.products[index].id,
+        company: selectCompany.options[selectCompany.selectedIndex].value,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    console.log(requestData);
+    request.send(JSON.stringify(requestData));
 
 }
+
 function sendUpdateToProdID(index) {
     if (selectCompany.selectedIndex === 0) {
         alert("select a company to update the product for")

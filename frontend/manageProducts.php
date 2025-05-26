@@ -32,26 +32,30 @@
 
     <table class="addProduct">
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 add new product
             </td>
         </tr>
         <tr>
             <td>
                 <p>name</p>
-                <input type="text">
+                <input id="nameID" type="text">
             </td>
             <td>
-                <p>dsc</p>
-                <input type="text">
+                <p>description</p>
+                <input id="dscID" type="text">
+            </td>
+            <td>
+                <p>Image Url</p>
+                <input id="imgID" type="text">
             </td>
             <td>
                 <p>Regular price</p>
-                <input min="1" type="number">
+                <input id="regPriceID" min="1" type="number">
             </td>
             <td>
                 <p>Discount price</p>
-                <input min="1" type="number">
+                <input id="discPriceID" min="1" type="number">
             </td>
             <td>
                 <p>Brand</p>
