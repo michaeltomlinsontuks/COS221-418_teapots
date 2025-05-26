@@ -1,6 +1,6 @@
 <?php
+require_once(__DIR__ . '/../config.php');
 require_once("header.php");
-include_once 'config.php';
 // if necessary to user at some stage for http requests
 $EnvJson = array(
     "host" => DB_HOST,

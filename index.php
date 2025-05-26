@@ -18,7 +18,7 @@
 
 <body>
     <div class="container">
-        <img src="https://wheatley.cs.up.ac.za/u24584216/teapots/images/teapotsLogoPot.png" alt="">
+        <img src="images/teapotsLogoPot.png" alt="">
     </div>
     <div class="aboutUsDiv">
         <input type="button" onclick="goToProducts()" value="Products">
@@ -27,10 +27,10 @@
 </body>
 <script>
     function goToProducts() {
-        window.location.href = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=login";
+        window.location.href = "frontend/pagebuilder.php?page=login";
     }
     function goToAboutUs() {
-        window.location.href = "https://wheatley.cs.up.ac.za/u24584216/teapots/aboutUs.php";
+        window.location.href = "aboutUs.php";
     }
 </script>
 

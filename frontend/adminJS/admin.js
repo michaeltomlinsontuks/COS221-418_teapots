@@ -1,5 +1,3 @@
-
-
 var productHandler = new ProductHandler();
 var selectCompany;
 var selectCompanyNP;
@@ -515,6 +513,91 @@ function initialiseManageUsers() {
 }
 
 function stateChangeUsers() {
+    if (this.readyState === 4) {
+        if (this.status === 200) {
+            var response = JSON.parse(this.responseText);
+            if (response.status === "success") {
+                displayUsers(response.data);
+            } else {
+                alert("Error loading users");
+            }
+        }
+    }
+}
+
+function displayUsers(users) {
+    const table = document.querySelector('.manageUsers');
+    // Add headers if not present
+    if (table.rows.length === 0) {
+        const headerRow = table.insertRow();
+        ['Username', 'Email', 'Created At', 'Admin Status', 'Actions'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            headerRow.appendChild(th);
+        });
+    }
+
+    users.forEach(user => {
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${user.created_at}</td>
+            <td>${user.is_admin ? 'Yes' : 'No'}</td>
+            <td>
+                ${!user.is_admin ? 
+                    `<button onclick="makeAdmin(${user.id})">Make Admin</button>` : 
+                    ''}
+                <button onclick="deleteUser(${user.id})">Delete</button>
+            </td>
+        `;
+    });
+}
+
+function makeAdmin(userId) {
+    if (!confirm('Are you sure you want to make this user an admin?')) return;
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            var response = JSON.parse(this.responseText);
+            if (response.status === "success") {
+                alert("User made admin successfully");
+                initialiseManageUsers(); // Refresh the list
+            }
+        }
+    };
+
+    var requestData = {
+        type: "makeadmin",
+        api_key: getLoginCookie().api_key,
+        user_id: userId
+    };
+
+    sendRequest(request, requestData);
+}
+
+function deleteUser(userId) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            var response = JSON.parse(this.responseText);
+            if (response.status === "success") {
+                alert("User deleted successfully");
+                initialiseManageUsers(); // Refresh the list
+            }
+        }
+    };
+
+    var requestData = {
+        type: "deleteuser",
+        api_key: getLoginCookie().api_key,
+        user_id: userId
+    };
+
+    sendRequest(request, requestData);
     if (this.readyState === 4) {
         if (this.status === 200) {
             var requestResponse = this.responseText;

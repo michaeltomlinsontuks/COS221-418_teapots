@@ -263,6 +263,22 @@ class API
                 return $this->getBrands();
             case 'getcompanies':
                 return $this->getCompanies();
+            case 'getadminproducts':
+                return $this->getAdminProducts();
+            case 'updateproduct':
+                return $this->updateProduct();
+            case 'deleteproduct':
+                return $this->deleteProduct();
+            case 'addproduct':
+                return $this->addProduct();
+            case 'getallusers':
+                return $this->getAllUsers();
+            case 'deleteuser':
+                return $this->deleteUser();
+            case 'adduser':
+                return $this->addUser();
+            case 'makeadmin':
+                return $this->makeAdmin();
 
             default:
                 $this->response['message'] = 'Invalid request type';
@@ -1059,6 +1075,358 @@ class API
         return $this->response;
     }
 
+    private function getAllUsers() {
+        $query = "SELECT u.UserID, u.Username, u.Email, u.CreatedAt, 
+                  CASE WHEN a.UserID IS NOT NULL THEN 1 ELSE 0 END as IsAdmin 
+                  FROM Users u 
+                  LEFT JOIN Admin a ON u.UserID = a.UserID";
+        
+        $result = $this->conn->query($query);
+        $users = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $users[] = [
+                'id' => $row['UserID'],
+                'username' => $row['Username'],
+                'email' => $row['Email'],
+                'created_at' => $row['CreatedAt'],
+                'is_admin' => (bool)$row['IsAdmin']
+            ];
+        }
+        
+        $this->response['status'] = 'success';
+        $this->response['data'] = $users;
+        return $this->response;
+    }
+
+    private function deleteUser() {
+        if (!isset($this->requestData['user_id'])) {
+            $this->response['message'] = 'User ID required';
+            return $this->response;
+        }
+
+        $userId = $this->requestData['user_id'];
+
+        $this->conn->begin_transaction();
+        try {
+            // Remove from Admin if exists
+            $query = "DELETE FROM Admin WHERE UserID = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('i', $userId);
+            $stmt->execute();
+
+            // Delete user
+            $query = "DELETE FROM Users WHERE UserID = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('i', $userId);
+            
+            if ($stmt->execute()) {
+                $this->conn->commit();
+                $this->response['status'] = 'success';
+                $this->response['message'] = 'User deleted successfully';
+            } else {
+                throw new Exception('Failed to delete user');
+            }
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            $this->response['message'] = 'Error deleting user: ' . $e->getMessage();
+        }
+
+        return $this->response;
+    }
+
+    private function makeAdmin() {
+        if (!isset($this->requestData['user_id'])) {
+            $this->response['message'] = 'User ID required';
+            return $this->response;
+        }
+
+        $userId = $this->requestData['user_id'];
+
+        $query = "INSERT INTO Admin (UserID, CreatedAt) VALUES (?, NOW())";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $userId);
+        
+        if ($stmt->execute()) {
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'User made admin successfully';
+        } else {
+            $this->response['message'] = 'Error making user admin';
+        }
+
+        return $this->response;
+    }
+
+    private function getAdminProducts() {
+        $query = "SELECT bp.*, b.BrandName, c.CategoryName 
+              FROM BestProduct bp
+              LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+              LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+              ORDER BY bp.ProductID";
+        
+        $result = $this->conn->query($query);
+        $products = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $products[] = [
+                'ProductID' => $row['ProductID'],
+                'Name' => $row['Name'],
+                'Description' => $row['Description'],
+                'BrandName' => $row['BrandName'],
+                'CategoryName' => $row['CategoryName'],
+                'RegularPrice' => number_format((float)$row['RegularPrice'], 2),
+                'BestPrice' => number_format((float)$row['BestPrice'], 2),
+                'OnlineAvailability' => (bool)$row['OnlineAvailability'],
+                'ThumbnailImage' => $row['ThumbnailImage'],
+                'CarouselImages' => $row['CarouselImages']
+            ];
+        }
+        
+        $this->response['status'] = 'success';
+        $this->response['data'] = $products;
+        return $this->response;
+    }
+
+    private function addProduct() {
+        if (!isset($this->requestData['name'], $this->requestData['description'], 
+            $this->requestData['brand_id'], $this->requestData['category_id'])) {
+            $this->response['message'] = 'Missing required fields';
+            return $this->response;
+        }
+
+        $this->conn->begin_transaction();
+        try {
+            $query = "INSERT INTO BestProduct (Name, Description, BrandID, CategoryID, 
+                      RegularPrice, BestPrice, OnlineAvailability, ThumbnailImage) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssiiddis",
+                $this->requestData['name'],
+                $this->requestData['description'],
+                $this->requestData['brand_id'],
+                $this->requestData['category_id'],
+                $this->requestData['regular_price'],
+                $this->requestData['discount_price'],
+                $this->requestData['online_availability'],
+                $this->requestData['thumbnail_image']
+            );
+
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to add product');
+            }
+
+            $productId = $this->conn->insert_id;
+
+            // Add product to company table if specified
+            if (isset($this->requestData['company'])) {
+                $query = "INSERT INTO {$this->requestData['company']} 
+                         (ProductID, RegularPrice, DiscountedPrice, OnlineAvailability) 
+                         VALUES (?, ?, ?, ?)";
+                
+                $stmt = $this->conn->prepare($query);
+                $stmt->bind_param("iddi",
+                    $productId,
+                    $this->requestData['regular_price'],
+                    $this->requestData['discount_price'],
+                    $this->requestData['online_availability']
+                );
+
+                if (!$stmt->execute()) {
+                    throw new Exception('Failed to add company product data');
+                }
+            }
+
+            $this->conn->commit();
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'Product added successfully';
+            $this->response['data'] = ['product_id' => $productId];
+
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            $this->response['message'] = $e->getMessage();
+        }
+
+        return $this->response;
+    }
+
+    private function updateProduct() {
+        if (!isset($this->requestData['product_id'])) {
+            $this->response['message'] = 'Product ID required';
+            return $this->response;
+        }
+
+        $updates = [];
+        $params = [];
+        $types = '';
+
+        $allowedFields = [
+            'name' => 's',
+            'description' => 's',
+            'brand_id' => 'i',
+            'category_id' => 'i',
+            'regular_price' => 'd',
+            'best_price' => 'd',
+            'online_availability' => 'i',
+            'thumbnail_image' => 's'
+        ];
+
+        foreach ($allowedFields as $field => $type) {
+            if (isset($this->requestData[$field])) {
+                $updates[] = "`" . str_replace('_', '', ucwords($field, '_')) . "` = ?";
+                $params[] = $this->requestData[$field];
+                $types .= $type;
+            }
+        }
+
+        if (empty($updates)) {
+            $this->response['message'] = 'No fields to update';
+            return $this->response;
+        }
+
+        $query = "UPDATE BestProduct SET " . implode(', ', $updates) . 
+                 " WHERE ProductID = ?";
+        
+        $params[] = $this->requestData['product_id'];
+        $types .= 'i';
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        
+        if ($stmt->execute()) {
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'Product updated successfully';
+        } else {
+            $this->response['message'] = 'Error updating product';
+        }
+        
+        return $this->response;
+    }
+
+    private function deleteProduct() {
+        if (!isset($this->requestData['product_id'])) {
+            $this->response['message'] = 'Product ID required';
+            return $this->response;
+        }
+
+        $this->conn->begin_transaction();
+        try {
+            $productId = $this->requestData['product_id'];
+
+            // Delete from company tables first
+            $companies = ['Bitify', 'ByteCrate', 'ByteMart', 'ChipCart', 'CoreBay',
+                         'FuseBasket', 'Nexonic', 'TechNova', 'VoltEdge', 'ZapNest'];
+            
+            foreach ($companies as $company) {
+                $query = "DELETE FROM $company WHERE ProductID = ?";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bind_param('i', $productId);
+                $stmt->execute();
+            }
+
+            // Delete reviews
+            $query = "DELETE FROM Review WHERE ProductID = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('i', $productId);
+            $stmt->execute();
+
+            // Delete from BestProduct
+            $query = "DELETE FROM BestProduct WHERE ProductID = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('i', $productId);
+            
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to delete product');
+            }
+
+            $this->conn->commit();
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'Product deleted successfully';
+
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            $this->response['message'] = $e->getMessage();
+        }
+
+        return $this->response;
+    }
+
+    private function addUser() {
+        // Check required fields
+        if (!isset($this->requestData['username'], 
+               $this->requestData['password'],
+               $this->requestData['email'])) {
+            $this->response['message'] = 'Username, password and email are required';
+            return $this->response;
+        }
+
+        // Validate username format
+        if (!$this->validateUsername()) {
+            return $this->response;
+        }
+
+        // Validate email format
+        if (!$this->validateEmail($this->requestData['email'])) {
+            $this->response['message'] = 'Invalid email format';
+            return $this->response;
+        }
+
+        // Validate password
+        if (!$this->validatePassword()) {
+            return $this->response;
+        }
+
+        $this->conn->begin_transaction();
+        try {
+            // Hash password and generate API key
+            $passwordData = $this->hashPassword($this->requestData['password']);
+            $apiKey = $this->generateAPIKey();
+
+            // Insert into Users table
+            $query = "INSERT INTO Users (Email, Username, PasswordHash, Salt, APIKey, CreatedAt) 
+                 VALUES (?, ?, ?, ?, ?, NOW())";
+        
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("sssss", 
+                $this->requestData['email'],
+                $this->requestData['username'],
+                $passwordData['hash'],
+                $passwordData['salt'],
+                $apiKey
+            );
+
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to create user');
+            }
+
+            $userId = $this->conn->insert_id;
+
+            // If isAdmin flag is set, add to Admin table
+            if (isset($this->requestData['is_admin']) && $this->requestData['is_admin']) {
+                $query = "INSERT INTO Admin (UserID, CreatedAt) VALUES (?, NOW())";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bind_param("i", $userId);
+            
+                if (!$stmt->execute()) {
+                    throw new Exception('Failed to set admin status');
+                }
+            }
+
+            $this->conn->commit();
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'User added successfully';
+            $this->response['data'] = [
+                'user_id' => $userId,
+                'api_key' => $apiKey
+            ];
+
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            $this->response['message'] = 'Error creating user: ' . $e->getMessage();
+        }
+
+        return $this->response;
+    }
 }
 
 // Create API instance and handle the request
