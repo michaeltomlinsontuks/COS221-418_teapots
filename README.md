@@ -143,24 +143,32 @@ Responses are JSON objects:
 
 ```json
 {
-  "status": "success",
-  "timestamp": 1739978765,
-  "data": [
-    {
-      "id": 1112775,
-      "name": "Peerless-AV - SmartMount Articulating Wall Mount",
-      "salePrice": "334.99",
-      "reviewAverage": "4.80",
-      "thumbnail": "https://pisces.bbystatic.com/.../1112775cv12d.jpg"
+    "status": "success",
+    "timestamp": 1748263537,
+    "data": [
+        {
+            "id": 505,
+            "name": "Samsung - 3.3' USB Type A-to-USB Type C Device Cable - White",
+            "brand": "Samsung",
+            "category": "Charging Cables",
+            "ThumbnailImage": "https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5607/5607902_sd.jpg",
+            "CarouselImages": "[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"}]",
+            "reviewAverage": "4.70",
+            "reviewCount": 2878,
+            "regularPrice": "13.99",
+            "salePrice": "8.25",
+            "discountPercent": "41.03",
+            "inStock": true,
+            "bestCompany": "FuseBasket"
+        }
+    ],
+    "message": "Products Retrieved Successfully",
+    "pagination": {
+        "total": 16,
+        "offset": 0,
+        "limit": 1,
+        "has_more": true
     }
-  ],
-  "message": "Products retrieved successfully",
-  "pagination": {
-    "total": 100,
-    "offset": 0,
-    "limit": 51,
-    "has_more": true
-  }
 }
 ```
 
@@ -248,6 +256,57 @@ The API (`api.php`) supports the following endpoints, implemented with prepared 
   - **Example**:
     ```json
     {"type": "getproduct", "api_key": "xyz", "product_id": 1112775}
+    ```
+    ```json
+    {
+    "status": "success",
+    "timestamp": 1748265667,
+    "data": {
+        "product": {
+            "ProductID": 123,
+            "Name": "KEF - Ventura 6-1/2\" Passive 2-Way Outdoor Speakers (Pair) - White",
+            "Description": "Enjoy dynamic sound with this KEF Ventura 6 outdoor speaker. The 54Hz to 20kHz frequency response ensures efficient audio reproduction, and the aluminum grille and mounting brackets offer easy installation. This KEF Ventura 6 outdoor speaker has an IP65 construction that protects against harsh weather elements, while the stainless steel and brass hardware ensure long-lasting durability.",
+            "ThumbnailImage": "https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2887/2887581_sa.jpg",
+            "ReviewAverage": "4.70",
+            "ReviewCount": 3,
+            "CarouselImages": "[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2887\\/2887581_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2887\\/2887581_sa.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/2887\\/2887581ld.jpg\"}]",
+            "SalePrice": "581.99",
+            "OnlineAvailability": 1,
+            "AddToCartURL": "https://api.bestbuy.com/click/-/2887581/cart",
+            "Type": "HardGood",
+            "BrandName": "KEF",
+            "CategoryName": "Floor Speakers"
+        },
+        "price_comparisons": {
+            "VoltEdge": {
+                "regularPrice": "581.99",
+                "discountedPrice": "581.99",
+                "discountPercentage": 0
+            },
+            "ByteCrate": {
+                "regularPrice": "635.99",
+                "discountedPrice": "635.99",
+                "discountPercentage": 0
+            },
+            "ChipCart": {
+                "regularPrice": "635.99",
+                "discountedPrice": "635.99",
+                "discountPercentage": 0
+            },
+            "TechNova": {
+                "regularPrice": "689.99",
+                "discountedPrice": "689.99",
+                "discountPercentage": 0
+            },
+            "ByteMart": {
+                "regularPrice": "701.99",
+                "discountedPrice": "701.99",
+                "discountPercentage": 0
+            }
+        }
+    },
+    "message": "Product details retrieved successfully"
+    }
     ```
   - **Implementation**: Queries `BestProduct` with joins to `Brand` and `Category`, fetches comparisons from retailer tables, sorts by `discountedPrice`.
 
