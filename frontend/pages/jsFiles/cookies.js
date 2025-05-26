@@ -56,5 +56,6 @@ function getLocalRoute() {
 }
 function signOut() {
     document.cookie = "userdata=; max-age=0; path=/;";
+    document.cookie = "userdataAdmin=; max-age=0; path=/;"
     window.location.replace(getLocalRoute() + "logout");
 }
