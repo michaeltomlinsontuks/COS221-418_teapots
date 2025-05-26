@@ -306,7 +306,7 @@ The API (`api.php`) supports the following endpoints, implemented with prepared 
         }
     },
     "message": "Product details retrieved successfully"
-}
+    }
     ```
   - **Implementation**: Queries `BestProduct` with joins to `Brand` and `Category`, fetches comparisons from retailer tables, sorts by `discountedPrice`.
 
