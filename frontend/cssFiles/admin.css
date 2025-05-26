@@ -28,6 +28,15 @@
 
 .manageUsers {
     width: 100%;
+    table-layout: fixed !important;
+}
+
+.manageUsers td {
+    width: 20% !important;
+}
+
+.manageUsers td input {
+    text-align: center !important;
 }
 
 .scrollDivUsers {

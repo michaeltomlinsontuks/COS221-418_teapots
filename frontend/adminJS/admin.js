@@ -10,6 +10,10 @@ var prodDscHtml;
 var imgUrlHtml;
 var priceRegHtml;
 var priceDiscHtml;
+var userHandlerVar;
+var usernameHtml;
+var emailHtml;
+
 document.addEventListener("DOMContentLoaded", setUpPage);
 
 
@@ -145,7 +149,6 @@ function insertIntoTableAdmin() {
         pData.type = "button";
         pData.value = "update";
         pData.id = i;
-
         pData.addEventListener('click', function () {
             sendUpdateToProdID(this.id);
         })
@@ -506,13 +509,37 @@ function initialiseManageUsers() {
 }
 
 function stateChangeUsers() {
+    if (this.readyState === 4) {
+        if (this.status === 200) {
+            var requestResponse = this.responseText;
+            requestResponse = JSON.parse(requestResponse);
+            if (requestResponse.status === "error") {
+                alert("something went wrong...");
+                userHandlerVar = new userHandler(createMockUsers());
+                userHandlerVar.insertintoTableUsers();
+            }
+            else {
+                var data = requestResponse.data;
+                userHandlerVar = new userHandler(data);
 
+            }
+        }
+        else {
+            alert("An error occurred on our side...")
+            userHandlerVar = new userHandler(createMockUsers());
+            userHandlerVar.insertintoTableUsers();
+        }
+    }
 }
 
 var userClass = function (data) {
     this.email = data.email;
     this.username = data.username;
     this.api_key = data.api_key;
+    this.is_Admin = data.is_Admin;
+    this.usernameHtml = null;
+    this.emailHtml = null;
+    this.checkedHtml = null;
 }
 
 var userHandler = function (data) {
@@ -520,4 +547,171 @@ var userHandler = function (data) {
     for (var i = 0; i < data.length; i++) {
         this.users.push(new userClass(data[i]));
     }
+
+    this.insertintoTableUsers = insertIntoTableUsersData;
+}
+function insertIntoTableUsersData() {
+    var table = document.getElementById("manageUsersID")
+    for (var i = 0; i < userHandlerVar.users.length; i++) {
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        var pData = document.createElement('input');
+        pData.type = "text";
+        pData.value = userHandlerVar.users[i].username;
+        userHandlerVar.users[i].usernameHtml = pData;
+        td.appendChild(pData);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        pData = document.createElement('input');
+        pData.type = "text";
+        pData.value = userHandlerVar.users[i].email;
+        userHandlerVar.users[i].emailHtml = pData;
+        td.appendChild(pData)
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        pData = document.createElement('p');
+        pData.textContent = userHandlerVar.users[i].api_key;
+        td.appendChild(pData);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        pData = document.createElement('input');
+        pData.type = "checkbox";
+        userHandlerVar.users[i].checkedHtml = pData;
+        pData.checked = userHandlerVar.users[i].is_Admin;
+        td.appendChild(pData)
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        pData = document.createElement('input');
+        pData.type = "button";
+        pData.value = "update";
+        pData.id = i;
+        pData.addEventListener('click', function () {
+            sendUpdateToUser(this.id);
+        })
+        td.appendChild(pData);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        pData = document.createElement('input');
+        pData.type = "button";
+        pData.value = "delete";
+        pData.id = i;
+        pData.addEventListener('click', function () {
+            sendDeleteUser(this.id);
+        })
+        td.appendChild(pData);
+        tr.appendChild(td);
+
+
+
+        table.appendChild(tr);
+    }
+}
+
+function createMockUsers() {
+    var data = []
+    for (var i = 0; i < 20; i++) {
+        data.push(
+            {
+                username: "mock",
+                api_key: "mock api",
+                email: "mock email",
+                is_Admin: i % 2 === 0,
+            })
+    }
+
+    return data;
+}
+function sendUpdateToUser(index) {
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    alert("update successful");
+
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "updateUser",
+        api_key: api_key,
+        username: userHandlerVar.users[index].usernameHtml.value,
+        email: userHandlerVar.users[index].emailHtml.value,
+        userApi_key: userHandlerVar.users[index].api_key,
+        is_Admin: userHandlerVar.users[index].checkedHtml.checked,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+    console.log(requestData);
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.send(JSON.stringify(requestData));
+
+}
+function sendDeleteUser(index) {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    alert("deletion successful");
+
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "deleteUser",
+        api_key: api_key,
+        userApikey: userHandlerVar.users[index].api_key,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+    console.log(requestData);
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    console.log(requestData);
+    request.send(JSON.stringify(requestData));
+
 }
