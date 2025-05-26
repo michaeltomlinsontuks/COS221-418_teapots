@@ -73,7 +73,7 @@ function sendRegister() {
 
     var requestHeaderData = getLocalCredentials();
 
-    request.open("POST", requestHeaderData.host, true);
+    request.open("POST",requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
 
  request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
@@ -86,7 +86,8 @@ function stateChangeRegister() {
             var requestResponse = this.responseText;
             requestResponse = JSON.parse(requestResponse);
             if (requestResponse.status === "error") {
-                popup.construct("This username already exists, please use a different username or login if you already have an account", false);
+                console.error(requestResponse);
+                popup.construct("This username or email already exists, please use a different username or email, or login if you already have an account", false);
             }
             else {
                 var data = requestResponse.data;
