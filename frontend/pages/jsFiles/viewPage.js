@@ -300,5 +300,27 @@ document.addEventListener("DOMContentLoaded", function () {
         product_id: productId
     }));
 }
+
+    leaveReviewBtn.addEventListener("click", function () {
+        if (userReview) {
+            //Editing a review
+            reviewFormTitle.textContent = "Edit Your Review";
+            reviewTitleInput.value = userReview.title;
+            reviewDescriptionInput.value = userReview.description;
+            reviewRatingInput.value = userReview.rating;
+        } 
+        else {
+            //Leaving a review
+            reviewFormTitle.textContent = "Leave a Review";
+            reviewTitleInput.value = "";
+            reviewDescriptionInput.value = "";
+            reviewRatingInput.value = "5";
+        }
+
+        reviewPopup.style.display = "block";
+    });
+    cancelReviewBtn.addEventListener("click", function () {
+        reviewPopup.style.display = "none";
+    });
     loadReviews();
 });
