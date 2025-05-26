@@ -13,6 +13,8 @@ var priceDiscHtml;
 var userHandlerVar;
 var usernameHtml;
 var emailHtml;
+var passwordHtml;
+var checkedHtml;
 
 document.addEventListener("DOMContentLoaded", setUpPage);
 
@@ -486,6 +488,10 @@ function fillCategoriesBox() {
 
 
 function initialiseManageUsers() {
+    usernameHtml = document.getElementById('userID');
+    emailHtml = document.getElementById('emailID');
+    passwordHtml = document.getElementById('passID');
+    checkedHtml = document.getElementById('checkID');
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeUsers;
@@ -714,4 +720,78 @@ function sendDeleteUser(index) {
     console.log(requestData);
     request.send(JSON.stringify(requestData));
 
+}
+function addNewUser() {
+    if (usernameValidation() && passwordValidation() && emailValidation()) {
+        var request = new XMLHttpRequest();
+
+        request.onreadystatechange = function () {
+
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    var requestResponse = this.responseText;
+                    requestResponse = JSON.parse(requestResponse);
+                    if (requestResponse.status === "error") {
+                        alert("This username or email already exists");
+                    }
+                    else {
+                        alert("user successfully added");
+                    }
+                }
+                else {
+                    alert("An error occurred on our side...")
+                }
+            }
+
+
+        };
+        var cookieData = getLoginCookie();
+        var api_key = cookieData.api_key;
+
+        requestData = {
+            type: "addUser",
+            api_key: api_key, // admin api key
+            username: usernameHtml.value,
+            password: passwordHtml.value,
+            is_Admin: checkedHtml.checked,
+        }
+
+        var requestHeaderData = getLocalCredentials();
+        console.log(requestData);
+
+        request.open("POST", requestHeaderData.host, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+        // fix to use wheately login stuff instead of the php my admin code if necessary
+        request.send(JSON.stringify(requestData));
+
+
+    }
+    else {
+        alert("please insure all data is properly filled in, usernames must be atleast 3 characters long");
+    }
+}
+function usernameValidation() {
+    // regex for username length
+    var pattern = /^.{3,}$/
+    return pattern.test(usernameHtml.value);
+}
+function passwordValidation() {
+    // regex for password length
+    var letterTest = /[a-z]+/;
+    var upperLetterText = /[A-Z]+/;
+    var hasDigit = /\d+/;
+    var hasSymbol = /[\W_]+/;
+    var testLength = /.{8,}/
+    var result = letterTest.test(passwordHtml.value) && upperLetterText.test(passwordHtml.value) && hasDigit.test(passwordHtml.value) && hasSymbol.test(passwordHtml.value) && testLength.test(passwordHtml.value);
+    if (result === false)
+        alert("Please ensure that your password has lowercase and uppercase letters, a symbol and a number to improve security");
+    return result;
+}
+function emailValidation() {
+    // regex for password length
+    var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!pattern.test(emailHtml.value))
+        alert("Please enter a valid email address");
+    return pattern.test(emailHtml.value);
 }

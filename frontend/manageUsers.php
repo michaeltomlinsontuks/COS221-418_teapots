@@ -49,7 +49,7 @@
             </td>
             <td>
                 <p>submit</p>
-                <input type="button" value="confirm">
+                <input type="button" value="confirm" onclick="addNewUser()">
             </td>
         </tr>
     </table>
