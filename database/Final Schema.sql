@@ -20,8 +20,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `u24856462_COS221PA5`
 --
+DROP DATABASE IF EXISTS u24856462_COS221PA5;
 
--- --------------------------------------------------------
+CREATE DATABASE u24856462_COS221PA5;
+
+USE u24856462_COS221PA5;
 
 --
 -- Table structure for table `Admin`
