@@ -69,10 +69,12 @@ function buildFilterbar() {
     var minPriceHtml = document.createElement("input");
     minPriceHtml.id = "minPriceID";
     minPriceHtml.type = "number";
+    minPriceHtml.min = 0;
 
     var maxPriceHtml = document.createElement("input");
     maxPriceHtml.id = "maxPriceID";
     maxPriceHtml.type = "number";
+    maxPriceHtml.min = 0;
 
     var sortByHtml = document.createElement("select");
     sortByHtml.id = "sortByID";
@@ -152,6 +154,8 @@ var Product = function (data) {
     this.productCarousel = JSON.parse(data.CarouselImages);
     this.mainImg = this.productCarousel[0].image;
     this.ImgPointer = null;
+    this.AdminRegPrice = null;
+    this.AdminDiscPrice = null;
     // used to keep track exactly which 
     this.setImgPointer = function (ImgPointer) {
         this.ImgPointer = ImgPointer;
@@ -188,6 +192,17 @@ var ProductHandler = function () {
         }
         if (this.newProductsAt !== this.newProductsStop)
             insertTd();
+
+    }
+    this.addProductsAdmin = function (data) {
+        // data should be an array
+        this.newProductsAt = this.products.length;
+        this.newProductsStop = this.newProductsAt + data.length;
+        for (var i = 0; i < data.length; i++) {
+            this.products.push(new Product(data[i]));
+        }
+        if (this.newProductsAt !== this.newProductsStop)
+            insertIntoTableAdmin();
 
     }
 }
@@ -299,7 +314,6 @@ var RequestStateHandler = function () {
     }
 
 }
-function returnToProduct()
-{
-    window.location.replace(getLocalRoute() + "products");  
+function returnToProduct() {
+    window.location.replace(getLocalRoute() + "products");
 }

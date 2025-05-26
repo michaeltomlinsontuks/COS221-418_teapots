@@ -51,7 +51,7 @@ $loggedInStatus = isset($_COOKIE['userdata']);
             <?php
             if (isset($_GET['page'])) {
 
-                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout")
+                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout" || $_GET['page'] == 'admin' || $_GET['page'] == "adminUsers")
                     echo $_GET['page'];
                 else if ($_GET['page'] == 'products' || $_GET['page'] == 'view') {
                     echo "<img class=\"titleImg\" src =\"images/noBackgroundLogo.png\">";
@@ -101,6 +101,12 @@ $loggedInStatus = isset($_COOKIE['userdata']);
         //can do this in the items themselves
         if (isset($_GET['page']))
             switch ($_GET['page']) {
+                case ('admin'):
+                    include_once("admin.php");
+                    break;
+                case ('adminUsers'):
+                    include_once("admin.php");
+                    break;
                 case ("login"):
                     include_once("pages/login.php");
                     break;

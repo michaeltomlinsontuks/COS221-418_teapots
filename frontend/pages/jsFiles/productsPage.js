@@ -106,8 +106,7 @@ function insertTd() {
 
     for (var i = 0; i < rowsNeeded; i++) {
         tr = document.createElement("tr");
-
-
+        
         for (var cols = 0; cols < 3 && productsNeeded > 0; cols++, index++, productsNeeded--) {
 
             td = document.createElement("td");
