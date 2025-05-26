@@ -22,8 +22,8 @@ setcookie('localAuthentication', $cookieData);
 
 //setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
 //$localRoute = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=";
-setcookie("localRoute", "localhost/teapots/frontend/pagebuilder.php?page=");
-$localRoute = "localhost/teapots/frontend/pagebuilder.php?page=";
+setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
+$localRoute = "http://localhost/teapots/frontend/pagebuilder.php?page=";
 //comment out and change it to be your local route 
 $loggedInStatus = isset($_COOKIE['userdata']);
 ?>
@@ -124,7 +124,6 @@ $loggedInStatus = isset($_COOKIE['userdata']);
                     }
                     break;
                 case ('logout'):
-
                     header("Location: " . $localRoute . "login");
                     exit;
                 default:
