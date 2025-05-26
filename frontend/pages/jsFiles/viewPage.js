@@ -173,18 +173,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Populating Rating
-    var ratingCell = document.querySelector(".bottomInfo td:last-child");
+    var ratingCell = document.getElementById("ratingCell");
     if (ratingCell) {
         var stars = "";
         var rating = Math.floor(parseFloat(product.reviewAvg));
         for (var i = 0; i < 5; i++) {
             stars += i < rating ? "⭐" : "✩";
         }
-        ratingCell.textContent = `Rating: ${stars}`;
+        ratingCell.textContent = "Rating: " + stars;
     }
 
     //Populating Best Price
-    var bestPriceCell = document.querySelector(".bottomInfo td:first-child");
+    var bestPriceCell = document.getElementById("bestPriceCell");
     if (bestPriceCell) {
         bestPriceCell.textContent = "Best Price: $" + product.salePrice;
     }
@@ -247,4 +247,80 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     request.send(body);
+
+
+    var username = getLoginCookie().username;
+    var reviewsContainer = document.getElementById("reviewsContainer");
+    var leaveReviewBtn = document.getElementById("leaveReviewBtn");
+    var reviewPopup = document.getElementById("reviewPopup");
+    var reviewFormTitle = document.getElementById("reviewFormTitle");
+    var reviewTitleInput = document.getElementById("reviewTitle");
+    var reviewDescriptionInput = document.getElementById("reviewDescription");
+    var reviewRatingInput = document.getElementById("reviewRating");
+    var submitReviewBtn = document.getElementById("submitReviewBtn");
+    var cancelReviewBtn = document.getElementById("cancelReviewBtn");
+    var userReview = null;
+
+    function loadReviews() {
+        var req = new XMLHttpRequest();
+        req.open("POST", requestHeaderData.host, true);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status === 200) {
+                var res = JSON.parse(req.responseText);
+                reviewsContainer.innerHTML = "";
+                if (res.status === "success") {
+                    var reviews = res.data;
+                    userReview = null;
+                    for (var i = 0; i < reviews.length; i++) {
+                        if (reviews[i].username === username) {
+                            userReview = reviews[i];
+                        }
+                        var box = document.createElement("div");
+                        box.className = "reviewBox";
+                        box.innerHTML = "<strong>" + reviews[i].username + "</strong> (" + reviews[i].rating + "\u2B50): <em>" + reviews[i].title + 
+                        "</em><br>" + reviews[i].description +
+                        "<br><small>" + reviews[i].timestamp + "</small><hr>";
+                        reviewsContainer.appendChild(box);
+                    }
+                    leaveReviewBtn.textContent = userReview ? "Edit Your Review" : "Leave a Review";
+                } 
+                else 
+                {
+                    reviewsContainer.textContent = "No reviews available.";
+            }
+        }
+    };
+
+    req.send(JSON.stringify({
+        type: "getreviews",
+        api_key: apiKey,
+        product_id: productId
+    }));
+}
+
+    leaveReviewBtn.addEventListener("click", function () {
+        if (userReview) {
+            //Editing a review
+            reviewFormTitle.textContent = "Edit Your Review";
+            reviewTitleInput.value = userReview.title;
+            reviewDescriptionInput.value = userReview.description;
+            reviewRatingInput.value = userReview.rating;
+        } 
+        else {
+            //Leaving a review
+            reviewFormTitle.textContent = "Leave a Review";
+            reviewTitleInput.value = "";
+            reviewDescriptionInput.value = "";
+            reviewRatingInput.value = "5";
+        }
+
+        reviewPopup.style.display = "block";
+    });
+    cancelReviewBtn.addEventListener("click", function () {
+        reviewPopup.style.display = "none";
+    });
+    loadReviews();
 });
