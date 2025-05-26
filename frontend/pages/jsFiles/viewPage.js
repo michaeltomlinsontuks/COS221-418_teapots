@@ -173,18 +173,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Populating Rating
-    var ratingCell = document.querySelector(".bottomInfo td:last-child");
+    var ratingCell = document.getElementById("ratingCell");
     if (ratingCell) {
         var stars = "";
         var rating = Math.floor(parseFloat(product.reviewAvg));
         for (var i = 0; i < 5; i++) {
             stars += i < rating ? "⭐" : "✩";
         }
-        ratingCell.textContent = `Rating: ${stars}`;
+        ratingCell.textContent = "Rating: " + stars;
     }
 
     //Populating Best Price
-    var bestPriceCell = document.querySelector(".bottomInfo td:first-child");
+    var bestPriceCell = document.getElementById("bestPriceCell");
     if (bestPriceCell) {
         bestPriceCell.textContent = "Best Price: $" + product.salePrice;
     }
