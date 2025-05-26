@@ -55,6 +55,11 @@
     text-align: center;
 }
 
+.addProduct tr td select {
+    width: 100%;
+    text-align: center;
+}
+
 .manageProducts {
     width: 100%;
     table-layout: fixed;

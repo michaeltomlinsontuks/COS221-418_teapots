@@ -1,6 +1,15 @@
+
+
 var productHandler = new ProductHandler();
 var selectCompany;
-
+var selectCompanyNP;
+var selectNpBrand;
+var selectNpCat;
+var prodNameHtml;
+var prodDscHtml;
+var imgUrlHtml;
+var priceRegHtml;
+var priceDiscHtml;
 document.addEventListener("DOMContentLoaded", setUpPage);
 
 
@@ -12,6 +21,16 @@ function manageProducts() {
 }
 function setUpPage() {
     selectCompany = document.getElementById("compID");
+    selectCompanyNP = document.getElementById("compNP");
+    selectNpBrand = document.getElementById("brandNP");
+    selectNpCat = document.getElementById('catNP');
+
+    prodNameHtml = document.getElementById("nameID");
+    prodDscHtml = document.getElementById('dscID');
+    imgUrlHtml = document.getElementById('imgID');
+    priceRegHtml = document.getElementById('regPriceID');
+    priceDiscHtml = document.getElementById('discPriceID');
+
     var params = new URLSearchParams(window.location.search);
     var value = params.get('page');
     if (value === "admin")
@@ -22,6 +41,8 @@ function setUpPage() {
 function initialiseManageProducts() {
     selectCompany.disabled = false;
     fillCompanyBox();
+    fillBrandBox();
+    fillCategoriesBox();
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeProducts;
@@ -269,6 +290,7 @@ function fillCompanyBox() {
                         opt.value = data[i].company_name;
                         opt.textContent = data[i].company_name;
                         selectCompany.appendChild(opt);
+                        selectCompanyNP.appendChild(opt);
                     }
 
                 }
@@ -298,6 +320,166 @@ function fillCompanyBox() {
 
 }
 
+function fillBrandBox() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    var data = requestResponse.data;
+                    for (var i = 0; i < data.length && i < 20; i++) {
+                        var opt = document.createElement('option');
+                        opt.value = data[i].brand_id;
+                        opt.textContent = data[i].brand_name;
+                        selectNpBrand.appendChild(opt);
+                    }
+
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "getbrands",
+        api_key: api_key,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.send(JSON.stringify(requestData));
+
+}
+function addNewProduct() {
+    if (priceDiscHtml.value === "" || !testImgUrl() || priceRegHtml.value === "" || prodDscHtml.value === "" || prodNameHtml.value === "" || imgUrlHtml.value === "" || selectCompanyNP.selectedIndex === 0 || selectNpBrand.selectedIndex === 0 || selectNpCat.selectedIndex === 0) {
+        alert("please insure all fields are correctly filled out");
+        return null;
+    }
+
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    alert("Product added");
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "addProduct",
+        api_key: api_key,
+        name: prodNameHtml.value,
+        description: prodDscHtml.value,
+        brandID: selectNpBrand.options[selectNpBrand.selectedIndex].value,
+        categoryID: selectNpCat.options[selectNpCat.selectedIndex].value,
+        company: selectCompanyNP.options[selectCompanyNP.selectedIndex].value,
+        bestPrice: priceDiscHtml.value,
+        regularPrice: priceRegHtml.value,
+        images: [JSON.stringify({ image: imgUrlHtml.value })]
+    }
+
+    var requestHeaderData = getLocalCredentials();
+    console.log(requestData);
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.send(JSON.stringify(requestData));
+
+}
+function testImgUrl() {
+    var imgUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
+    if (!imgUrlRegex.test(imgUrlHtml.value)) {
+        alert("please insure that the provided image url is valid")
+    }
+    return imgUrlRegex.test(imgUrlHtml.value);
+
+}
+
+
+function fillCategoriesBox() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = this.responseText;
+                requestResponse = JSON.parse(requestResponse);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                }
+                else {
+                    var data = requestResponse.data;
+                    for (var i = 0; i < data.length && i < 20; i++) {
+                        var opt = document.createElement('option');
+                        opt.value = data[i].category_id;
+                        opt.textContent = data[i].category_name;
+                        selectNpCat.appendChild(opt);
+                    }
+
+                }
+            }
+            else {
+                alert("An error occurred on our side...")
+            }
+        }
+
+
+    };
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "getcategories",
+        api_key: api_key,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.send(JSON.stringify(requestData));
+
+}
 
 
 function initialiseManageUsers() {

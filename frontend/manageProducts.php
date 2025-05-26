@@ -59,19 +59,19 @@
             </td>
             <td>
                 <p>Brand</p>
-                <select>
+                <select id="brandNP">
                     <option value="">Select brand </option>
                 </select>
             </td>
             <td>
                 <p>category</p>
-                <select>
+                <select id="catNP">
                     <option value="">Select category</option>
                 </select>
             </td>
             <td>
                 <p>company</p>
-                <select>
+                <select id="compNP">
                     <option value="">select company</option>
                 </select>
             </td>
@@ -79,7 +79,7 @@
 
             <td>
                 <p>submit</p>
-                <input style="width:100%" type="button" value="confirm">
+                <input style="width:100%" type="button" value="confirm" onclick="addNewProduct()">
             </td>
         </tr>
     </table>
