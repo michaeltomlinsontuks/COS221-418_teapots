@@ -299,6 +299,7 @@ var RequestStateHandler = function () {
     }
 
 }
-
-
-// linked list carousel code 
+function returnToProduct()
+{
+    window.location.replace(getLocalRoute() + "products");  
+}

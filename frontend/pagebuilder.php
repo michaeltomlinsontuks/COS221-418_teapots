@@ -37,6 +37,8 @@ $loggedInStatus = isset($_COOKIE['userdata']);
             echo "<div class=\"filterOverlay\" id=\"overlay\">";
             echo "<input  type = \"image\" src = \"images/menu.png\" class = \"menu\" id=\"menu\">";
             echo "</div>";
+        } else if (isset($_GET['page']) && $_GET['page'] == 'view') {
+            echo "<input  type = \"button\" onclick=\"returnToProduct()\"  class = \"returnProd\" id=\"prodReturnID\"value=\"Products\">";
         }
         ?>
         <div class="titleUnder">

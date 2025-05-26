@@ -27,9 +27,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td >
+                        <div style="max-height: 200px; overflow-y: auto;">
                         <table class="pricesTable">
                         </table>
+                        </div>
                     </td>
                 </tr>
             </table>
