@@ -483,9 +483,41 @@ function fillCategoriesBox() {
 
 
 function initialiseManageUsers() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = stateChangeUsers;
+    var cookieData = getLoginCookie();
+    var api_key = cookieData.api_key;
+
+    requestData = {
+        type: "getAllUsers",
+        api_key: api_key,
+    }
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.send(JSON.stringify(requestData));
+
 
 }
 
 function stateChangeUsers() {
 
+}
+
+var userClass = function (data) {
+    this.email = data.email;
+    this.username = data.username;
+    this.api_key = data.api_key;
+}
+
+var userHandler = function (data) {
+    this.users = [];
+    for (var i = 0; i < data.length; i++) {
+        this.users.push(new userClass(data[i]));
+    }
 }
