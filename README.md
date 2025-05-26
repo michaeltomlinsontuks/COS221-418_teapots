@@ -143,24 +143,32 @@ Responses are JSON objects:
 
 ```json
 {
-  "status": "success",
-  "timestamp": 1739978765,
-  "data": [
-    {
-      "id": 1112775,
-      "name": "Peerless-AV - SmartMount Articulating Wall Mount",
-      "salePrice": "334.99",
-      "reviewAverage": "4.80",
-      "thumbnail": "https://pisces.bbystatic.com/.../1112775cv12d.jpg"
+    "status": "success",
+    "timestamp": 1748263537,
+    "data": [
+        {
+            "id": 505,
+            "name": "Samsung - 3.3' USB Type A-to-USB Type C Device Cable - White",
+            "brand": "Samsung",
+            "category": "Charging Cables",
+            "ThumbnailImage": "https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5607/5607902_sd.jpg",
+            "CarouselImages": "[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"}]",
+            "reviewAverage": "4.70",
+            "reviewCount": 2878,
+            "regularPrice": "13.99",
+            "salePrice": "8.25",
+            "discountPercent": "41.03",
+            "inStock": true,
+            "bestCompany": "FuseBasket"
+        }
+    ],
+    "message": "Products Retrieved Successfully",
+    "pagination": {
+        "total": 16,
+        "offset": 0,
+        "limit": 1,
+        "has_more": true
     }
-  ],
-  "message": "Products retrieved successfully",
-  "pagination": {
-    "total": 100,
-    "offset": 0,
-    "limit": 51,
-    "has_more": true
-  }
 }
 ```
 
