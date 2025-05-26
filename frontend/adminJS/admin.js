@@ -52,7 +52,7 @@ function initialiseManageProducts() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeProducts;
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -203,7 +203,7 @@ function deleteProduct(index) {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -253,7 +253,7 @@ function sendUpdateToProdID(index) {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -307,7 +307,7 @@ function fillCompanyBox() {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -355,7 +355,7 @@ function fillBrandBox() {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -401,7 +401,7 @@ function addNewProduct() {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -467,7 +467,7 @@ function fillCategoriesBox() {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -495,7 +495,7 @@ function initialiseManageUsers() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeUsers;
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -657,7 +657,7 @@ function sendUpdateToUser(index) {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -702,7 +702,7 @@ function sendDeleteUser(index) {
 
 
     };
-    var cookieData = getLoginCookie();
+    var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
     requestData = {
@@ -745,7 +745,7 @@ function addNewUser() {
 
 
         };
-        var cookieData = getLoginCookie();
+        var cookieData = getLoginCookieAdmin();
         var api_key = cookieData.api_key;
 
         requestData = {
@@ -794,4 +794,48 @@ function emailValidation() {
     if (!pattern.test(emailHtml.value))
         alert("Please enter a valid email address");
     return pattern.test(emailHtml.value);
+}
+function loginAdmin() {
+    var request = new XMLHttpRequest();
+    var usernameHtml = document.getElementById("usernameID");
+    var passwordHtml = document.getElementById('passwordID');
+    request.onreadystatechange = stateChangeLoginAdmin;
+
+    var requestData =
+    {
+        type: "adminLogin",
+        username: usernameHtml.value,
+        password: passwordHtml.value,
+    };
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
+    // fix to use wheately login stuff instead of the php my admin code if necessary
+
+    request.send(JSON.stringify(requestData));
+}
+function stateChangeLoginAdmin() {
+    if (this.readyState === 4) {
+        if (this.status === 200) {
+            var requestResponse = this.responseText;
+            requestResponse = JSON.parse(requestResponse);
+            if (requestResponse.status === "error") {
+                alert("Login unsuccessful please insure that your password and username is correct");
+            }
+            else {
+                var data = requestResponse.data;
+                setLoginCookieAdmin(data.api_key, data.username);
+                alert("Successful login");
+                window.location.replace(getLocalRoute() + "admin");
+            }
+
+        }
+        else {
+            alert("An error has occurred on our side...");
+        }
+    }
 }

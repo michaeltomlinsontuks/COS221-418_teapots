@@ -26,6 +26,7 @@ setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=
 $localRoute = "http://localhost/teapots/frontend/pagebuilder.php?page=";
 //comment out and change it to be your local route 
 $loggedInStatus = isset($_COOKIE['userdata']);
+$adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
 ?>
 
 <body>
@@ -51,7 +52,7 @@ $loggedInStatus = isset($_COOKIE['userdata']);
             <?php
             if (isset($_GET['page'])) {
 
-                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout" || $_GET['page'] == 'admin' || $_GET['page'] == "adminUsers")
+                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout" || $_GET['page'] == 'admin' || $_GET['page'] == "adminLogin" || $_GET['page'] == "adminUsers")
                     echo $_GET['page'];
                 else if ($_GET['page'] == 'products' || $_GET['page'] == 'view') {
                     echo "<img class=\"titleImg\" src =\"images/noBackgroundLogo.png\">";
@@ -64,7 +65,7 @@ $loggedInStatus = isset($_COOKIE['userdata']);
                 }
 
                 $page = $_GET['page'];
-                if ($page == "signup" || $page == "login") {
+                if ($page == "signup" || $page == "login" || $page == "adminLogin") {
                     if ($page == "signup") {
                         $page = "login?";
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToLogin()\"  class = \"changeDir\">";
@@ -101,11 +102,22 @@ $loggedInStatus = isset($_COOKIE['userdata']);
         //can do this in the items themselves
         if (isset($_GET['page']))
             switch ($_GET['page']) {
+                case ('adminLogin'):
+                    include_once("adminLogin.php");
+                    break;
                 case ('admin'):
-                    include_once("admin.php");
+                    if ($adminLoggedInStatus)
+                        include_once("admin.php");
+                    else {
+                        header("Location: " . $localRoute . "adminLogin");
+                    }
                     break;
                 case ('adminUsers'):
-                    include_once("admin.php");
+                    if ($adminLoggedInStatus)
+                        include_once("admin.php");
+                    else {
+                        header("Location: " . $localRoute . "adminLogin");
+                    }
                     break;
                 case ("login"):
                     include_once("pages/login.php");
