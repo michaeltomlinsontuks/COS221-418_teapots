@@ -241,6 +241,8 @@ class API
                 return $this->login();
             case 'register':
                 return $this->register();
+            case 'adminlogin':
+                return $this->adminLogin();
             // Product Management
             case 'getproductpage':
                 return $this->getProductPage();
@@ -316,6 +318,7 @@ class API
         }
 
         $user = $result->fetch_assoc();
+        $stmt->close();
 
         // Verify password
         if (!$this->verifyPassword($password, $user['PasswordHash'], $user['Salt'])) {
@@ -323,12 +326,24 @@ class API
             return $this->response;
         }
 
+        $query = "SELECT UserID FROM Admin WHERE UserID = ?";
+        $stmt = $this->conn->prepare($query);
+        if ($stmt === false) {
+            $this->response['message'] = 'Database error: ' . $this->conn->error;
+            return $this->response;
+        }
+        $stmt->bind_param("i", $user['UserID']);
+        $stmt->execute();
+        $isAdmin = $stmt->get_result()->num_rows > 0;
+        $stmt->close();
+
         // Login successful
         $this->response['status'] = 'success';
         $this->response['data'] = [
             'api_key' => $user['APIKey'],
             'user_id' => $user['UserID'],
-            'username' => $user['Username']
+            'username' => $user['Username'],
+            'is_admin' => $isAdmin
         ];
         $this->response['message'] = 'Login successful';
 
@@ -389,6 +404,75 @@ class API
         } else {
             $this->response['message'] = 'Registration failed: ' . $this->conn->error;
         }
+
+        return $this->response;
+    }
+
+    private function adminLogin()
+    {
+        // Check if username and password are provided
+        if (!isset($this->requestData['username']) || empty($this->requestData['username'])) {
+            $this->response['message'] = 'Username is required';
+            return $this->response;
+        }
+
+        if (!isset($this->requestData['password']) || empty($this->requestData['password'])) {
+            $this->response['message'] = 'Password is required';
+            return $this->response;
+        }
+
+        $username = $this->requestData['username'];
+        $password = $this->requestData['password'];
+
+        // Get user from database
+        $query = "SELECT UserID, Username, PasswordHash, Salt, APIKey FROM Users WHERE Username = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            $this->response['message'] = 'Invalid credentials';
+            return $this->response;
+        }
+
+        $user = $result->fetch_assoc();
+
+        // Verify password
+        if (!$this->verifyPassword($password, $user['PasswordHash'], $user['Salt'])) {
+            $this->response['message'] = 'Invalid credentials';
+            return $this->response;
+        }
+
+        // Check if user is an admin
+        $query = "SELECT UserID FROM Admin WHERE UserID = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $user['UserID']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            $this->response['message'] = 'User is not an admin';
+            return $this->response;
+        }
+
+        // Generate new API key
+        $apiKey = $this->generateAPIKey();
+
+        // Update API key in Users table
+        $query = "UPDATE Users SET APIKey = ? WHERE UserID = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("si", $apiKey, $user['UserID']);
+        $stmt->execute();
+
+        // Admin login successful
+        $this->response['status'] = 'success';
+        $this->response['data'] = [
+            'username' => $user['Username'],
+            'api_key' => $apiKey,
+            'is_admin' => true
+        ];
+        $this->response['message'] = 'Admin login successful';
 
         return $this->response;
     }

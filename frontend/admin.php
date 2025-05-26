@@ -23,5 +23,4 @@
     }
     ?>
 </div>
-<script src="js/ProductHandler.js"></script>
 <script src="adminJS/admin.js"></script>

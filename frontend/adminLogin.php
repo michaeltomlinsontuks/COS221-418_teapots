@@ -1,28 +1,18 @@
+<?php
+?>
 <div class="adminLogin">
     <table>
         <tr>
-            <td>
-                username
-                <br>
-                <input type="text" value="" placeholder="..." id="usernameID">
-                <br>
-            </td>
+            <td><input type="text" id="usernameID" placeholder="username"></td>
         </tr>
         <tr>
-            <td class="passTd">
-                password
-                <br>
-                <div class="passCombo">
-                    <input class="passwordText" type="password" value="" placeholder="..." id="passwordID">
-                </div>
-            </td>
+            <td><input type="password" id="passwordID" placeholder="password"></td>
         </tr>
         <tr>
-            <td class="confirmLoginTD">
-                <input type="button" value="confirm" id="confirmLoginID" onclick="loginAdmin()">
-            </td>
+            <td><input type="button" value="Login" onclick="loginAdmin()"></td>
         </tr>
     </table>
-
 </div>
+<!-- Make sure these scripts are included in the correct order -->
+<script src="pages/jsFiles/cookies.js"></script>
 <script src="adminJS/admin.js"></script>

@@ -1,4 +1,3 @@
-var productHandler = new ProductHandler();
 var selectCompany;
 var selectCompanyNP;
 var selectNpBrand;
@@ -879,46 +878,59 @@ function emailValidation() {
     return pattern.test(emailHtml.value);
 }
 function loginAdmin() {
-    var request = new XMLHttpRequest();
     var usernameHtml = document.getElementById("usernameID");
-    var passwordHtml = document.getElementById('passwordID');
-    request.onreadystatechange = stateChangeLoginAdmin;
+    var passwordHtml = document.getElementById("passwordID");
 
-    var requestData =
-    {
-        type: "adminLogin",
+    // Validate inputs
+    if (!validateAdminLogin()) {
+        popup.construct("Please check that your username and password are filled in", false);
+        return;
+    }
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = stateChangeAdminLogin;
+
+    // Attempt to include an api_key (even if empty, to test server behavior)
+    var requestData = {
+        type: "login",
         username: usernameHtml.value,
         password: passwordHtml.value,
     };
 
     var requestHeaderData = getLocalCredentials();
+    console.log('Sending request with data:', JSON.stringify(requestData));
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
 
     request.send(JSON.stringify(requestData));
 }
-function stateChangeLoginAdmin() {
+
+function validateAdminLogin() {
+    var pattern = /^.{3,}$/;
+    var usernameValid = pattern.test(document.getElementById("usernameID").value);
+    var passwordValid = pattern.test(document.getElementById("passwordID").value);
+    return usernameValid && passwordValid;
+}
+
+function stateChangeAdminLogin() {
     if (this.readyState === 4) {
         if (this.status === 200) {
-            var requestResponse = this.responseText;
-            requestResponse = JSON.parse(requestResponse);
+            var requestResponse = JSON.parse(this.responseText);
+            console.log('Full login response:', requestResponse);
             if (requestResponse.status === "error") {
-                alert("Login unsuccessful please insure that your password and username is correct");
-            }
-            else {
+                alert("Admin login unsuccessful. Please ensure your username and password are correct.");
+            } else if (!requestResponse.data.is_admin) {
+                alert("User is not an admin. Please use admin credentials.");
+            } else {
                 var data = requestResponse.data;
                 setLoginCookieAdmin(data.api_key, data.username);
-                alert("Successful login");
-                window.location.replace(getLocalRoute() + "admin");
+                alert("Admin login successful. Welcome!");
+                window.location.href = "./admin.php";
             }
-
-        }
-        else {
-            alert("An error has occurred on our side...");
+        } else {
+            alert("An error occurred on our side...");
         }
     }
 }
