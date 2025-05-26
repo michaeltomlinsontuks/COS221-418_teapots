@@ -14,13 +14,16 @@ setcookie('wheateleyAuthentication', $cookieData);
 $localEnvJson = array(
     "host" => HOST,
     'username' => USER,
-    'password' =>PASS,
+    'password' => PASS,
 );
 
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
-setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
-$localRoute = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=";
+
+//setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
+//$localRoute = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=";
+setcookie("localRoute", "localhost/teapots/frontend/pagebuilder.php?page=");
+$localRoute = "localhost/teapots/frontend/pagebuilder.php?page=";
 //comment out and change it to be your local route 
 $loggedInStatus = isset($_COOKIE['userdata']);
 ?>
@@ -108,24 +111,24 @@ $loggedInStatus = isset($_COOKIE['userdata']);
                     if ($loggedInStatus) {
                         include_once("pages/products.php");
                     } else {
-                        header("Location: ".$localRoute."login");
+                        header("Location: " . $localRoute . "login");
                     }
                     break;
                 case ("view"):
                     if ($loggedInStatus && isset($_GET['prodID'])) {
                         include_once("pages/view.php");
                     } else if ($loggedInStatus)
-                        header("Location: ".$localRoute."products");
+                        header("Location: " . $localRoute . "products");
                     else {
-                        header("Location: ".$localRoute."login");
+                        header("Location: " . $localRoute . "login");
                     }
                     break;
                 case ('logout'):
-            
-                    header("Location: ".$localRoute."login");
+
+                    header("Location: " . $localRoute . "login");
                     exit;
                 default:
-                    header("Location: ".$localRoute."login");
+                    header("Location: " . $localRoute . "login");
                     break;
             }
         else
