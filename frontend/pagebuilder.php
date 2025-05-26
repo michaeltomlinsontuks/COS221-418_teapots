@@ -12,9 +12,9 @@ setcookie('wheateleyAuthentication', $cookieData);
 
 // comment out host and set it to your route to the api.php
 $localEnvJson = array(
-    "host" => "https://wheatley.cs.up.ac.za/u24584216/teapots/API/api.php",
-    'username' => "u24584216",
-    'password' => "Wilmarsmit2004",
+    "host" => HOST,
+    'username' => USER,
+    'password' =>PASS,
 );
 
 $cookieData = json_encode($localEnvJson);
