@@ -10,7 +10,7 @@
 
         </div>
         <!-- pages/pageAssets/temp.gif -->
-        <div class="rightInfo">
+        <div style="max-height: 100%;overflow-y:auto;" class="rightInfo">
 
             <table class="rightInfoTable">
                 <tr id="titleRow">
@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <td >
-                        <div style="max-height: 200px; overflow-y: auto;">
+                        <div >
                         <table class="pricesTable">
                         </table>
                         </div>

@@ -77,7 +77,7 @@
 }
 
 .rightInfoTable {
-    height: 90% !important;
+    height: 50% !important;
     width: 100%; 
     table-layout: fixed;
     overflow-y: scroll;
