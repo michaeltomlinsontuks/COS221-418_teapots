@@ -322,5 +322,54 @@ document.addEventListener("DOMContentLoaded", function () {
     cancelReviewBtn.addEventListener("click", function () {
         reviewPopup.style.display = "none";
     });
+
+    submitReviewBtn.addEventListener("click", function () {
+        var title = reviewTitleInput.value.trim();
+        var description = reviewDescriptionInput.value.trim();
+        var rating = parseInt(reviewRatingInput.value);
+
+        if (!title || !description || isNaN(rating)) {
+            alert("All fields are required.");
+            return;
+        }
+
+        var payload = {
+            type: userReview ? "editreview" : "addreview",
+            api_key: apiKey,
+            rating: rating,
+            review_title: title,
+            review_description: description
+        };
+
+        if (userReview) {
+            payload.review_id = userReview.review_id;
+        } 
+        else {
+            payload.product_id = productId;
+        }
+
+        var sendReq = new XMLHttpRequest();
+        sendReq.open("POST", requestHeaderData.host, true);
+        sendReq.setRequestHeader("Content-Type", "application/json");
+        sendReq.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+
+        sendReq.onreadystatechange = function () {
+            if (sendReq.readyState === 4 && sendReq.status === 200) {
+                var res = JSON.parse(sendReq.responseText);
+                if (res.status === "success") {
+                    alert("Your review has been submitted!");
+                    reviewPopup.style.display = "none";
+                    loadReviews();
+                } 
+                else {
+                    alert("Failed to submit: " + res.message);
+                }
+            }
+        };
+
+    sendReq.send(JSON.stringify(payload));
+});
+
     loadReviews();
+    
 });
