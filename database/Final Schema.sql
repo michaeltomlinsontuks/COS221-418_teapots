@@ -1,3 +1,12 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.4deb2~bpo10+1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: May 26, 2025 at 09:10 PM
+-- Server version: 10.3.39-MariaDB-0+deb10u2
+-- PHP Version: 7.3.31-1~deb10u7
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -11,9 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `u24856462_COS221PA5`
 --
-CREATE DATABASE IF NOT EXISTS u24856462_COS221PA5 
-DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE u24856462_COS221PA5;
+
 -- --------------------------------------------------------
 
 --
@@ -22,10 +29,17 @@ USE u24856462_COS221PA5;
 
 CREATE TABLE `Admin` (
   `UserID` int(11) NOT NULL,
-  `Company` varchar(25) DEFAULT NULL,
   `LastLogin` datetime DEFAULT NULL,
   `CreatedAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Admin`
+--
+
+INSERT INTO `Admin` (`UserID`, `LastLogin`, `CreatedAt`) VALUES
+(9, '2025-05-26 21:08:05', '2025-05-26 21:08:05'),
+(10, '2025-05-26 21:08:50', '2025-05-26 21:08:50');
 
 -- --------------------------------------------------------
 
@@ -35,22 +49,22 @@ CREATE TABLE `Admin` (
 
 CREATE TABLE `BestProduct` (
   `ProductID` int(11) NOT NULL,
-  `Name` varchar(255) DEFAULT NULL,
+  `Name` varchar(200) DEFAULT NULL,
   `Description` text DEFAULT NULL,
   `BrandID` int(11) DEFAULT NULL,
   `CategoryID` int(11) DEFAULT NULL,
-  `BestPrice` decimal(10,2) DEFAULT NULL,
+  `BestPrice` decimal(8,2) DEFAULT NULL,
   `DiscountPercent` decimal(5,2) DEFAULT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
   `ReviewCount` int(11) DEFAULT NULL,
   `ReviewAverage` decimal(3,2) DEFAULT NULL,
   `BestCompany` varchar(100) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `ThumbnailImage` varchar(255) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `ThumbnailImage` varchar(200) DEFAULT NULL,
   `CarouselImages` text DEFAULT NULL,
   `LastUpdated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `BestProduct`
@@ -573,7 +587,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (504, 'Garmin - Vehicle Charger - Black', 'Get where you\'re going without running out of power with this Garmin vehicle charger. The 12V charger is compatible with a range of Garmin Nuvi GPS models to deliver you from doorstep to doorstep without having to ask for directions. This Garmin vehicle charger plugs easily into your car\'s auxiliary power port.', 101, 159, '14.52', '29.99', '20.74', 1336, '4.70', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5513289/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5513/5513289_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (505, 'Samsung - 3.3\' USB Type A-to-USB Type C Device Cable - White', 'Charge your device quickly and easily with this Samsung USB-C cable. It also transfers photo, video, data and music files between your smartphone and laptop.', 102, 160, '8.25', '41.03', '13.99', 2878, '4.70', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/5607902/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5607/5607902_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (506, 'Apple - Lightning-to-3.5mm Headphone Adapter - White', 'This Apple&#174; MD821ZM/A Lightning-to-USB adapter lets you connect devices that use a 3.5 mm audio plug to your Lightning devices.', 38, 161, '6.32', '37.98', '10.19', 27226, '4.70', 'Bitify', 0, 'https://api.bestbuy.com/click/-/5622278/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5622/5622278_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"}]', '2025-05-13 20:38:10'),
-(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 105, '4.50', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-13 20:38:10'),
+(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 3, '3.33', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-26 18:33:51'),
 (508, 'Ultra Mobile - 1-Month 3GB Prepaid SIM Card - Orange', 'With an Ultra Mobile wireless prepaid SIM card kit, your world is always included, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world.', 103, 162, '9.22', '49.97', '18.43', 135, '4.20', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5706136/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5706/5706136_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (509, 'Belkin - Lightning Audio with Charge Adapter - White', 'Enjoy nonstop music while charging your iPhone with this Belkin Lightning Audio + Charge RockStar adapter. It keeps your iPhone 7 or 7 Plus fully functional while plugged in, and it\'s compatible with Apple MFi-certified cables and headphones. The 12W power pass-through of this Belkin Lightning Audio + Charge RockStar adapter provides optimal charging speed for compatible devices.', 104, 161, '13.52', '39.99', '22.53', 1930, '4.50', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5710888/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5710/5710888_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (510, 'SureCall - Flare 4G Cell Phone Signal Booster - Silver', 'Improve cellular coverage throughout your home or office with this SureCall cell phone signal booster. It handles multiple users simultaneously, providing improved voice, text and 4G LTE data signals covering up to 2,500 sq. ft. This SureCall cellular phone signal booster comes with the antennas, cable and power supply for fast setup.', 100, 157, '184.91', '33.00', '275.99', 12, '3.80', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5753128/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5753/5753128_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"}]', '2025-05-13 20:38:10'),
@@ -639,7 +653,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (568, 'Apple - Geek Squad Certified Refurbished iPhone X 64GB - Space Gray (Sprint)', 'Geek Squad Certified Refurbished products are thoroughly, painstakingly and lovingly tested, so you can be sure that your device will work right, right away. Learn more about Geek Squad Certified Refurbished products.Stay connected to friends and family with this refurbished iPhone X smartphone for Sprint. It has 64GB of internal memory to save important files and contacts, and its 12MP camera takes crisp photos almost anywhere. This iPhone X smartphone has wireless charging capability and a long-lasting battery for added convenience.', 38, 171, '854.99', '0.00', '854.99', NULL, NULL, 'VoltEdge', 0, 'https://api.bestbuy.com/click/-/6304051/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6304/6304051_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_sd.jpg\"},{\"backViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_bd.jpg\"}]', '2025-05-13 20:38:10'),
 (569, 'Apple - Geek Squad Certified Refurbished iPhone 8 256GB - Space Gray (Sprint)', 'Geek Squad Certified Refurbished products are thoroughly, painstakingly and lovingly tested, so you can be sure that your device will work right, right away. Learn more about Geek Squad Certified Refurbished products.Talk online or play games with this refurbished iPhone 8 smartphone for Sprint. It has a 12MP camera for capturing important moments and memories, and its 256GB of memory lets you store plenty of files and apps. This iPhone 8 smartphone has a front-facing 7MP camera for taking selfies or making video calls.', 38, 171, '407.99', '36.00', '637.49', 1, '3.00', 'Nexonic', 0, 'https://api.bestbuy.com/click/-/6304057/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6304/6304057_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_sd.jpg\"},{\"backViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_bd.jpg\"}]', '2025-05-13 20:38:10'),
 (570, 'Apple - Pre-Owned Excellent iPhone 8 Plus 256GB 4G LTE (Unlocked) - Silver', 'Watch movies or play games on this refurbished Apple iPhone 8 Plus. The 5.5-inch display supports enjoyable media experiences, and the 256GB of internal memory lets you store plenty of photos, videos and apps. This unlocked Apple iPhone 8 Plus works with any carrier and has front and back cameras for capturing candid moments and selfies.', 38, 164, '132.77', '53.00', '282.49', 711, '4.10', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6305072/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6305/6305072_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"}]', '2025-05-13 20:38:10'),
-(571, 'Mint Mobile - Prepaid SIM Card Starter Kit - Gold', 'Our See For Yourself Kit is an easy, worry-free way to try Mint Mobile out before committing to one of our phone plans. Download our free Mint Mobile app to activate and test Mint where you live, work, and play. Try us for 7 days and once you know we\'re a match, choose the plan that\'s right for you. Bring your phone number with you from your current carrier or get a new one. The sooner you buy, the sooner you start saving like a fox.', 106, 162, '1.36', '39.82', '2.26', 858, '4.40', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6310601/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5ad8c6df-b247-4354-a25a-814b5617cb4b.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/96f2d8f4-1361-4626-b243-dd51fa032e7f.jpg\"}]', '2025-05-13 20:38:10'),
+(571, 'Mint Mobile - Prepaid SIM Card Starter Kit - Gold', 'Our See For Yourself Kit is an easy, worry-free way to try Mint Mobile out before committing to one of our phone plans. Download our free Mint Mobile app to activate and test Mint where you live, work, and play. Try us for 7 days and once you know we\'re a match, choose the plan that\'s right for you. Bring your phone number with you from your current carrier or get a new one. The sooner you buy, the sooner you start saving like a fox.', 106, 162, '1.36', '39.82', '2.26', 2, '4.50', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6310601/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5ad8c6df-b247-4354-a25a-814b5617cb4b.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/96f2d8f4-1361-4626-b243-dd51fa032e7f.jpg\"}]', '2025-05-26 18:39:23'),
 (572, 'SaharaCase - ZeroDamage Privacy Glass Screen Protector for Apple® iPhone® 8/7/6s/6 - Clear', 'Protect your iPhone 8, 7, 6s, 6 with the ZeroDamage Privacy screen protector that features tempered-glass material to safeguard your device\'s display from breaks, scuffs, and scratches. The oil-resistant coating keeps the screen clean.', 109, 174, '18.92', '48.01', '36.39', 35, '4.10', 'ZapNest', 1, 'https://api.bestbuy.com/click/-/6315557/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6315/6315557_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (573, 'SaharaCase - ZeroDamage Privacy Glass Screen Protector for Apple® iPhone® 8 Plus/7 Plus/6s Plus/6 Plus - Clear', 'Protect your iPhone 8 Plus with this SaharaCase ZeroDamage privacy screen protector. The 9H hardened clear tempered glass safeguards the device\'s display against scratches and breakage from falls and bumps. This SaharaCase ZeroDamage privacy screen protector has an oil-resistant coating to keep fingerprints to a minimum while ensuring a precise touch response.', 109, 174, '38.14', '0.00', '38.14', 26, '4.50', 'Bitify', 1, 'https://api.bestbuy.com/click/-/6315559/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6315/6315559_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (574, 'SureCall - Flare 3.0 Cell Phone Signal Booster - Silver', 'Count on stronger 4G LTE data reception with this SureCall Flare 3.0 cellular signal booster kit. It supports all U.S. cell service carriers and optimizes mobile data signal strength in a 3000 sq. ft. remote home or building. Install the high-gain Yagi antenna of this SureCall Flare 3.0 cellular signal booster kit via its mounting hardware and 50-foot RG-6 cable.', 100, 157, '173.88', '48.00', '334.39', 11, '3.80', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/6319147/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6319/6319147_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"}]', '2025-05-13 20:38:10'),
@@ -771,11 +785,11 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 
 CREATE TABLE `Bitify` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `Bitify`
@@ -1205,7 +1219,7 @@ INSERT INTO `Bitify` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCart
 
 CREATE TABLE `Brand` (
   `BrandID` int(11) NOT NULL,
-  `BrandName` varchar(100) DEFAULT NULL
+  `BrandName` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1347,7 +1361,7 @@ CREATE TABLE `ByteCrate` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `ByteCrate`
@@ -1574,7 +1588,7 @@ CREATE TABLE `ByteMart` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `ByteMart`
@@ -2318,7 +2332,7 @@ CREATE TABLE `ChipCart` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `ChipCart`
@@ -2951,7 +2965,7 @@ CREATE TABLE `CoreBay` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `CoreBay`
@@ -3247,7 +3261,7 @@ CREATE TABLE `FuseBasket` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `FuseBasket`
@@ -3405,7 +3419,7 @@ CREATE TABLE `Nexonic` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `Nexonic`
@@ -3567,6 +3581,17 @@ CREATE TABLE `Review` (
   `Timestamp` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `Review`
+--
+
+INSERT INTO `Review` (`ReviewID`, `ProductID`, `UserID`, `ReviewTitle`, `ReviewDescription`, `ReviewRating`, `Timestamp`) VALUES
+(1, 507, 6, 'Rev', 'Not a bad product', 2, '2025-05-26 18:30:48'),
+(2, 507, 7, 'Better', 'It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product', 5, '2025-05-26 18:42:33'),
+(3, 571, 6, 'Satisfied', 'Works well on my son', 5, '2025-05-26 18:26:02'),
+(4, 507, 8, 'Satisfactory', 'A decent product', 3, '2025-05-26 18:43:10'),
+(5, 571, 8, 'lovely', 'works well', 4, '2025-05-26 18:39:23');
+
 -- --------------------------------------------------------
 
 --
@@ -3579,7 +3604,7 @@ CREATE TABLE `TechNova` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `TechNova`
@@ -4120,6 +4145,20 @@ CREATE TABLE `Users` (
   `CreatedAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`UserID`, `Email`, `Username`, `Salt`, `PasswordHash`, `APIKey`, `CreatedAt`) VALUES
+(1, 'test@gmail.com', 'newuser', '84abf4765bb1ee0ec7cd192a818177b53b2e5699725a96b2d17dce3bfadf99ba', '12162d65351c8d31db162200dc5405a8c8e39fe72cd5bd62f2fa92461caa60e259f108a699fb53661fde1c18e5df2d8a44184dcafaba03ddfa84032c9b396dee', '4d592c3020b2847db714f88a29ced27d7d177bfdbdca56e7239b78876536e67a', '2025-05-26 10:53:04'),
+(4, 'test123@gmail.com', 'testUser', 'd19c924afb1e85eecfbb88bc53fd914c313d834c63505a3958f644c04261f64e', '9e55a19eb745c87913fbb5672383078e9bac92033414a0078c913abaddeb8ad482195a969406e241a544c219abbf5247340e72cb5d8b1ec393c3a77747d85345', '7b708da7ce3863762173a66de859dc83fdc23278a279a25533b64eff8202bdea', '2025-05-26 11:41:15'),
+(5, 'Smit@gmail.com', 'userSmit', 'badca89c818d0060ff8ac59f9c921f26c9efbea8d68d9617164de23eb2676580', 'e7187cc83e4785136a959d461007c913d85151b8f18b1c7cab0fa6d84c2cefc9e30b33736f1c0ca5178fa836163ce18ffe57942da00788c79c6f4e081b72c5a8', '13916fd5cb4166a9826775ca670d100fe09046ae9e07c832006ff9c7b1840b6d', '2025-05-26 13:07:32'),
+(6, 'testuser@gmail.com', 'tester', '304a1e698fa4c3c7a1b13aeccbd7986bf289738d22ca13e289df85b715a02c48', '0c6af4f7216af4d2ed8a311c03b50d07de3ea94769ed2430bbafe050372dd018cb9669459dec60eab3278378f3d98c8bf7efcac47569026d9870c4fed8c88c4a', '72fb5bb8995047290651b66459ab2fa260f7e4eedcc3af9a2290d3f91e09f8ac', '2025-05-26 15:47:50'),
+(7, 'testuser2@gmail.com', 'tester2', 'd029b1782abe04e7310f8a91820c2460321f4bf2cc4cb200f741f086fdda4f35', 'ffa6c367c04bf93665937fc8e58e4b5849f031cb5e23ebaa350a0248c5c0872eeca8a23ea79d04387e96d2b9d4ca871f2c6a2859768ec12a16eb0dbc63e59786', 'f364a475cd2b5d369810bf78b4bf6623e0cb35f7a31ae49d7bf5167143182a8b', '2025-05-26 16:38:44'),
+(8, 'testuser3@gmail.com', 'tester3', '3125cdfbdea30482ab299e84281495e6a6547ba6bc42c0cfd9911c146d14fe18', '19d74bcc99e7519442731aa66decfddd42dc7cd3402af0d9ddac78cded11721e5f5a70aae07142de1415390752d6d1f0dbccf16aebefa929c2757575a8d37887', '840b38be5f1d4cd19f18c81590e3db504564aa7641dc0c6381551a1db87f7f19', '2025-05-26 18:33:33'),
+(9, 'admin@gmail.com', 'Admin', 'f6cc0a1c9259acfb82d49b6f69619cf183c9ad4cbfb894bded973ca874a971ca', '3b52f3af5e3e7e928fe452589362fc73e1d5e0e273f419eee0d6a730f0040e0d159e3d972abcaf163745fde480941619558e797097c285c53eaef5fb1e6724b7', 'c444d46e2e645c553693f6d60fa4aeb8d917e87c6e7d4c433f6b78dfa2647e46', '2025-05-26 21:05:35'),
+(10, 'admin2@gmail.com', 'Admin2', '1318393ddf8578d1a8ed3a49dfa978eee38f469cdf6b8812d4e6da75d62e101b', 'c8b9da35b5885069ee2498a0b604d8e740b7791cf1229ce085c26e08c3fde033c6237d497f8b98c28a3f5a4de79b38e10535a5fa0b550925ca60c23fd335bcda', '511e11c818e0d0aba302ca79e8b8ce119943521a20ba08ad35601c440bbaf553', '2025-05-26 21:08:31');
+
 -- --------------------------------------------------------
 
 --
@@ -4132,7 +4171,7 @@ CREATE TABLE `VoltEdge` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `VoltEdge`
@@ -4497,7 +4536,7 @@ CREATE TABLE `ZapNest` (
   `DiscountedPrice` decimal(10,2) DEFAULT NULL,
   `AddToCartURL` varchar(255) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Dumping data for table `ZapNest`
@@ -4961,14 +5000,14 @@ INSERT INTO `ZapNest` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCar
 -- Indexes for table `Admin`
 --
 ALTER TABLE `Admin`
-  ADD PRIMARY KEY (`UserID`),
-  ADD UNIQUE KEY `Company` (`Company`);
+  ADD PRIMARY KEY (`UserID`);
 
 --
 -- Indexes for table `BestProduct`
 --
 ALTER TABLE `BestProduct`
   ADD PRIMARY KEY (`ProductID`),
+  ADD UNIQUE KEY `Name` (`Name`),
   ADD KEY `fk_BP1` (`BrandID`),
   ADD KEY `fk_BP2` (`CategoryID`);
 
@@ -5079,7 +5118,7 @@ ALTER TABLE `ZapNest`
 -- AUTO_INCREMENT for table `BestProduct`
 --
 ALTER TABLE `BestProduct`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=691;
+  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Brand`
@@ -5103,13 +5142,13 @@ ALTER TABLE `Company`
 -- AUTO_INCREMENT for table `Review`
 --
 ALTER TABLE `Review`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
