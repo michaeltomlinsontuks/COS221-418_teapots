@@ -34,3 +34,5 @@ Thumbs.db
 # Ignore environment/dependency files
 node_modules/
 vendor/
+API/connection.php
+index.php

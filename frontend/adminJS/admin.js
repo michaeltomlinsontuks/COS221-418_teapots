@@ -19,7 +19,6 @@ function isAdminLoginPage() {
     return window.location.pathname.endsWith("adminLogin.php");
 }
 
-// Only run setUpPage if not on the login page
 if (!isAdminLoginPage()) {
     document.addEventListener("DOMContentLoaded", setUpPage);
 }
@@ -64,14 +63,15 @@ function initialiseManageProducts() {
     if (selectCompany) {
         selectCompany.disabled = false;
     }
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     fillCompanyBox();
     fillBrandBox();
     fillCategoriesBox();
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeProducts;
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
 
     var requestData = {
         type: "getadminproducts",
@@ -245,6 +245,9 @@ function sendUpdateToProdID(index) {
 }
 
 function fillCompanyBox() {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -275,8 +278,6 @@ function fillCompanyBox() {
             }
         }
     };
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
 
     var requestData = {
         type: "getcompanies",
@@ -292,6 +293,9 @@ function fillCompanyBox() {
 }
 
 function fillBrandBox() {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -321,9 +325,6 @@ function fillBrandBox() {
 
 
     };
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
-
     requestData = {
         type: "getbrands",
         api_key: api_key,
@@ -333,12 +334,14 @@ function fillBrandBox() {
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
 
 }
 function addNewProduct() {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     if (priceDiscHtml.value === "" || !testImgUrl() || priceRegHtml.value === "" || prodDscHtml.value === "" || prodNameHtml.value === "" || imgUrlHtml.value === "" || selectCompanyNP.selectedIndex === 0 || selectNpBrand.selectedIndex === 0 || selectNpCat.selectedIndex === 0) {
         alert("please insure all fields are correctly filled out");
         return null;
@@ -360,9 +363,6 @@ function addNewProduct() {
             }
         }
     };
-
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
 
     var requestData = {
         type: "addProduct",
@@ -396,6 +396,9 @@ function testImgUrl() {
 
 
 function fillCategoriesBox() {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -425,9 +428,6 @@ function fillCategoriesBox() {
 
 
     };
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
-
     requestData = {
         type: "getcategories",
         api_key: api_key,
@@ -438,14 +438,16 @@ function fillCategoriesBox() {
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
 
 }
 
 
 function initialiseManageUsers() {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     usernameHtml = document.getElementById('userID');
     emailHtml = document.getElementById('emailID');
     passwordHtml = document.getElementById('passID');
@@ -453,8 +455,6 @@ function initialiseManageUsers() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = stateChangeUsers;
-    var cookieData = getLoginCookieAdmin();
-    var api_key = cookieData.api_key;
 
     requestData = {
         type: "getAllUsers",
@@ -465,8 +465,7 @@ function initialiseManageUsers() {
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
 
 
@@ -510,6 +509,9 @@ function displayUsers(users) {
 }
 
 function makeAdmin(userId) {
+    var api_key = getApiKeySafe();
+    if (!api_key) return;
+
     if (!confirm('Are you sure you want to make this user an admin?')) return;
 
     var request = new XMLHttpRequest();
@@ -525,7 +527,7 @@ function makeAdmin(userId) {
 
     var requestData = {
         type: "makeadmin",
-        api_key: getLoginCookieAdmin().api_key,
+        api_key: api_key,
         user_id: userId
     };
 
@@ -825,4 +827,10 @@ function cancelProductEdit(index) {
     if (originalHTML) {
         row.innerHTML = originalHTML;
     }
+}
+
+// Defensive helper for cookieData
+function getApiKeySafe() {
+    var cookieData = getLoginCookieAdmin && getLoginCookieAdmin();
+    return cookieData && cookieData.api_key ? cookieData.api_key : null;
 }
