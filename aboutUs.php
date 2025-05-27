@@ -166,8 +166,8 @@
                 </div>
                 <div class="member-details front">
                     <h3>About Dawid</h3>
-                    <p>"Fly@UP"</p>
-                    <p>Fun fact: Likes rocks</p>
+                    <p>"If you begin to regret, you'll dull your future decisions and let others make your choices for you"</p>
+                    <p>Fun fact: Likes boulders a lot</p>
                     <p>Dream Career: cyber-security</p>
                 </div>
             </div>
