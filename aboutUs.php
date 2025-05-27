@@ -99,6 +99,7 @@
             border-radius: 30px;
             display: inline-block;
         }
+        
         .front
         {
             background-color: lightgoldenrodyellow;
