@@ -81,13 +81,13 @@ We tested the Best Buy API and choose several categories to give us a good sprea
 ### Mock Data Generator & Generation
 **[Mock Data Generator](MockDataTools/MockDataGenerationTool)**
 
-[](images/MockDataGenerator)
+![Mock Data Generator Interface](images/MockDataGenerator.png)
 
 ### Price Calculation
 Searched all the mock companies and find who offers the best price
 Update the best products table
 
-**[Price Calculator](MockDataTools/PriceCalculation)** `<!-- PLACEHOLDER: Link to price calculation code -->`
+**[Price Calculator](MockDataTools/PriceCalculation)**
 
 ## Development Guidelines (Task 8 & 10)
 
