@@ -136,52 +136,48 @@ function insertIntoTableAdmin() {
 
 function deleteProduct(index) {
     if (selectCompany.selectedIndex === 0) {
-        alert("select a company to delete the product of")
+        alert("select a company to delete the product of");
         return null;
+    }
+
+    if (!confirm("Are you sure you want to delete this product? This cannot be undone.")) {
+        return;
     }
 
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
-
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = this.responseText;
-                requestResponse = JSON.parse(requestResponse);
+                var requestResponse = JSON.parse(this.responseText);
                 if (requestResponse.status === "error") {
                     alert("something went wrong...");
+                } else {
+                    alert("Delete successful. Refreshing product list...");
+                    // Refresh the table after deletion
+                    loadCompanyProducts(selectCompany.value);
                 }
-                else {
-                    alert("delete successful refresh to view result");
-
-                }
-            }
-            else {
-                alert("An error occurred on our side...")
+            } else {
+                alert("An error occurred on our side...");
             }
         }
-
-
     };
+
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
-    requestData = {
-        type: "removeProduct",
+    var requestData = {
+        type: "deleteProduct",
         api_key: api_key,
-        prodID: productHandler.products[index].id,
-        company: selectCompany.options[selectCompany.selectedIndex].value,
-    }
+        product_id: productHandler.products[index].ProductID
+    };
 
     var requestHeaderData = getLocalCredentials();
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
-    console.log(requestData);
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
-
 }
 
 function sendUpdateToProdID(index) {
@@ -735,4 +731,8 @@ function loadCompanyProducts(companyName) {
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
+}
+
+function editProduct(index) {
+    alert("Edit functionality not implemented yet. Product index: " + index);
 }
