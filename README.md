@@ -233,6 +233,7 @@ CREATE TABLE `Admin` (
 
 - `UserID`: Primary and Foreign Key
 
+
 ### BestProduct
 
 - Represents the best priced version of each product
@@ -298,6 +299,7 @@ CREATE TABLE `BestProduct` (
 - `BrandID`: Faster querying on product brands
 - `CategoryID`: Faster querying on product categories
 
+
 ### Bitify
 
 - Represents Bitify's products
@@ -327,6 +329,7 @@ CREATE TABLE `Bitify` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Brand
 
 - Represents product brands
@@ -350,6 +353,7 @@ CREATE TABLE `Brand` (
 
 - `BrandID`: Primary Key
 - `BrandName`: Unique Key
+
 
 ### ByteCrate
 
@@ -380,6 +384,7 @@ CREATE TABLE `ByteCrate` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### ByteMart
 
 - Represents ByteMart's products
@@ -409,6 +414,7 @@ CREATE TABLE `ByteMart` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Category
 
 - Represents product categories
@@ -432,6 +438,7 @@ CREATE TABLE `Category` (
 
 - `CategoryID`: Primary Key
 - `CategoryName`: Unique Key
+
 
 ### ChipCart
 
@@ -462,6 +469,7 @@ CREATE TABLE `ChipCart` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Company
 
 - Represents product companies
@@ -486,6 +494,7 @@ CREATE TABLE `Company` (
 
 - `CompanyID`: Primary Key
 - `Name`: Unique Key
+
 
 ### CoreBay
 
@@ -516,6 +525,7 @@ CREATE TABLE `CoreBay` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### FuseBasket
 
 - Represents FuseBasket's products
@@ -545,6 +555,7 @@ CREATE TABLE `FuseBasket` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Nexonic
 
 - Represents Nexonic's products
@@ -573,6 +584,7 @@ CREATE TABLE `Nexonic` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
+
 
 ### Review
 
@@ -615,6 +627,7 @@ CREATE TABLE `Review` (
 
 - `ProductID`: Faster retrieval of reviews per product
 
+
 ### TechNova
 
 - Represents TechNova's products
@@ -643,6 +656,7 @@ CREATE TABLE `TechNova` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
+
 
 ### Users
 
@@ -685,6 +699,7 @@ CREATE TABLE `Users` (
 - `PasswordHash`: Unique Key
 - `APIKey`: Unique Key
 
+
 ### VoltEdge
 
 - Represents VoltEdge's products
@@ -714,6 +729,7 @@ CREATE TABLE `VoltEdge` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### ZapNest
 
 - Represents ZapNest's products
@@ -742,7 +758,7 @@ CREATE TABLE `ZapNest` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
->>>>>>> 5d71d9750b15f6b9b124931afb1a413a7458e6ea
+
 
 ### Optimisation (Task 7)
 
