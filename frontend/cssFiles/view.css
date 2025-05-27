@@ -199,12 +199,19 @@
 }
 
 #reviewsScrollWrapper {
-    max-height: 180px;        
+    max-height: 190px; 
     overflow-y: auto;
+    padding-right: 8px; 
 }
 
 .reviewBox {
-    border-radius: 4px;
+    background-color: white;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .popupButtons {
@@ -229,8 +236,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
-
-/* Perhaps overkill */
+/* Evaluate colours */
 
 #submitReviewBtn {
     background-color: #2ecc71;
@@ -257,4 +263,25 @@
 
 #deleteReviewBtn:hover {
     background-color: #c0392b;
+}
+
+
+/* Maybe colour change? */
+#leaveReviewBtn {
+    padding: 12px 20px;
+    font-size: 15px;
+    background-color: #117a8b;  
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#leaveReviewBtn:hover {
+    background-color: #0d5e6c;  
+    transform: translateY(-2px);
 }
