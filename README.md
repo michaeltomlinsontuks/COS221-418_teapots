@@ -55,11 +55,11 @@ CompareIt is a next-generation price comparison web application aggregating prod
 
 ### Data Sources
 
-**Given API** choices - these didn't have good quality/enough data
-**Web scrapers** - questionable legality - hard to implement
-**eBay Developer API** - lots of variety between products - how do you easily compare iPhone to iPhone - without accidentally comparing an iPhone Case
-**Amazon Affiliate Program API** - unable to apply for Affiliate Program in South Africa
-**Best Buy Developer API** - Our Choice - Good Documentation - Able to get API key - easy to use query builder - lots of tech products - we decided to use this as a parent products dataset
+- **Given API** choices - these didn't have good quality/enough data
+- **Web scrapers** - questionable legality - hard to implement
+- **eBay Developer API** - lots of variety between products - how do you easily compare iPhone to iPhone - without accidentally comparing an iPhone Case
+- **Amazon Affiliate Program API** - unable to apply for Affiliate Program in South Africa
+- **Best Buy Developer API** - Our Choice - Good Documentation - Able to get API key - easy to use query builder - lots of tech products - we decided to use this as a parent products dataset
 ## Mock Data Generation (Task 6)
 
 ## Development Guidelines (Task 8 & 10)
