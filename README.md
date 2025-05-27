@@ -1735,3 +1735,7 @@ With the added functionality that a user can be made into an admin at creation.
   - File structure of the frontend [frontend](frontend)
   - Setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
   - Communication and group management with tutors.
+
+
+For Legal Reasons Best Buy needs to be credited for use of the Best Buy Developers API, this is not a Best Buy Product and does not claim to be.
+![BestBuyLogo](images/Best_Buy_Logo.png)
