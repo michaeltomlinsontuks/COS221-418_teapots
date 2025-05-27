@@ -153,7 +153,7 @@
                 <div class="member-details front">
                     <h3>About Wilmar</h3>
                     <p>"Deadlines are scary but the regret of missing them cuts deeper" ~ Wilmar</p>
-                    <p>Fun Fact: "Damn this is tough💀"</p>
+                    <p>Fun Fact: "dont know how but we made it "</p>
                     <p>Dream Career: Game Development with a focus on graphics.</p>
                 </div>
             </div>
