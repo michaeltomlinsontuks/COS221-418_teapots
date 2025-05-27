@@ -1,4 +1,3 @@
-then I wanted to make a new one that works with the products page but was struggling to test it so here it is:
 <?php
 // Check for product ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
