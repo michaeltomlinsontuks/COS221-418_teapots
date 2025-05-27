@@ -370,6 +370,35 @@ document.addEventListener("DOMContentLoaded", function () {
     sendReq.send(JSON.stringify(payload));
 });
 
+    document.getElementById("deleteReviewBtn").addEventListener("click", function () {
+    if (!userReview) return;
+
+    if (!confirm("Are you sure you want to delete your review?")) return;
+
+    var deleteReq = new XMLHttpRequest();
+    deleteReq.open("POST", requestHeaderData.host, true);
+    deleteReq.setRequestHeader("Content-Type", "application/json");
+    deleteReq.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+    deleteReq.onreadystatechange = function () {
+        if (deleteReq.readyState === 4 && deleteReq.status === 200) {
+            var res = JSON.parse(deleteReq.responseText);
+            if (res.status === "success") {
+                alert("Your review has been deleted.");
+                reviewPopup.style.display = "none";
+                loadReviews();
+            } 
+            else {
+                alert("Failed to delete review: " + res.message);
+            }
+        }
+    };
+
+    deleteReq.send(JSON.stringify({
+        type: "removereview",
+        api_key: apiKey,
+        review_id: userReview.review_id
+    }));
+});
     loadReviews();
     
 });
