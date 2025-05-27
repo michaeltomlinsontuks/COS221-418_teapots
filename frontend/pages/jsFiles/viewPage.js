@@ -248,7 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     request.send(body);
 
-
     var username = getLoginCookie().username;
     var reviewsContainer = document.getElementById("reviewsContainer");
     var leaveReviewBtn = document.getElementById("leaveReviewBtn");
@@ -302,23 +301,24 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
     leaveReviewBtn.addEventListener("click", function () {
-        if (userReview) {
-            //Editing a review
-            reviewFormTitle.textContent = "Edit Your Review";
-            reviewTitleInput.value = userReview.title;
-            reviewDescriptionInput.value = userReview.description;
-            reviewRatingInput.value = userReview.rating;
-        } 
-        else {
-            //Leaving a review
-            reviewFormTitle.textContent = "Leave a Review";
-            reviewTitleInput.value = "";
-            reviewDescriptionInput.value = "";
-            reviewRatingInput.value = "5";
-        }
+    if (userReview) {
+        // Edit mode
+        reviewFormTitle.textContent = "Edit Your Review";
+        reviewTitleInput.value = userReview.title;
+        reviewDescriptionInput.value = userReview.description;
+        reviewRatingInput.value = userReview.rating;
+    } 
+    else {
+        // Leave new review
+        reviewFormTitle.textContent = "Leave a Review";
+        reviewTitleInput.value = "";
+        reviewDescriptionInput.value = "";
+        reviewRatingInput.value = "5";
+    }
+    document.getElementById("deleteReviewBtn").style.display = userReview ? "inline-block" : "none";
+    reviewPopup.style.display = "block";
+});
 
-        reviewPopup.style.display = "block";
-    });
     cancelReviewBtn.addEventListener("click", function () {
         reviewPopup.style.display = "none";
     });
@@ -357,12 +357,17 @@ document.addEventListener("DOMContentLoaded", function () {
             if (sendReq.readyState === 4 && sendReq.status === 200) {
                 var res = JSON.parse(sendReq.responseText);
                 if (res.status === "success") {
-                    alert("Your review has been submitted!");
+                    if(payload.type === "editreview"){
+                        popup.construct("Review Edited", true );
+                    }
+                    else{
+                        popup.construct("Review Submitted", true );
+                    }
                     reviewPopup.style.display = "none";
                     loadReviews();
                 } 
                 else {
-                    alert("Failed to submit: " + res.message);
+                    popup.construct("Review Failed to Submit", false);
                 }
             }
         };
@@ -383,12 +388,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (deleteReq.readyState === 4 && deleteReq.status === 200) {
             var res = JSON.parse(deleteReq.responseText);
             if (res.status === "success") {
-                alert("Your review has been deleted.");
+                popup.construct("Review Deleted", true );
                 reviewPopup.style.display = "none";
                 loadReviews();
             } 
             else {
-                alert("Failed to delete review: " + res.message);
+                popup.construct("Review Failed to Delete", false);
             }
         }
     };
@@ -400,5 +405,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }));
 });
     loadReviews();
-    
+
 });
