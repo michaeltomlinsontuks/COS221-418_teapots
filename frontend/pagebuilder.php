@@ -65,7 +65,7 @@ $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
                 }
 
                 $page = $_GET['page'];
-                if ($page == "signup" || $page == "login" || $page == "adminLogin") {
+                if ($page == "signup" || $page == "login" || $page == "adminlogin") {
                     if ($page == "signup") {
                         $page = "login?";
                         echo "<input type=\"button\" id = \"CHID\" value =$page onclick=\"routeToLogin()\"  class = \"changeDir\">";
