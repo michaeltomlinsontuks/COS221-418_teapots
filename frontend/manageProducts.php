@@ -25,6 +25,9 @@
             <th>
                 Actions
             </th>
+            <th>
+                Delete
+            </th>
         </tr>
     </table>
 </div>

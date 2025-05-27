@@ -1,8 +1,6 @@
 <?php
-//require_once(__DIR__ . '/../config.php');
 require_once 'config.php';
 require_once("header.php");
-// if necessary to user at some stage for http requests
 $EnvJson = array(
     "host" => DB_HOST,
     'username' => DB_USER,
@@ -11,7 +9,6 @@ $EnvJson = array(
 $cookieData = json_encode($EnvJson);
 setcookie('wheateleyAuthentication', $cookieData);
 
-// comment out host and set it to your route to the api.php
 $localEnvJson = array(
     "host" => HOST,
     'username' => USER,
@@ -107,11 +104,7 @@ $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
                     include_once("adminLogin.php");
                     break;
                 case ('admin'):
-                   // if ($adminLoggedInStatus)
                         include_once("admin.php");
-                   // else {
-                   //     header("Location: " . $localRoute . "adminLogin");
-                  //  }
                     break;
                 case ('adminUsers'):
                     if ($adminLoggedInStatus)

@@ -1,6 +1,10 @@
 <?php
+error_reporting(0);
+ini_set('display_errors', 0);
+ob_start();
+
 //The new api.php file - decided to start over and bring stuff across because the new database is quite different
-//Will need to disable these headers on the production code, needed for testing though
+header("Content-Type: application/json"); // Ensure JSON content type
 header("Access-Control-Allow-Origin: *");  // Allows access from any origin
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -9,6 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
+// buffer stuffs i dont really get but it helps
+while (ob_get_level()) {
+    ob_end_clean();
+}
+ob_start();
+
 require_once 'connection.php';
 
 class API
@@ -23,8 +34,6 @@ class API
         $this->conn = getConnection();
         // Ensure proper character encoding
         $this->conn->set_charset("utf8mb4");
-
-        // Initialize response structure
         $this->response = [
             'status' => 'error',
             'timestamp' => time(),
@@ -32,7 +41,6 @@ class API
             'message' => ''
         ];
 
-        // Get request data from POST or JSON input
         $this->requestData = json_decode(file_get_contents('php://input'), true);
         if (!$this->requestData) {
             $this->requestData = $_POST;
@@ -1160,7 +1168,7 @@ class API
     }
 
     private function getAllUsers() {
-        $query = "SELECT u.UserID, u.Username, u.Email, u.CreatedAt, 
+        $query = "SELECT u.UserID, u.Username, u.Email, u.APIKey, 
                   CASE WHEN a.UserID IS NOT NULL THEN 1 ELSE 0 END as IsAdmin 
                   FROM Users u 
                   LEFT JOIN Admin a ON u.UserID = a.UserID";
@@ -1173,7 +1181,7 @@ class API
                 'id' => $row['UserID'],
                 'username' => $row['Username'],
                 'email' => $row['Email'],
-                'created_at' => $row['CreatedAt'],
+                'api_key' => $row['APIKey'],
                 'is_admin' => (bool)$row['IsAdmin']
             ];
         }
@@ -1201,7 +1209,7 @@ class API
                 throw new Exception('Failed to delete from Admin: ' . $stmt->error);
             }
 
-            // Delete user's reviews
+            // Delete user's reviews as its a foreign key and cause many many issues
             $query = "DELETE FROM Review WHERE UserID = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param('i', $userId);
@@ -1256,7 +1264,7 @@ class API
     }
 
     private function getAdminProducts() {
-        // Check if a company filter is set
+        // Check if a company filter is set(we pull bestproduct table if not, if yestwe pull company tables)
         $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
 
         if ($company) {
@@ -1287,7 +1295,6 @@ class API
                 'BrandName' => $row['BrandName'],
                 'CategoryName' => $row['CategoryName'],
                 'RegularPrice' => isset($row['RegularPrice']) ? number_format((float)$row['RegularPrice'], 2) : null,
-                // Fix: Use BestPrice for default, DiscountedPrice for company
                 'BestPrice' => isset($row['DiscountedPrice']) ? number_format((float)$row['DiscountedPrice'], 2) :
                            (isset($row['BestPrice']) ? number_format((float)$row['BestPrice'], 2) : null),
                 'OnlineAvailability' => isset($row['OnlineAvailability']) ? (bool)$row['OnlineAvailability'] : null,
@@ -1299,57 +1306,134 @@ class API
         $this->response['status'] = 'success';
         $this->response['data'] = $products;
         return $this->response;
-    }
-
-    private function addProduct() {
-        if (!isset($this->requestData['name'], $this->requestData['description'], 
-            $this->requestData['brand_id'], $this->requestData['category_id'])) {
-            $this->response['message'] = 'Missing required fields';
-            return $this->response;
-        }
-
-        $this->conn->begin_transaction();
+    }    private function addProduct() {
         try {
-            $name = $this->requestData['name'];
-            $description = $this->requestData['description'];
-            $brand_id = $this->requestData['brand_id'];
-            $category_id = $this->requestData['category_id'];
-            $best_price = $this->requestData['discount_price'];
-            $regular_price = $this->requestData['regular_price'];
-            $thumbnail_image = $this->requestData['thumbnail_image'];
-            $online_availability = $this->requestData['online_availability'];
-            $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
-
-            // Insert into BestProduct
-            $query = "INSERT INTO BestProduct (Name, Description, BrandID, CategoryID, DiscountedPrice, RegularPrice, ThumbnailImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("ssiddss", $name, $description, $brand_id, $category_id, $best_price, $regular_price, $thumbnail_image);
-
-            if (!$stmt->execute()) {
-                throw new Exception('Failed to add product: ' . $stmt->error);
-            }
-
-            $product_id = $this->conn->insert_id;
-
-            // Insert into company table
-            if ($company) {
-                $companyQuery = "INSERT INTO `$company` (ProductID, RegularPrice, DiscountedPrice, OnlineAvailability) VALUES (?, ?, ?, ?)";
-                $companyStmt = $this->conn->prepare($companyQuery);
-                $companyStmt->bind_param("iddi", $product_id, $regular_price, $best_price, $online_availability);
-
-                if (!$companyStmt->execute()) {
-                    throw new Exception('Failed to add company product data: ' . $companyStmt->error);
+            // Validate required fields
+            $requiredFields = ['name', 'description', 'brand_id', 'category_id', 'company', 'best_price', 'regular_price', 'thumbnail_image'];
+            foreach ($requiredFields as $field) {
+                if (!isset($this->requestData[$field]) || empty($this->requestData[$field])) {
+                    throw new Exception("Missing required field: {$field}");
                 }
             }
 
+            // Get user ID from API key to check if admin
+            $userID = $this->getUserID();
+            if (!$userID) {
+                throw new Exception('Invalid API key');
+            }
+
+            // Check if user is admin
+            $query = "SELECT UserID FROM Admin WHERE UserID = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare admin check query: " . $this->conn->error);
+            }
+            $stmt->bind_param("i", $userID);
+            $stmt->execute();
+            if ($stmt->get_result()->num_rows === 0) {
+                throw new Exception('Unauthorized: Admin access required');
+            }
+
+            // Validate brand exists
+            $query = "SELECT BrandID FROM Brand WHERE BrandID = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare brand check query: " . $this->conn->error);
+            }
+            $stmt->bind_param("i", $this->requestData['brand_id']);
+            $stmt->execute();
+            if ($stmt->get_result()->num_rows === 0) {
+                throw new Exception('Invalid brand_id');
+            }
+
+            // Validate category exists
+            $query = "SELECT CategoryID FROM Category WHERE CategoryID = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare category check query: " . $this->conn->error);
+            }
+            $stmt->bind_param("i", $this->requestData['category_id']);
+            $stmt->execute();
+            if ($stmt->get_result()->num_rows === 0) {
+                throw new Exception('Invalid category_id');
+            }
+
+            // Validate company exists
+            $query = "SELECT CompanyID FROM Company WHERE Name = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare company check query: " . $this->conn->error);
+            }
+            $stmt->bind_param("s", $this->requestData['company']);
+            $stmt->execute();
+            if ($stmt->get_result()->num_rows === 0) {
+                throw new Exception('Invalid company');
+            }
+
+            // Start transaction
+            $this->conn->begin_transaction();
+
+            // Insert into BestProduct table
+            $query = "INSERT INTO BestProduct (Name, Description, BrandID, CategoryID, ThumbnailImage, CarouselImages, BestPrice, RegularPrice) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare BestProduct insert: " . $this->conn->error);
+            }
+
+            // Process carousel images
+            $carouselImages = $this->requestData['carousel_images'] ?? '[]';
+
+            $stmt->bind_param("ssiissdd", 
+                $this->requestData['name'],
+                $this->requestData['description'],
+                $this->requestData['brand_id'],
+                $this->requestData['category_id'],
+                $this->requestData['thumbnail_image'],
+                $carouselImages,
+                $this->requestData['best_price'],
+                $this->requestData['regular_price']
+            );
+
+            if (!$stmt->execute()) {
+                throw new Exception("BestProduct insert failed: " . $stmt->error);
+            }
+
+            $productId = $this->conn->insert_id;
+
+            // Insert into company specific table
+            $companyTable = $this->requestData['company'];
+            $query = "INSERT INTO `{$companyTable}` (ProductID, RegularPrice, DiscountedPrice) VALUES (?, ?, ?)";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare company insert: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("idd", 
+                $productId,
+                $this->requestData['regular_price'],
+                $this->requestData['best_price']
+            );
+
+            if (!$stmt->execute()) {
+                throw new Exception("Company product insert failed: " . $stmt->error);
+            }
+
             $this->conn->commit();
+
             $this->response['status'] = 'success';
             $this->response['message'] = 'Product added successfully';
-            $this->response['data'] = ['product_id' => $product_id];
+            $this->response['data'] = ['product_id' => $productId];        } catch (Exception $e) {
 
-        } catch (Exception $e) {
-            $this->conn->rollback();
+            //erro handling via rollbackl if fail    
+            try {
+                $this->conn->rollback();
+            } catch (Exception $rollbackError) {
+                error_log("Rollback failed: " . $rollbackError->getMessage());
+            }
+            $this->response['status'] = 'error';
             $this->response['message'] = $e->getMessage();
+            error_log("Product addition error: " . $e->getMessage());
         }
 
         return $this->response;
@@ -1364,7 +1448,6 @@ class API
         $productId = $this->requestData['product_id'];
         $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
 
-        // 1. Update BestProduct (name, description, etc.)
         $updates = [];
         $params = [];
         $types = '';
@@ -1407,7 +1490,7 @@ class API
             }
         }
 
-        // 2. Update company table (RegularPrice, BestPrice, OnlineAvailability)
+        // 2. Update company table 
         if ($company && (isset($this->requestData['regular_price']) || isset($this->requestData['best_price']) || isset($this->requestData['online_availability']))) {
             $companyUpdates = [];
             $companyParams = [];
@@ -1473,7 +1556,7 @@ class API
                 $stmt->execute();
             }
 
-            // Delete reviews
+            // Delete reviews (again caused issues)
             $query = "DELETE FROM Review WHERE ProductID = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param('i', $productId);
@@ -1527,11 +1610,8 @@ class API
 
         $this->conn->begin_transaction();
         try {
-            // Hash password and generate API key
             $passwordData = $this->hashPassword($this->requestData['password']);
             $apiKey = $this->generateAPIKey();
-
-            // Insert into Users table
             $query = "INSERT INTO Users (Email, Username, PasswordHash, Salt, APIKey, CreatedAt) 
                  VALUES (?, ?, ?, ?, ?, NOW())";
         
@@ -1550,7 +1630,7 @@ class API
 
             $userId = $this->conn->insert_id;
 
-            // If isAdmin flag is set, add to Admin table
+            // If isAdmin flag is set, add to Admin table(flag acts as our admin tracker)
             if (isset($this->requestData['is_admin']) && $this->requestData['is_admin']) {
                 $query = "INSERT INTO Admin (UserID, CreatedAt) VALUES (?, NOW())";
                 $stmt = $this->conn->prepare($query);

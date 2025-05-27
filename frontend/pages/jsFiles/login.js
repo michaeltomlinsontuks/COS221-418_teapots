@@ -60,11 +60,23 @@ function sendlogin() {
 
     request.send(JSON.stringify(requestData));
 }
-function stateChangeLogin() {
-    if (this.readyState === 4) {
+function stateChangeLogin() {    if (this.readyState === 4) {
         if (this.status === 200) {
             var requestResponse = this.responseText;
-            requestResponse = JSON.parse(requestResponse);
+            try {
+                // debugging the broken stuffs
+                console.log('Raw server response:', requestResponse);
+                if (requestResponse.includes('<?php') || requestResponse.includes('</')) {
+                    requestResponse = requestResponse.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
+                }
+                
+                requestResponse = JSON.parse(requestResponse);
+                console.log('Parsed response:', requestResponse);
+            } catch (e) {
+                console.error('JSON parse error:', e);
+                popup.construct("An error occurred processing the server response. Please try again.", false);
+                return;
+            }
             if (requestResponse.status === "error") {
                 popup.construct("Login unsuccessful please insure that your password and username is correct", false);
             }
