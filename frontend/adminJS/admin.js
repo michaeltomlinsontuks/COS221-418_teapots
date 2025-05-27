@@ -636,7 +636,7 @@ function addNewUser() {
             username: usernameHtml.value,
             password: passwordHtml.value,
             email: emailHtml.value,
-            is_admin: checkedHtml.checked, // <-- use is_admin (all lowercase)
+            is_admin: checkedHtml.checked,
         }
 
         var requestHeaderData = getLocalCredentials();
