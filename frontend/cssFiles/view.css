@@ -206,3 +206,25 @@
 .reviewBox {
     border-radius: 4px;
 }
+
+.popupButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.popupButtons .leftButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.popupButtons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
