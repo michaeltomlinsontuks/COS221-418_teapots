@@ -74,9 +74,13 @@
         <option value="4">4</option>
         <option value="5">5</option>
     </select><br><br>
-
-    <button id="submitReviewBtn">Submit</button>
-    <button id="cancelReviewBtn">Cancel</button>
+    <div class="popupButtons">
+    <div class="leftButtons">
+        <button id="submitReviewBtn">Submit</button>
+        <button id="cancelReviewBtn">Cancel</button>
+    </div>
+        <button id="deleteReviewBtn" style="display: none;">Delete Review</button>
+    </div>
 </div>
 
 <script src="pages/jsFiles/viewPage.js"></script>
