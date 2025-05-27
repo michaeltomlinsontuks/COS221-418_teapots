@@ -130,19 +130,19 @@ Need to clarify how this is going to work - basically explain where to find dump
 
 ### API
 
-#### API Design
+### API Design
 
 The API follows RESTful principles using POST requests with JSON payloads. All communication occurs through a single endpoint that routes requests based on the `type` parameter in the request body.
 
-##### RESTful Principles
+### RESTful Principles
 
 - **Stateless**: Each request contains all necessary information for processing
 - **Uniform Interface**: Consistent request/response structure across all endpoints
 - **Resource-Based**: Operations are performed on clearly defined resources (users, products, reviews)
 
-##### Request and Response Formats
+### Request and Response Formats
 
-###### Request Format
+#### Request Format
 All requests are sent as POST with stringified JSON in the request body:
 
 ```json
@@ -154,7 +154,7 @@ All requests are sent as POST with stringified JSON in the request body:
 }
 ```
 
-###### Response Format
+#### Response Format
 All responses follow a consistent structure:
 
 ```json
@@ -172,18 +172,18 @@ All responses follow a consistent structure:
 - `data`: Contains the requested information (empty object on error)
 - `message`: Human-readable description for debugging and user feedback
 
-#### Security
+## Security
 
 - **API Key Authentication**: All endpoints (except login/register) require valid API keys
 - **Password Security**: Passwords are hashed using SHA-512 with random salts
 - **Database Security**: Database credentials are stored in a private configuration file ([connection.php](link-to-connection-file))
 - **Input Validation**: All user inputs are validated and sanitized before database operations
 
-#### Endpoints
+## Endpoints
 
-##### User Management
+### User Management
 
-###### Login
+#### Login
 Authenticates user credentials and returns an API key for subsequent requests.
 
 **Request:**
@@ -210,7 +210,7 @@ Authenticates user credentials and returns an API key for subsequent requests.
 }
 ```
 
-###### Register
+#### Register
 Creates a new user account and returns an API key.
 
 **Request:**
@@ -235,7 +235,7 @@ Creates a new user account and returns an API key.
 }
 ```
 
-###### Admin Login
+#### Admin Login
 Authenticates admin users and generates a new API key for admin operations.
 
 **Request:**
@@ -261,9 +261,9 @@ Authenticates admin users and generates a new API key for admin operations.
 }
 ```
 
-##### Product Management
+### Product Management
 
-###### Get Product Page
+#### Get Product Page
 Retrieves a paginated list of products with filtering and sorting options.
 
 **Request:**
@@ -315,7 +315,7 @@ Retrieves a paginated list of products with filtering and sorting options.
 }
 ```
 
-###### Get Product
+#### Get Product
 Retrieves detailed information for a specific product including price comparisons.
 
 **Request:**
@@ -364,9 +364,9 @@ Retrieves detailed information for a specific product including price comparison
 }
 ```
 
-##### Review Management
+### Review Management
 
-###### Add Review
+#### Add Review
 Creates a new product review for the authenticated user.
 
 **Request:**
@@ -391,7 +391,7 @@ Creates a new product review for the authenticated user.
 }
 ```
 
-###### Get Reviews
+#### Get Reviews
 Retrieves all reviews for a specific product.
 
 **Request:**
@@ -423,7 +423,7 @@ Retrieves all reviews for a specific product.
 }
 ```
 
-###### Edit Review
+#### Edit Review
 Updates an existing review by the authenticated user.
 
 **Request:**
@@ -448,7 +448,7 @@ Updates an existing review by the authenticated user.
 }
 ```
 
-###### Remove Review
+#### Remove Review
 Deletes a review by the authenticated user.
 
 **Request:**
@@ -470,7 +470,7 @@ Deletes a review by the authenticated user.
 }
 ```
 
-##### Filter Data
+### Filter Data
 
 #### Get Categories
 Retrieves all available product categories.
@@ -502,7 +502,7 @@ Retrieves all available product categories.
 }
 ```
 
-###### Get Brands
+#### Get Brands
 Retrieves all available product brands.
 
 **Request:**
@@ -532,7 +532,7 @@ Retrieves all available product brands.
 }
 ```
 
-###### Get Companies
+#### Get Companies
 Retrieves all available retailer companies.
 
 **Request:**
@@ -562,11 +562,11 @@ Retrieves all available retailer companies.
 }
 ```
 
-##### Admin Management
+### Admin Management
 
 *Note: The following endpoints require admin privileges.*
 
-###### Get Admin Products
+#### Get Admin Products
 Retrieves products for admin management, optionally filtered by company.
 
 **Request:**
@@ -601,7 +601,7 @@ Retrieves products for admin management, optionally filtered by company.
 }
 ```
 
-###### Add Product
+#### Add Product
 Creates a new product in the system.
 
 **Request:**
@@ -633,7 +633,7 @@ Creates a new product in the system.
 }
 ```
 
-###### Update Product
+#### Update Product
 Updates an existing product's information.
 
 **Request:**
@@ -660,7 +660,7 @@ Updates an existing product's information.
 }
 ```
 
-###### Delete Product
+#### Delete Product
 Removes a product from the system.
 
 **Request:**
@@ -682,7 +682,7 @@ Removes a product from the system.
 }
 ```
 
-###### Get All Users
+#### Get All Users
 Retrieves a list of all users in the system.
 
 **Request:**
@@ -711,7 +711,7 @@ Retrieves a list of all users in the system.
 }
 ```
 
-###### Add User
+#### Add User
 Creates a new user account (admin function).
 
 **Request:**
@@ -739,7 +739,7 @@ Creates a new user account (admin function).
 }
 ```
 
-###### Delete User
+#### Delete User
 Removes a user from the system.
 
 **Request:**
@@ -761,7 +761,7 @@ Removes a user from the system.
 }
 ```
 
-###### Make Admin
+#### Make Admin
 Grants admin privileges to an existing user.
 
 **Request:**
