@@ -91,6 +91,28 @@ Update the best products table
 
 ## Development Guidelines (Task 8 & 10)
 
+### Git Workflow & Commits
+
+- **Commit frequently** 
+    - Commit when you complete a function/class, not at end of day
+    -  **Detailed commit messages**
+        - Other team members need to understand what you've implemented
+    - **Branch strategy**
+        - Separate branches for each website section
+    - **Pull requests**
+        - Testing and review process before merging to main branch
+    - **Only working code**
+        - Ensure functionality works before committing to main
+
+### Code Standards
+
+- **Comment your code**
+    - For teammate understanding and demo purposes
+-  **Clear documentation**
+    - All API requests and functionality should be documented in README
+-  **Keep README current**
+    - Should serve as living documentation for the project
+
 ## Demo Details (Task 9)
 
 ## Database Design
