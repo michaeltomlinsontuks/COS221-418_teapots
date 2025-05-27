@@ -780,10 +780,43 @@ CREATE TABLE `ZapNest` (
 
 
 ### Optimisation (Task 7)
+**Product Page Query Optimisation**
+Initially we queried for each parameter, and then only returned the products that were returned in every query.
+```sql
+SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.CarouselImages,
+    bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
+    bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
+    FROM BestProduct bp
+    LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+    LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+    WHERE BestPrice < 1000
+
+# Similar Repeated Queries for all parameters
+```
+This is extremely inefficient, but easy to implement, its inefficiencies are due to many repeatitive, similar queries. Instead we made a complicated WHERE conditions builder to apply all the parameters at once, we also added joins for company filtering options:
+```sql
+SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.CarouselImages,
+    bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
+    bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
+FROM BestProduct bp
+LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+JOIN Nexonic nex ON bp.ProductID = nex.ProductID
+JOIN TechNova tec ON bp.ProductID = tec.ProductID
+WHERE (nex.OnlineAvailability = 1 OR tec.OnlineAvailability = 1)
+    AND bp.BestPrice >= 100
+    AND bp.BestPrice <= 500
+    AND b.BrandName IN ('Samsung', 'Apple')
+    AND c.CategoryName IN ('Smartphones')
+    AND (bp.Name LIKE '%wireless%' OR bp.Description LIKE '%wireless%' OR b.BrandName LIKE '%wireless%' OR c.CategoryName LIKE '%wireless%')
+ORDER BY bp.BestPrice ASC
+LIMIT 51 OFFSET 0
+```
+This drastically reduced the amount of queries being sent to the database and reduced the array comparisons done on the API, these arrays were becoming a major issue as the size of the arrays grew larger as we had more mock products. This made our code from a time to execute request, 10x faster, 5.96s -> 0.48s
 
 ## Website Functionality (Task 5)
 
-### API
+## API
 
 ### API Design
 
@@ -1640,7 +1673,18 @@ With the added functionality that a user can be made into an admin at creation.
 ## Individual Contributions
 
 ### Damian Moustakis (u24564738)
-
+- Pulled BestBuy data with python skript to get around 700 base products for mock data, with a list of predetermined attributes, compiled into several json files for db initialisation (fetch_bestby.py), /JSON/ 
+- Did initial Api endpoints for user and product management(basic model before DB completion, thus was mostly redone thereafter)
+- Reworked readme to consolidate db and api creation (now OLDREADME as it has become outdated)
+- Worked in git branch adminfeature/api-endpoints to work on the full functionality of the admin user.
+  - Modified/Created endpoints to makeAdmin, deleteUser, getAllUsers, getAllProducts, addProducts, updateProducts, deleteProducts, adminLogin
+  - Created Postman testing for the endpoints and for later verification and validation
+  - Used Wilmar generated base admin.php, adminLogin.php, admin.js, manageUsers.php, manageProducts.php files as frame works to build admin interdace
+  - Admin Login
+  - User Manipulation (inset/delete)
+  - Product Manipulation (insert/update/delete)
+  - Validated that Product and User manipulation was valid both in the admin workspace and user workspace (allowing for admin created products to be added to compareIt database)
+  - Overall worked on initial API endpoints related to user workspace and then moved onto API and Frontend work for all features admin related
 ### Aaron Kim (u21494305)
 - Task 2: EER Diagram with Ayrtonn
 - Task 3: EER to Relational Mapping with Ayrtonn
@@ -1679,7 +1723,7 @@ With the added functionality that a user can be made into an admin at creation.
    - Product Review Functionality [view page](frontend/pages/view.php)
 
 ### Wilmar Smit (u24584216)
-- Task 1:Reasearch 
+- Task 1:Research 
 - Task 5:Web based applications:
   - Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
   - Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
@@ -1691,3 +1735,7 @@ With the added functionality that a user can be made into an admin at creation.
   - File structure of the frontend [frontend](frontend)
   - Setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
   - Communication and group management with tutors.
+
+
+For Legal Reasons Best Buy needs to be credited for use of the Best Buy Developers API, this is not a Best Buy Product and does not claim to be.
+![BestBuyLogo](images/Best_Buy_Logo.png)
