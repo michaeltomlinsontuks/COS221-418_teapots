@@ -25,7 +25,10 @@
 .adminPage table td input {
     font-size: 15pt;
 }
-
+.adminPage table td
+{
+    overflow: auto;
+}
 .manageUsers {
     width: 100%;
     table-layout: fixed !important;
@@ -99,4 +102,5 @@
     width: 50%;
     font-size: 15pt;
     text-align: center;
+
 }
