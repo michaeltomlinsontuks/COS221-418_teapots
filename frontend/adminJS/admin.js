@@ -13,8 +13,8 @@ var emailHtml;
 var passwordHtml;
 var checkedHtml;
 
+//to force the page to not load things while waiting for admin key
 var productHandler = {};
-
 function isAdminLoginPage() {
     return window.location.pathname.endsWith("adminLogin");
 }
@@ -88,21 +88,49 @@ function initialiseManageProducts() {
     request.send(JSON.stringify(requestData));
 }
 
-function stateChangeProducts() {
-    if (this.readyState === 4) {
-        if (this.status === 200) {
-            var requestResponse = this.responseText;
-            requestResponse = JSON.parse(requestResponse);
-            if (requestResponse.status === "error") {
-                alert("something went wrong...");
+function stateChangeProducts() 
+{
+    if (this.readyState === 4) 
+        {
+        if (this.status === 200) 
+            {
+            try {
+                console.log('Raw response:', this.responseText);
+                let requestResponse = this.responseText;
+                if (requestResponse.includes('<?php') || requestResponse.includes('</')) 
+                {
+                    requestResponse = requestResponse.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
+                }
+                requestResponse = JSON.parse(requestResponse);
+                console.log('Parsed response:', requestResponse);
+
+                if (requestResponse.status === "error") 
+                {
+                    console.error('Server returned error:', requestResponse);
+                    alert("Error loading products: " + (requestResponse.message || "Unknown error"));
+                } 
+                
+                else 
+                {
+                    var data = requestResponse.data;
+                    if (Array.isArray(data)) 
+                    {
+                        productHandler.addProductsAdmin(data);
+                    } 
+                    
+                    else 
+                    {
+                        console.error('Invalid data format:', data);
+                        alert("Invalid data format received from server");
+                    }
+                }
+            } catch (e) {
+                console.error('JSON parse error:', e, '\nRaw response:', this.responseText);
+                alert("Error processing server response. Please try again.");
             }
-            else {
-                var data = requestResponse.data;
-                productHandler.addProductsAdmin(data);
-            }
-        }
-        else {
-            alert("Failed to load products.");
+        } else {
+            console.error('HTTP error:', this.status);
+            alert("Failed to load products. Server returned status: " + this.status);
         }
     }
 }
@@ -119,7 +147,7 @@ function insertIntoTableAdmin() {
         return;
     }
     console.log("Products to display:", productHandler.products);
-    // Clear all rows except the header
+    // Clear all rows except the header so we dont have 2 sets of data
     while (table.rows.length > 1) {
         table.deleteRow(1);
     }
@@ -152,35 +180,63 @@ function insertIntoTableAdmin() {
 
 function deleteProduct(index) {
     if (selectCompany.selectedIndex === 0) {
-        alert("select a company to delete the product of");
-        return null;
+        alert("Please select a company to delete the product from");
+        return;
     }
 
-    if (!confirm("Are you sure you want to delete this product? This cannot be undone.")) {
+    if (!confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
         return;
     }
 
     var request = new XMLHttpRequest();
 
-    request.onreadystatechange = function () {
-        if (this.readyState === 4) {
-            if (this.status === 200) {
-                var requestResponse = JSON.parse(this.responseText);
-                if (requestResponse.status === "error") {
-                    alert("something went wrong...");
-                } else {
-                    alert("Delete successful. Refreshing product list...");
-                    // Refresh the table after deletion
-                    loadCompanyProducts(selectCompany.value);
+    request.onreadystatechange = function () 
+    {
+        if (this.readyState === 4) 
+            {
+            if (this.status === 200) 
+                {
+                try 
+                {
+                    console.log('Raw response:', this.responseText);
+                    let requestResponse = this.responseText;
+                    if (requestResponse.includes('<?php') || requestResponse.includes('</')) 
+                        {
+                        requestResponse = requestResponse.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
+                    }
+                    requestResponse = JSON.parse(requestResponse);
+                    
+                    if (requestResponse.status === "success") 
+                        {
+                        alert("Product deleted successfully.");
+                        loadCompanyProducts(selectCompany.value);
+                    } 
+                    else 
+                    {
+                        console.error('Delete error:', requestResponse);
+                        alert("Error deleting product: " + (requestResponse.message || "Unknown error"));
+                    }
+                } 
+                catch (e) 
+                {
+                    console.error('JSON parse error:', e);
+                    alert("Error processing server response. Please try again.");
                 }
-            } else {
-                alert("An error occurred on our side...");
+            } 
+            else 
+            {
+                alert("An error occurred while deleting the product. Status: " + this.status);
             }
         }
     };
 
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
+
+    if (!api_key) {
+        alert("You are not logged in. Please log in and try again.");
+        return;
+    }
 
     var requestData = {
         type: "deleteProduct",
@@ -189,7 +245,6 @@ function deleteProduct(index) {
     };
 
     var requestHeaderData = getLocalCredentials();
-
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
@@ -250,46 +305,74 @@ function sendUpdateToProdID(index) {
 
 function fillCompanyBox() {
     var api_key = getApiKeySafe();
-    if (!api_key) return;
+    if (!api_key) {
+        alert("You are not logged in. Please log in and try again.");
+        return;
+    }
 
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = JSON.parse(this.responseText);
-                if (requestResponse.status === "error") {
-                    alert("something went wrong...");
-                } else {
-                    var data = requestResponse.data;
-                    // Clear existing options except the first
-                    selectCompany.length = 1;
-                    selectCompanyNP.length = 1;
-                    for (var i = 0; i < data.length; i++) {
-                        var opt1 = document.createElement('option');
-                        opt1.value = data[i].company_name;
-                        opt1.textContent = data[i].company_name;
-                        selectCompany.appendChild(opt1);
-
-                        var opt2 = document.createElement('option');
-                        opt2.value = data[i].company_name;
-                        opt2.textContent = data[i].company_name;
-                        selectCompanyNP.appendChild(opt2);
+                try {
+                    console.log('Raw response:', this.responseText);
+                    let requestResponse = this.responseText;
+                    if (requestResponse.includes('<?php') || requestResponse.includes('</')) {
+                        requestResponse = requestResponse.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
                     }
+                    requestResponse = JSON.parse(requestResponse);
+                    console.log('Parsed response:', requestResponse);
+
+                    if (requestResponse.status === "error") {
+                        console.error('Server error:', requestResponse);
+                        alert("Error loading companies: " + (requestResponse.message || "Unknown error"));
+                    } else {
+                        if (!Array.isArray(requestResponse.data)) {
+                            console.error('Invalid data format:', requestResponse.data);
+                            alert("Invalid data format received from server");
+                            return;
+                        }
+
+                        var data = requestResponse.data;
+                        // Clear existing options except the first
+                        selectCompany.length = 1;
+                        selectCompanyNP.length = 1;
+                        
+                        data.forEach(function(company) {
+                            if (!company.company_name) {
+                                console.warn('Company missing name:', company);
+                                return;
+                            }
+
+                            var opt1 = document.createElement('option');
+                            opt1.value = company.company_name;
+                            opt1.textContent = company.company_name;
+                            selectCompany.appendChild(opt1);
+
+                            var opt2 = document.createElement('option');
+                            opt2.value = company.company_name;
+                            opt2.textContent = company.company_name;
+                            selectCompanyNP.appendChild(opt2);
+                        });
+                    }
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    alert("Error processing server response. Please try again.");
                 }
             } else {
-                alert("An error occurred on our side...");
+                console.error('HTTP error:', this.status);
+                alert("Failed to load companies. Please try again.");
             }
         }
     };
 
     var requestData = {
         type: "getcompanies",
-        api_key: api_key,
+        api_key: api_key
     };
 
     var requestHeaderData = getLocalCredentials();
-
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
@@ -344,11 +427,31 @@ function fillBrandBox() {
 }
 function addNewProduct() {
     var api_key = getApiKeySafe();
-    if (!api_key) return;
+    if (!api_key) {
+        alert("You are not logged in. Please log in and try again.");
+        return;
+    }
 
-    if (priceDiscHtml.value === "" || !testImgUrl() || priceRegHtml.value === "" || prodDscHtml.value === "" || prodNameHtml.value === "" || imgUrlHtml.value === "" || selectCompanyNP.selectedIndex === 0 || selectNpBrand.selectedIndex === 0 || selectNpCat.selectedIndex === 0) {
-        alert("please insure all fields are correctly filled out");
-        return null;
+    // Validate all required fields
+    if (priceDiscHtml.value === "" || 
+        !testImgUrl() || 
+        priceRegHtml.value === "" || 
+        prodDscHtml.value.trim() === "" || 
+        prodNameHtml.value.trim() === "" || 
+        imgUrlHtml.value === "" || 
+        selectCompanyNP.selectedIndex === 0 || 
+        selectNpBrand.selectedIndex === 0 || 
+        selectNpCat.selectedIndex === 0) {
+        alert("Please ensure all fields are correctly filled out");
+        return;
+    }
+
+    // Validate prices
+    const regPrice = parseFloat(priceRegHtml.value);
+    const discPrice = parseFloat(priceDiscHtml.value);
+    if (isNaN(regPrice) || isNaN(discPrice) || regPrice < 0 || discPrice < 0) {
+        alert("Please enter valid prices");
+        return;
     }
 
     var request = new XMLHttpRequest();
@@ -356,11 +459,25 @@ function addNewProduct() {
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = JSON.parse(this.responseText);
-                if (requestResponse.status === "error") {
-                    alert("something went wrong...");
-                } else {
-                    alert("Product added");
+                try {
+                    var response = JSON.parse(this.responseText);
+                    if (response.status === "success") {
+                        alert("Product added successfully");
+                        // Clear form
+                        prodNameHtml.value = '';
+                        prodDscHtml.value = '';
+                        imgUrlHtml.value = '';
+                        priceRegHtml.value = '';
+                        priceDiscHtml.value = '';
+                        selectCompanyNP.selectedIndex = 0;
+                        selectNpBrand.selectedIndex = 0;
+                        selectNpCat.selectedIndex = 0;
+                    } else {
+                        alert("Error adding product: " + (response.message || "Unknown error"));
+                    }
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    alert("Error processing server response");
                 }
             } else {
                 alert("An error occurred on our side...");
@@ -368,21 +485,37 @@ function addNewProduct() {
         }
     };
 
+    //trying to save thumbnail url from add user so we can see it in product loading pages for ueser
+    // Get the thumbnail (small) image URL
+    const thumbImgUrl = imgUrlHtml.value.trim();
+    // Generate the main (large) image URL by replacing the size in the URL (image2)
+    let mainImgUrl = thumbImgUrl;
+    if (thumbImgUrl.includes('/108/54/')) {
+        mainImgUrl = thumbImgUrl.replace('/108/54/', '/500/500/');
+    }
+
+    const carouselImages = [
+        { image: mainImgUrl },
+        { thumbnailImage: thumbImgUrl }
+        // Add more image objects here if you have more fields, e.g. { angleImage: angleUrl }, etc.
+    ];
+
     var requestData = {
         type: "addProduct",
         api_key: api_key,
-        name: prodNameHtml.value,
-        description: prodDscHtml.value,
+        name: prodNameHtml.value.trim(),
+        description: prodDscHtml.value.trim(),
         brand_id: parseInt(selectNpBrand.value),
         category_id: parseInt(selectNpCat.value),
         company: selectCompanyNP.value,
-        best_price: parseFloat(priceDiscHtml.value),
-        regular_price: parseFloat(priceRegHtml.value),
-        images: [JSON.stringify({ image: imgUrlHtml.value })]
+        best_price: discPrice,
+        regular_price: regPrice,
+        thumbnail_image: thumbImgUrl, 
+        carousel_images: JSON.stringify(carouselImages) 
     };
 
     var requestHeaderData = getLocalCredentials();
-    console.log(requestData);
+    console.log('Sending request:', requestData);
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
@@ -500,7 +633,7 @@ function displayUsers(users) {
         row.innerHTML = `
             <td>${user.username}</td>
             <td>${user.email}</td>
-            <td>${user.created_at}</td>
+            <td>${user.api_key || 'N/A'}</td>
             <td>${user.is_admin ? 'Yes' : 'No'}</td>
             <td>
                 ${!user.is_admin ?
@@ -526,7 +659,7 @@ function makeAdmin(userId) {
             var response = JSON.parse(this.responseText);
             if (response.status === "success") {
                 alert("User made admin successfully");
-                initialiseManageUsers(); // Refresh the list
+                initialiseManageUsers();
             }
         }
     };
@@ -710,35 +843,60 @@ function sendRequest(request, requestData) {
 }
 
 function loadCompanyProducts(companyName) {
+    if (!companyName) {
+        alert("Please select a company first");
+        return;
+    }
+
     var request = new XMLHttpRequest();
-
-
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = JSON.parse(this.responseText);
-                if (requestResponse.status === "error") {
-                    alert("something went wrong...");
-                } else {
-
-                    var table = document.getElementById("manageProdID");
-                    // Clear all rows except the header
-                    while (table.rows.length > 1) {
-                        table.deleteRow(1);
+                try {
+                    console.log('Raw response:', this.responseText);
+                    let requestResponse = this.responseText;
+                    if (requestResponse.includes('<?php') || requestResponse.includes('</')) {
+                        requestResponse = requestResponse.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
                     }
+                    requestResponse = JSON.parse(requestResponse);
+                    console.log('Parsed response:', requestResponse);
 
+                    if (requestResponse.status === "error") {
+                        console.error('Server error:', requestResponse);
+                        alert("Error loading products: " + (requestResponse.message || "Unknown error"));
+                    } else {
+                        var table = document.getElementById("manageProdID");
+                        // Clear all rows except the header
+                        while (table.rows.length > 1) {
+                            table.deleteRow(1);
+                        }
 
-                    var data = requestResponse.data;
-                    productHandler.addProductsAdmin(data);
+                        var data = requestResponse.data;
+                        if (Array.isArray(data)) {
+                            productHandler.addProductsAdmin(data);
+                        } else {
+                            console.error('Invalid data format:', data);
+                            alert("Invalid data format received from server");
+                        }
+                    }
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    alert("Error processing server response. Please try again.");
                 }
             } else {
-                alert("Failed to load products.");
+                console.error('HTTP error:', this.status);
+                alert("Failed to load products. Please try again.");
             }
         }
     };
 
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
+
+    if (!api_key) {
+        alert("You are not logged in. Please log in and try again.");
+        return;
+    }
 
     var requestData = {
         type: "getadminproducts",
@@ -747,7 +905,6 @@ function loadCompanyProducts(companyName) {
     };
 
     var requestHeaderData = getLocalCredentials();
-
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
@@ -792,8 +949,15 @@ function saveProductEdit(index) {
     var newRegPrice = document.getElementById(`editRegPrice${index}`).value;
     var newBestPrice = document.getElementById(`editBestPrice${index}`).value;
 
+    // Validate inputs
     if (!newName || !newDesc || newRegPrice === "" || newBestPrice === "") {
         alert("Please fill out all fields.");
+        return;
+    }
+
+    // Validate prices
+    if (isNaN(newRegPrice) || isNaN(newBestPrice) || parseFloat(newRegPrice) < 0 || parseFloat(newBestPrice) < 0) {
+        alert("Please enter valid prices.");
         return;
     }
 
@@ -801,21 +965,41 @@ function saveProductEdit(index) {
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var response = JSON.parse(this.responseText);
-                if (response.status === "success") {
-                    alert("Product updated successfully.");
-                    loadCompanyProducts(selectCompany.value);
-                } else {
-                    alert("Error updating product: " + (response.message || "Unknown error"));
+                try {
+                    console.log('Raw response:', this.responseText);
+                    let response = this.responseText;
+                    // Clean any potential HTML from response
+                    if (response.includes('<?php') || response.includes('</')) {
+                        response = response.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
+                    }
+                    response = JSON.parse(response);
+                    console.log('Parsed response:', response);
+
+                    if (response.status === "success") {
+                        alert("Product updated successfully.");
+                        loadCompanyProducts(selectCompany.value);
+                    } else {
+                        console.error('Server returned error:', response);
+                        alert("Error updating product: " + (response.message || "Unknown error"));
+                    }
+                } catch (e) {
+                    console.error('JSON parse error:', e, '\nRaw response:', this.responseText);
+                    alert("Error processing server response. Please try again.");
                 }
             } else {
-                alert("An error occurred on our side...");
+                console.error('HTTP error:', this.status);
+                alert("An error occurred while updating the product. Status: " + this.status);
             }
         }
     };
 
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
+
+    if (!api_key) {
+        alert("You are not logged in. Please log in and try again.");
+        return;
+    }
 
     var requestData = {
         type: "updateProduct",
@@ -844,7 +1028,7 @@ function cancelProductEdit(index) {
     }
 }
 
-// Defensive helper for cookieData
+//protection agaisnt the console errors
 function getApiKeySafe() {
     var cookieData = getLoginCookieAdmin && getLoginCookieAdmin();
     return cookieData && cookieData.api_key ? cookieData.api_key : null;
