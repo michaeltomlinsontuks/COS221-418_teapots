@@ -137,7 +137,7 @@ The Enhanced Entity Relationship (EER) diagram below illustrates the structure o
   - **Users**: Represents registered users, with a specialised subtype for users with admin access.
 
 - **Inheritance**:
-  - `Company` has attribute-defined specialization (8c) based on `Name`, creating subtypes: `Bitify`, `ByteCrate`, `ByteMart`, `ChipCart`, `CoreBay`, `FuseBasket`, `Nexonic`, `TechNova`, `VoltEdge`, `ZapNest` which represent individual companies.
+  - `Company` has attribute-defined specialization (8c) based on Name, creating subtypes: `Bitify`, `ByteCrate`, `ByteMart`, `ChipCart`, `CoreBay`, `FuseBasket`, `Nexonic`, `TechNova`, `VoltEdge`, and `ZapNest`. Each represents a distinct retailer.
   - `User` has a disjoint, partial specialization (8a) based on user role, resulting in the subtype `Admin`, which is stored in a separate table with a foreign key reference to User, indicating that only some users are administrators.
 
 - **Relationships**:
@@ -166,13 +166,16 @@ The Enhanced Entity Relationship (EER) diagram below illustrates the structure o
 ### Relational Mapping (Task 3)
 
 
-![ERD Diagram](database/erd_diagram.png)
+
 
 The EER model is then mapped to a relational schema by applying the steps to convert a EER to ERD as outlined by the COS 221 textbook
 
 **Steps:**
 1. **Strong Entity Types**: 
   - Created tables for `BestProduct`, `Brand`, `Category`, `Company`, `Review`, `Users`.
+
+  ![ERD Diagram](database/erd_diagram1.png)
+
 
 2. **Weak Entity Types**: 
   - Not applicable.
@@ -182,6 +185,9 @@ The EER model is then mapped to a relational schema by applying the steps to con
 
 4. **Binary 1:N Relationships**: 
   - All 1:N relations mapped via foreign keys (e.g., `BestProduct.BrandID` → `Brand.BrandID`, retailer tables’ `ProductID` → `BestProduct.ProductID`).
+
+  ![ERD Diagram](database/erd_diagram2.png)
+
 
 5. **Binary M:N Relationships**: 
   - Not applicable.
@@ -196,8 +202,13 @@ The EER model is then mapped to a relational schema by applying the steps to con
   - Used Option 8c (single relation with type attribute) for `Company`, with subtypes implemented as separate retailer tables (`Bitify`, etc.).
   - Used Optiion 8a (Multiple Relations with a Superclass and subclass) for `User` for a subtype called `Admin`, implemented as a seperate table.
 
+  ![ERD Diagram](database/erd_diagram3.png)
+
+
 9. **Unions**: Not applicable.
 
+**Final Relational Schema**
+![ERD Diagram](database/erd_diagram.png)
 
 ## Relational Constraints (Task 4)
 
