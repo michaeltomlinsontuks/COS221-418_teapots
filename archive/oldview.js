@@ -1,209 +1,209 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id");
-    if (!productId) {
+    const params = new URLSearchParams(window.location.search);
+    const idFromUrl = params.get("id");
+
+    if (!idFromUrl) {
         alert("No product ID provided.");
         return;
     }
 
-    var product = JSON.parse(localStorage.getItem("selectedProduct"));
-    if (!product) {
-        var request = new XMLHttpRequest();
-        var requestHeaderData = getLocalCredentials();
-        request.open("POST", requestHeaderData.host, true);
-        request.setRequestHeader("Content-Type", "application/json");
-        request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+    let productData = JSON.parse(localStorage.getItem("selectedProduct"));
 
-        var apiKey = getLoginCookie().api_key;
-        var body = JSON.stringify({
+    if (!productData) {
+        const xhr = new XMLHttpRequest();
+        const headers = getLocalCredentials();
+
+        xhr.open("POST", headers.host, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Basic " + btoa(headers.username + ":" + headers.password));
+
+        const apiKey = getLoginCookie().api_key;
+
+        const payload = JSON.stringify({
             type: "getproduct",
             api_key: apiKey,
-            product_id: productId
+            product_id: idFromUrl
         });
 
-        request.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                var response = JSON.parse(this.responseText);
-                if (response.status === "success") {
-                    product = response.data;
-                    localStorage.setItem("selectedProduct", JSON.stringify(product));
-                    populatePage(product);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const res = JSON.parse(xhr.responseText);
+                if (res.status === "success") {
+                    productData = res.data;
+                    localStorage.setItem("selectedProduct", JSON.stringify(productData));
+                    fillPage(productData);
                 } else {
-                    alert("Failed to load product data: " + response.message);
+                    alert("Failed to load product data: " + res.message);
                 }
             }
         };
-        request.send(body);
+
+        xhr.send(payload);
     } else {
-        populatePage(product);
+        fillPage(productData);
     }
 
-    function populatePage(product) {
-        var titleElement = document.querySelector(".contentContainer h2");
-        if (titleElement) {
-            titleElement.textContent = product.name || "Product Name";
+    function fillPage(product) {
+        const title = document.querySelector(".contentContainer h2");
+        if (title) title.textContent = product.name || "Product Name";
+
+        const desc = document.querySelector(".contentContainer p:nth-child(2)");
+        if (desc) desc.textContent = product.description || "No description available.";
+
+        const meta = document.querySelector(".contentContainer p:nth-child(3)");
+        if (meta) {
+            meta.textContent = "ID: " + product.id + " | Brand: " + product.brand + " | Category: " + product.category;
         }
 
-        var descElement = document.querySelector(".contentContainer p:nth-child(2)");
-        if (descElement) {
-            descElement.textContent = product.description || "No description available.";
+        const mainImg = document.getElementById("mainImage");
+        if (mainImg) {
+            mainImg.src = product.mainImg || "https://via.placeholder.com/300";
+            mainImg.alt = product.name || "Product Image";
         }
 
-        var brandCategoryElement = document.querySelector(".contentContainer p:nth-child(3)");
-        if (brandCategoryElement) {
-            brandCategoryElement.textContent =
-                "ID: " + product.id +
-                " | Brand: " + product.brand +
-                " | Category: " + product.category;
-        }
-
-        var mainImageElement = document.getElementById("mainImage");
-        if (mainImageElement) {
-            mainImageElement.src = product.mainImg || "https://via.placeholder.com/300";
-            mainImageElement.alt = product.name || "Product Image";
-        }
-
-        var carouselImages = product.productCarousel.filter(function (imgObj) {
-            return imgObj.image || imgObj.angleImage || imgObj.leftViewImage;
-        });
-        var currentIndex = 0;
-        var prevBtn = document.querySelector(".carousel-control.prev");
-        var nextBtn = document.querySelector(".carousel-control.next");
-
-        function updateCarousel() {
-            var imgObj = carouselImages[currentIndex];
-            var imgSrc = imgObj.image || imgObj.angleImage || imgObj.leftViewImage;
-            mainImageElement.src = imgSrc;
-        }
-
-        if (carouselImages.length > 0) {
-            updateCarousel();
-        }
-
-        prevBtn.addEventListener("click", function () {
-            currentIndex = (currentIndex - 1 + carouselImages.length) % carouselImages.length;
-            updateCarousel();
+        const carouselList = product.productCarousel.filter(function (img) {
+            return img.image || img.angleImage || img.leftViewImage;
         });
 
-        nextBtn.addEventListener("click", function () {
-            currentIndex = (currentIndex + 1) % carouselImages.length;
-            updateCarousel();
+        let index = 0;
+        const prev = document.querySelector(".carousel-control.prev");
+        const next = document.querySelector(".carousel-control.next");
+
+        function updateImage() {
+            const imgData = carouselList[index];
+            const src = imgData.image || imgData.angleImage || imgData.leftViewImage;
+            mainImg.src = src;
+        }
+
+        if (carouselList.length > 0) {
+            updateImage();
+        }
+
+        prev.addEventListener("click", function () {
+            index = (index - 1 + carouselList.length) % carouselList.length;
+            updateImage();
         });
 
-        var priceTableBody = document.querySelector(".price-table tbody");
-        if (priceTableBody) {
-            priceTableBody.innerHTML = "";
-            var request = new XMLHttpRequest();
-            request.open("POST", requestHeaderData.host, true);
-            request.setRequestHeader("Content-Type", "application/json");
-            request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+        next.addEventListener("click", function () {
+            index = (index + 1) % carouselList.length;
+            updateImage();
+        });
 
-            request.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    var response = JSON.parse(this.responseText);
-                    if (response.status === "success") {
-                        var comparisons = response.data.price_comparisons;
-                        for (var company in comparisons) {
-                            if (comparisons.hasOwnProperty(company)) {
-                                var row = document.createElement("tr");
-                                var companyCell = document.createElement("td");
-                                companyCell.textContent = company;
-                                companyCell.style.border = "1px solid black";
-                                companyCell.style.padding = "5px";
+        const priceBody = document.querySelector(".price-table tbody");
+        if (priceBody) {
+            priceBody.innerHTML = "";
 
-                                var priceCell = document.createElement("td");
-                                priceCell.textContent = "$" + comparisons[company].discountedPrice;
-                                priceCell.style.border = "1px solid black";
-                                priceCell.style.padding = "5px";
+            const priceReq = new XMLHttpRequest();
+            priceReq.open("POST", headers.host, true);
+            priceReq.setRequestHeader("Content-Type", "application/json");
+            priceReq.setRequestHeader("Authorization", "Basic " + btoa(headers.username + ":" + headers.password));
 
-                                row.appendChild(companyCell);
-                                row.appendChild(priceCell);
-                                priceTableBody.appendChild(row);
+            priceReq.onreadystatechange = function () {
+                if (priceReq.readyState === 4 && priceReq.status === 200) {
+                    const result = JSON.parse(priceReq.responseText);
+                    if (result.status === "success") {
+                        const priceList = result.data.price_comparisons;
+                        for (let company in priceList) {
+                            if (priceList.hasOwnProperty(company)) {
+                                let row = document.createElement("tr");
+
+                                let td1 = document.createElement("td");
+                                td1.textContent = company;
+                                td1.style.border = "1px solid black";
+                                td1.style.padding = "5px";
+
+                                let td2 = document.createElement("td");
+                                td2.textContent = "$" + priceList[company].discountedPrice;
+                                td2.style.border = "1px solid black";
+                                td2.style.padding = "5px";
+
+                                row.appendChild(td1);
+                                row.appendChild(td2);
+                                priceBody.appendChild(row);
                             }
                         }
                     } else {
-                        console.error("API error:", response.message);
+                        console.error("API error:", result.message);
                     }
                 }
             };
 
-            request.send(JSON.stringify({
+            priceReq.send(JSON.stringify({
                 type: "getproduct",
                 api_key: apiKey,
-                product_id: productId
+                product_id: idFromUrl
             }));
         }
 
-        var bestPriceElement = document.querySelector(".bottom-section div:nth-child(1) p");
-        if (bestPriceElement) {
-            bestPriceElement.textContent = "Best Price: $" + (product.salePrice || "N/A");
-        }
+        const bestPrice = document.querySelector(".bottom-section div:nth-child(1) p");
+        if (bestPrice) bestPrice.textContent = "Best Price: $" + (product.salePrice || "N/A");
 
-        var ratingElement = document.getElementById("ratingDisplay");
-        if (ratingElement) {
-            var stars = "";
-            var rating = Math.floor(parseFloat(product.reviewAvg || 0));
-            for (var i = 0; i < 5; i++) {
-                stars += i < rating ? "⭐" : "✩";
+        const ratingDisplay = document.getElementById("ratingDisplay");
+        if (ratingDisplay) {
+            let stars = "";
+            let ratingVal = Math.floor(parseFloat(product.reviewAvg || 0));
+            for (let r = 0; r < 5; r++) {
+                stars += r < ratingVal ? "⭐" : "✩";
             }
-            ratingElement.textContent = "Rating: " + stars;
+            ratingDisplay.textContent = "Rating: " + stars;
         }
 
-        var reviewsElement = document.querySelector(".bottom-section div:nth-child(3) p");
-        if (reviewsElement) {
-            var req = new XMLHttpRequest();
-            req.open("POST", requestHeaderData.host, true);
-            req.setRequestHeader("Content-Type", "application/json");
-            req.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+        const reviews = document.querySelector(".bottom-section div:nth-child(3) p");
+        if (reviews) {
+            const reviewXhr = new XMLHttpRequest();
+            reviewXhr.open("POST", headers.host, true);
+            reviewXhr.setRequestHeader("Content-Type", "application/json");
+            reviewXhr.setRequestHeader("Authorization", "Basic " + btoa(headers.username + ":" + headers.password));
 
-            req.onreadystatechange = function () {
-                if (req.readyState === 4 && req.status === 200) {
-                    var res = JSON.parse(req.responseText);
-                    if (res.status === "success" && res.data.length > 0) {
-                        var reviews = res.data;
-                        reviewsElement.textContent = "";
-                        for (var i = 0; i < reviews.length; i++) {
-                            reviewsElement.textContent += reviews[i].username + " (" + reviews[i].rating + "⭐): " + reviews[i].title + " - " + reviews[i].description + "\n";
+            reviewXhr.onreadystatechange = function () {
+                if (reviewXhr.readyState === 4 && reviewXhr.status === 200) {
+                    const reviewData = JSON.parse(reviewXhr.responseText);
+                    if (reviewData.status === "success" && reviewData.data.length > 0) {
+                        let allReviews = reviewData.data;
+                        reviews.textContent = "";
+                        for (let r = 0; r < allReviews.length; r++) {
+                            reviews.textContent += allReviews[r].username + " (" + allReviews[r].rating + "⭐): " + allReviews[r].title + " - " + allReviews[r].description + "\n";
                         }
                     } else {
-                        reviewsElement.textContent = "No reviews available.";
+                        reviews.textContent = "No reviews available.";
                     }
                 }
             };
 
-            req.send(JSON.stringify({
+            reviewXhr.send(JSON.stringify({
                 type: "getreviews",
                 api_key: apiKey,
-                product_id: productId
+                product_id: idFromUrl
             }));
         }
 
-        var rateButton = document.getElementById("rateButton");
-        rateButton.addEventListener("click", function () {
-            var rating = prompt("Rate this product (1-5):");
-            if (rating && !isNaN(rating) && rating >= 1 && rating <= 5) {
-                var sendReq = new XMLHttpRequest();
-                sendReq.open("POST", requestHeaderData.host, true);
-                sendReq.setRequestHeader("Content-Type", "application/json");
-                sendReq.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+        const rateBtn = document.getElementById("rateButton");
 
-                sendReq.onreadystatechange = function () {
-                    if (sendReq.readyState === 4 && sendReq.status === 200) {
-                        var res = JSON.parse(sendReq.responseText);
-                        if (res.status === "success") {
+        rateBtn.addEventListener("click", function () {
+            const userInput = prompt("Rate this product (1-5):");
+            if (userInput && !isNaN(userInput) && userInput >= 1 && userInput <= 5) {
+                const ratingPost = new XMLHttpRequest();
+                ratingPost.open("POST", headers.host, true);
+                ratingPost.setRequestHeader("Content-Type", "application/json");
+                ratingPost.setRequestHeader("Authorization", "Basic " + btoa(headers.username + ":" + headers.password));
+
+                ratingPost.onreadystatechange = function () {
+                    if (ratingPost.readyState === 4 && ratingPost.status === 200) {
+                        const feedback = JSON.parse(ratingPost.responseText);
+                        if (feedback.status === "success") {
                             alert("Rating submitted successfully!");
                             window.location.reload();
                         } else {
-                            alert("Failed to submit rating: " + res.message);
+                            alert("Failed to submit rating: " + feedback.message);
                         }
                     }
                 };
 
-                sendReq.send(JSON.stringify({
+                ratingPost.send(JSON.stringify({
                     type: "addreview",
                     api_key: apiKey,
-                    product_id: productId,
-                    rating: parseInt(rating),
+                    product_id: idFromUrl,
+                    rating: parseInt(userInput),
                     review_title: "Quick Rating",
                     review_description: "Rated via button"
                 }));
