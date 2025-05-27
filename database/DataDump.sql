@@ -1,75 +1,35 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4deb2~bpo10+1
--- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 17, 2025 at 10:13 AM
--- Server version: 10.3.39-MariaDB-0+deb10u2
--- PHP Version: 7.3.31-1~deb10u7
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `COS221PA5`
---
-CREATE DATABASE IF NOT EXISTS `COS221PA5` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `COS221PA5`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `BestProduct`
+-- Dumping data for table `Admin`
 --
 
-CREATE TABLE `BestProduct` (
-  `ProductID` int(11) NOT NULL,
-  `Name` varchar(255) DEFAULT NULL,
-  `Description` text DEFAULT NULL,
-  `BrandID` int(11) DEFAULT NULL,
-  `CategoryID` int(11) DEFAULT NULL,
-  `BestPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountPercent` decimal(5,2) DEFAULT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `ReviewCount` int(11) DEFAULT NULL,
-  `ReviewAverage` decimal(3,2) DEFAULT NULL,
-  `BestCompany` varchar(100) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `ThumbnailImage` varchar(255) DEFAULT NULL,
-  `CarouselImages` text DEFAULT NULL,
-  `LastUpdated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `Admin` (`UserID`, `LastLogin`, `CreatedAt`) VALUES
+                                                             (9, '2025-05-26 21:08:05', '2025-05-26 21:08:05'),
+                                                             (10, '2025-05-26 21:08:50', '2025-05-26 21:08:50');
+
+
 
 --
 -- Dumping data for table `BestProduct`
 --
 
 INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `CategoryID`, `BestPrice`, `DiscountPercent`, `RegularPrice`, `ReviewCount`, `ReviewAverage`, `BestCompany`, `OnlineAvailability`, `AddToCartURL`, `ThumbnailImage`, `CarouselImages`, `LastUpdated`) VALUES
-(1, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - Monochromatic Stainless Steel', 'This 18.2 cu. ft. Whirlpool WRT318FZDM top-freezer refrigerator features wall-to-wall frameless glass shelves, a Flexi-Slide bin, humidity-controlled crispers and gallon-size door storage, so you can easily keep your groceries fresh and organized.', 1, 1, '584.99', '0.00', '584.99', 307, '4.20', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1073004/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073004_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004cv1d.jpg\"}]', '2025-05-13 20:38:10'),
-(2, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - White', 'With wall-to-wall frameless glass shelves, humidity-controlled crispers, a Flexi-Slide bin and gallon-size door storage, this 18.2 cu. ft. Whirlpool WRT318FZDW top-freezer refrigerator provides plenty of room to house your groceries.', 1, 1, '379.43', '40.00', '632.39', 307, '4.20', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/1073095/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073095_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095cv1d.jpg\"}]', '2025-05-13 20:38:10'),
-(3, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - Black', 'With wall-to-wall frameless glass shelves, humidity-controlled crispers, a Flexi-Slide bin and gallon-size door storage, this 18.2 cu. ft. Whirlpool WRT318FZDB top-freezer refrigerator provides plenty of room to house your groceries.', 1, 1, '430.84', '34.00', '652.79', 307, '4.20', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1073119/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073119_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119ld.jpg\"}]', '2025-05-13 20:38:10'),
-(4, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - Black', 'With glass shelves, a dairy center, a deli meat drawer and analog temperature controls, this 14.3 cu. ft. Whirlpool WRT314TFDB top-freezer refrigerator allows you to keep your groceries fresh and neatly organized.', 1, 1, '474.01', '34.00', '718.19', 16, '4.30', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1073155/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073155_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155cv1d.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155cv2d.jpg\"}]', '2025-05-13 20:38:10'),
-(5, 'NewAir - 24” Built-in 46 Bottle Dual Zone Compressor Wine Cooler with Beech Wood Shelves - Stainless Steel', 'The roomy Newair 24\" Built-In Dual Zone 46 Bottle Wine Fridge slides easily between standard base cabinets to create the ultimate wine cellar in your custom kitchen. It can also stand-alone anywhere you like. This fridge offers two cooling zones to keep 46 bottles of red and white wines at their ideal temperatures&#8239;&#8212; and it looks great doing it, thanks to stainless steel and beech wood finishes.', 2, 2, '370.76', '40.00', '617.94', 85, '4.20', 'ZapNest', 1, 'https://api.bestbuy.com/click/-/1099062/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5eaaa87a-215e-4d1d-9575-9e34850c4f0a.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/361c06cf-0fbb-4098-b80d-0d2c41af3200.jpg\"}]', '2025-05-13 20:38:10'),
-(6, 'NewAir - 24\" Built-In 52 Bottle Compressor Wine Fridge with Adjustable Shelves and Precision Digital Thermostat - Stainless Steel', 'The roomy NewAir 24\" Built-In Single Zone 52 Bottle Wine Fridge slides between standard base cabinets to create a custom, built-in wine cellar in your kitchen. It can also stand alone in any room of the house. This fridge keeps an impressive 52 standard bottles at their ideal temperature with precision digital controls that let you set the temperature anywhere between 40&#176;F and 65&#176;F. The fridge is a real beauty, thanks to its triple paned UV-protected glass, stainless steel and beech wood finishes.', 2, 2, '775.99', '0.00', '775.99', 16, '3.80', 'Bitify', 0, 'https://api.bestbuy.com/click/-/1099122/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/24028e55-d169-444d-8718-e0192a954391.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/24028e55-d169-444d-8718-e0192a954391.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/24028e55-d169-444d-8718-e0192a954391.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/ff596aef-a339-4518-b787-5d75b5ea0b80.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/f9fbca6f-c2dc-460c-bebc-9861652971bd.jpg\"}]', '2025-05-13 20:38:10'),
-(7, 'GE Profile - 30\" Built-In Single Electric Convection Wall Oven with Built-In Microwave - Stainless steel', 'With spacious compartments and convection technology, this GE Profile Series PT7800SHSS microwave/wall oven combination makes it easy to cook meals quickly and to your liking. Glass touch controls facilitate the food-prep process.', 3, 3, '3268.50', '22.00', '4190.39', 181, '4.40', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1117077/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1117/1117077_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117077_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117077_sd.jpg\"}]', '2025-05-13 20:38:10'),
-(8, 'GE Profile - 30\" Built-In Double Electric Convection Wall Oven - Stainless steel', 'This GE Profile Series PT9800SHSS double wall oven combines a True European-convection, 5.0 cu. ft. lower oven and a Speedcook upper oven, which features instantaneous halogen heat, to ensure your meals are prepared to your liking.', 3, 4, '2201.47', '51.00', '4492.79', 18, '4.20', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/1117086/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1117/1117086_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117086_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117086_sa.jpg\"}]', '2025-05-13 20:38:10'),
-(9, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - White', 'This 21.3 cu. ft. Whirlpool WRT511SZDW top-freezer refrigerator\'s wall-to-wall frameless glass shelves, humidity-controlled crispers and Flexi-Slide bin make it easy to organize a variety of foods. Gallon-size door storage helps free up shelf space.', 1, 1, '625.96', '28.00', '869.39', 34, '3.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/1118003/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118003_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118003_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118003_sa.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (1, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - Monochromatic Stainless Steel', 'This 18.2 cu. ft. Whirlpool WRT318FZDM top-freezer refrigerator features wall-to-wall frameless glass shelves, a Flexi-Slide bin, humidity-controlled crispers and gallon-size door storage, so you can easily keep your groceries fresh and organized.', 1, 1, '584.99', '0.00', '584.99', 307, '4.20', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1073004/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073004_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073004cv1d.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (2, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - White', 'With wall-to-wall frameless glass shelves, humidity-controlled crispers, a Flexi-Slide bin and gallon-size door storage, this 18.2 cu. ft. Whirlpool WRT318FZDW top-freezer refrigerator provides plenty of room to house your groceries.', 1, 1, '379.43', '40.00', '632.39', 307, '4.20', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/1073095/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073095_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073095cv1d.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (3, 'Whirlpool - 18.2 Cu. Ft. Top-Freezer Refrigerator - Black', 'With wall-to-wall frameless glass shelves, humidity-controlled crispers, a Flexi-Slide bin and gallon-size door storage, this 18.2 cu. ft. Whirlpool WRT318FZDB top-freezer refrigerator provides plenty of room to house your groceries.', 1, 1, '430.84', '34.00', '652.79', 307, '4.20', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1073119/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073119_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073119ld.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (4, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - Black', 'With glass shelves, a dairy center, a deli meat drawer and analog temperature controls, this 14.3 cu. ft. Whirlpool WRT314TFDB top-freezer refrigerator allows you to keep your groceries fresh and neatly organized.', 1, 1, '474.01', '34.00', '718.19', 16, '4.30', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1073155/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1073/1073155_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155cv1d.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1073\\/1073155cv2d.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (5, 'NewAir - 24” Built-in 46 Bottle Dual Zone Compressor Wine Cooler with Beech Wood Shelves - Stainless Steel', 'The roomy Newair 24\" Built-In Dual Zone 46 Bottle Wine Fridge slides easily between standard base cabinets to create the ultimate wine cellar in your custom kitchen. It can also stand-alone anywhere you like. This fridge offers two cooling zones to keep 46 bottles of red and white wines at their ideal temperatures&#8239;&#8212; and it looks great doing it, thanks to stainless steel and beech wood finishes.', 2, 2, '370.76', '40.00', '617.94', 85, '4.20', 'ZapNest', 1, 'https://api.bestbuy.com/click/-/1099062/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/96d61bf9-678e-4a19-9db3-6198cc2b2ae8.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5eaaa87a-215e-4d1d-9575-9e34850c4f0a.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/361c06cf-0fbb-4098-b80d-0d2c41af3200.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (6, 'NewAir - 24\" Built-In 52 Bottle Compressor Wine Fridge with Adjustable Shelves and Precision Digital Thermostat - Stainless Steel', 'The roomy NewAir 24\" Built-In Single Zone 52 Bottle Wine Fridge slides between standard base cabinets to create a custom, built-in wine cellar in your kitchen. It can also stand alone in any room of the house. This fridge keeps an impressive 52 standard bottles at their ideal temperature with precision digital controls that let you set the temperature anywhere between 40&#176;F and 65&#176;F. The fridge is a real beauty, thanks to its triple paned UV-protected glass, stainless steel and beech wood finishes.', 2, 2, '775.99', '0.00', '775.99', 16, '3.80', 'Bitify', 0, 'https://api.bestbuy.com/click/-/1099122/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/24028e55-d169-444d-8718-e0192a954391.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/24028e55-d169-444d-8718-e0192a954391.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/24028e55-d169-444d-8718-e0192a954391.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/ff596aef-a339-4518-b787-5d75b5ea0b80.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/f9fbca6f-c2dc-460c-bebc-9861652971bd.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (7, 'GE Profile - 30\" Built-In Single Electric Convection Wall Oven with Built-In Microwave - Stainless steel', 'With spacious compartments and convection technology, this GE Profile Series PT7800SHSS microwave/wall oven combination makes it easy to cook meals quickly and to your liking. Glass touch controls facilitate the food-prep process.', 3, 3, '3268.50', '22.00', '4190.39', 181, '4.40', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1117077/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1117/1117077_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117077_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117077_sd.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (8, 'GE Profile - 30\" Built-In Double Electric Convection Wall Oven - Stainless steel', 'This GE Profile Series PT9800SHSS double wall oven combines a True European-convection, 5.0 cu. ft. lower oven and a Speedcook upper oven, which features instantaneous halogen heat, to ensure your meals are prepared to your liking.', 3, 4, '2201.47', '51.00', '4492.79', 18, '4.20', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/1117086/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1117/1117086_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117086_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1117\\/1117086_sa.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                    (9, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - White', 'This 21.3 cu. ft. Whirlpool WRT511SZDW top-freezer refrigerator\'s wall-to-wall frameless glass shelves, humidity-controlled crispers and Flexi-Slide bin make it easy to organize a variety of foods. Gallon-size door storage helps free up shelf space.', 1, 1, '625.96', '28.00', '869.39', 34, '3.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/1118003/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118003_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118003_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118003_sa.jpg\"}]', '2025-05-13 20:38:10'),
 (10, 'Whirlpool - 19.2 Cu. Ft. Top-Freezer Refrigerator - Monochromatic Stainless Steel', 'Easily access your favorite foods with this Whirlpool WRT549SZDM 19.2 cu. ft. top-freezer refrigerator, which features a Flexi-Slide bin, humidity-controlled crispers and 3 wall-to-wall, frameless glass shelves to keep your groceries close at hand.', 1, 1, '985.79', '0.00', '985.79', 18, '3.40', 'CoreBay', 1, 'https://api.bestbuy.com/click/-/1118049/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118049_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118049_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118049_sa.jpg\"}]', '2025-05-13 20:38:10'),
-(11, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - Black', 'Store your groceries at the right temperature for freshness with this 21.3 cu. ft. Whirlpool WRT541SZDB top-freezer refrigerator, which features frameless glass shelves, humidity-controlled crispers and a Flexi-Slide bin for flexible storage options.', 1, 1, '824.90', '33.00', '1231.19', 69, '3.90', 'ChipCart', 1, 'https://api.bestbuy.com/click/-/1118067/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118067_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118067_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118067_sa.jpg\"}]', '2025-05-13 20:38:10'),
-(12, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - Monochromatic Stainless Steel', 'Stock up on your favorite foods with this Whirlpool WRT511SZDM 21.3 cu. ft. top-freezer refrigerator, which features wall-to-wall, frameless glass shelves, a Flexi-Slide bin and gallon-size door storage to help keep groceries neatly organized.', 1, 1, '746.21', '33.00', '1113.74', 34, '3.80', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1118076/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118076_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118076_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118076_sa.jpg\"}]', '2025-05-13 20:38:10'),
-(13, 'Whirlpool - SideKicks 17.7 Cu. Ft. Refrigerator - Monochromatic Stainless Steel', 'With up-front electronic controls and a temperature alarm, this 17.7 cu. ft. Whirlpool SideKicks WSR57R18DM refrigerator allows you to keep your groceries fresh. Glass shelves and an in-door pizza pocket provide flexible storage options.', 1, 5, '1480.42', '32.00', '2177.09', 24, '2.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/1118109/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118109_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118109_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118109_sd.jpg\"}]', '2025-05-13 20:38:10'),
-(14, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - White', 'Chill groceries with this Whirlpool WRT134TFDW 14.3 cu. ft. top-freezer refrigerator, which features interior temperature control dials for easy adjustments. Three shelves and a deli meat drawer help organize the storage space.', 1, 1, '297.21', '57.00', '691.19', 407, '4.40', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1118145/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118145_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_sa.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_rd.jpg\"}]', '2025-05-13 20:38:10'),
-(15, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - Biscuit', 'Store your fresh and frozen goods in this Whirlpool WRT104TFDT 14.3 cu. ft. top-freezer refrigerator, which offers glass and wire shelves and spacious compartments to accommodate your groceries. Analog controls facilitate temperature adjustment.', 1, 1, '498.41', '0.00', '498.41', 13, '4.30', 'VoltEdge', 1, 'https://api.bestbuy.com/click/-/1118163/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118163_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_sa.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_rd.jpg\"}]', '2025-05-13 20:38:10'),
-(16, 'Whirlpool - 19.2 Cu. Ft. Top-Freezer Refrigerator - White', 'Easily access your favorite foods with this Whirlpool WRT549SZDW 19.2 cu. ft. top-freezer refrigerator, which features a Flexi-Slide bin, humidity-controlled crispers and 3 wall-to-wall, frameless glass shelves to keep your groceries close at hand.', 1, 1, '355.07', '54.00', '771.89', 18, '3.40', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1118172/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118172_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118172_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118172_sa.jpg\"}]', '2025-05-13 20:38:10'),
-(17, 'Hamilton Beach - Steak Lover\'s Indoor Grill - Black', 'Easily prepare excellent steaks and more with this indoor grill that features a searing function that cooks meat at 500&#176; to lock in flavor. The removable drip tray catches excess runoff for healthier meals.', 4, 6, '42.67', '39.00', '69.95', 77, '4.60', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1174146/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1174/1174146_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146ld.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (11, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - Black', 'Store your groceries at the right temperature for freshness with this 21.3 cu. ft. Whirlpool WRT541SZDB top-freezer refrigerator, which features frameless glass shelves, humidity-controlled crispers and a Flexi-Slide bin for flexible storage options.', 1, 1, '824.90', '33.00', '1231.19', 69, '3.90', 'ChipCart', 1, 'https://api.bestbuy.com/click/-/1118067/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118067_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118067_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118067_sa.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (12, 'Whirlpool - 21.3 Cu. Ft. Top-Freezer Refrigerator - Monochromatic Stainless Steel', 'Stock up on your favorite foods with this Whirlpool WRT511SZDM 21.3 cu. ft. top-freezer refrigerator, which features wall-to-wall, frameless glass shelves, a Flexi-Slide bin and gallon-size door storage to help keep groceries neatly organized.', 1, 1, '746.21', '33.00', '1113.74', 34, '3.80', 'TechNova', 1, 'https://api.bestbuy.com/click/-/1118076/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118076_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118076_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118076_sa.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (13, 'Whirlpool - SideKicks 17.7 Cu. Ft. Refrigerator - Monochromatic Stainless Steel', 'With up-front electronic controls and a temperature alarm, this 17.7 cu. ft. Whirlpool SideKicks WSR57R18DM refrigerator allows you to keep your groceries fresh. Glass shelves and an in-door pizza pocket provide flexible storage options.', 1, 5, '1480.42', '32.00', '2177.09', 24, '2.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/1118109/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118109_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118109_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118109_sd.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (14, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - White', 'Chill groceries with this Whirlpool WRT134TFDW 14.3 cu. ft. top-freezer refrigerator, which features interior temperature control dials for easy adjustments. Three shelves and a deli meat drawer help organize the storage space.', 1, 1, '297.21', '57.00', '691.19', 407, '4.40', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1118145/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118145_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_sa.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118145_rd.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (15, 'Whirlpool - 14.3 Cu. Ft. Top-Freezer Refrigerator - Biscuit', 'Store your fresh and frozen goods in this Whirlpool WRT104TFDT 14.3 cu. ft. top-freezer refrigerator, which offers glass and wire shelves and spacious compartments to accommodate your groceries. Analog controls facilitate temperature adjustment.', 1, 1, '498.41', '0.00', '498.41', 13, '4.30', 'VoltEdge', 1, 'https://api.bestbuy.com/click/-/1118163/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118163_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_sa.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118163_rd.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (16, 'Whirlpool - 19.2 Cu. Ft. Top-Freezer Refrigerator - White', 'Easily access your favorite foods with this Whirlpool WRT549SZDW 19.2 cu. ft. top-freezer refrigerator, which features a Flexi-Slide bin, humidity-controlled crispers and 3 wall-to-wall, frameless glass shelves to keep your groceries close at hand.', 1, 1, '355.07', '54.00', '771.89', 18, '3.40', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1118172/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1118/1118172_sa.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118172_sa.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1118\\/1118172_sa.jpg\"}]', '2025-05-13 20:38:10'),
+                                                                                                                                                                                                                                                                                     (17, 'Hamilton Beach - Steak Lover\'s Indoor Grill - Black', 'Easily prepare excellent steaks and more with this indoor grill that features a searing function that cooks meat at 500&#176; to lock in flavor. The removable drip tray catches excess runoff for healthier meals.', 4, 6, '42.67', '39.00', '69.95', 77, '4.60', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/1174146/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1174/1174146_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1174\\/1174146ld.jpg\"}]', '2025-05-13 20:38:10'),
 (18, 'Hamilton Beach - 6-Speed Classic Hand/Stand Mixer - Silver', 'This versatile mixer allows you to use the hand mixer alone or position it on the stand for hands-free use. With 290 watts of power, 6 speed settings and an attachment set, this mixer thoroughly blends ingredients.', 4, 7, '27.12', '46.00', '50.22', 106, '4.20', 'ZapNest', 1, 'https://api.bestbuy.com/click/-/1179026/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1179/1179026_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1179\\/1179026_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1179\\/1179026_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1179\\/1179026_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (19, 'Cuisinart - PerfecTemp Cordless Electric Kettle - Silver', 'Protect your tea from over brewing with the PerfecTemp Cordless Electric Kettle and its six preset temperatures optimized for every variety of tea. The 1500-watt cordless kettle quickly brings water to the exact heat and keep it at temperature for 30 minutes, so you don&#8217;t have to wait for your second cup! And for those who enjoy coffee, this Cuisinart teakettle also features a French Press preset to bring out the full flavors of your coffee grinds every time.', 5, 8, '69.34', '27.00', '94.99', 638, '4.70', 'CoreBay', 1, 'https://api.bestbuy.com/click/-/1208122/cart', NULL, '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1208\\/1208122_rd.jpg\"}]', '2025-05-13 20:38:10'),
 (20, 'Cuisinart - Power Advantage PLUS 9 Speed Hand Mixer - White', 'Power Advantage PLUS 9 Speed Hand Mixer with Storage Case', 5, 9, '34.16', '27.99', '47.44', 134, '4.80', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/1208238/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/1208/1208238_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/1208\\/1208238_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/1208\\/1208238_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/1208\\/1208238_ra.jpg\"}]', '2025-05-13 20:38:10'),
@@ -318,7 +278,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (258, 'Sony - FE 70-300mm f/4.5-5.6 G OSS Telephoto Lens for Alpha E-mount Cameras - Black', 'Get a little closer to your subject with this Sony 70-300mm lens. Built-in optical stabilization delivers solid results even under low-light conditions, and the dust-resistant design helps prevent speckles from forming on the sensor itself. Narrower apertures from f/4.5-5.6 ensure you get wider depths of field with this Sony 70-300mm lens.', 51, 90, '910.34', '32.00', '1338.74', 190, '4.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5169500/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5169/5169500_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500_sd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500ld.jpg\"}]', '2025-05-13 20:38:10'),
 (259, 'Sunpak - PlatinumPlus 4200XL 42\" Tripod - Black', 'Capture clear, stable videos and pictures with this Sunpak PlatinumPlus 4200XL 620-420BB 42\" tripod, which features 8 leg sections that extend from 11\" to 42\" for use on tabletops or the floor. The nonslip rubber feet ensure stability.', 55, 81, '14.78', '56.00', '33.59', 1508, '3.90', 'TechNova', 1, 'https://api.bestbuy.com/click/-/5191931/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5191/5191931_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931ld.jpg\"}]', '2025-05-13 20:38:10'),
 (260, 'Panasonic - LUMIX G 25mm f/1.7 ASPH. Lens for Mirrorless Micro Four Thirds Compatible Cameras, H-H025-K - Black', 'Take beautiful photos and hi-speed video with this hybrid Panasonic LUMIX 25mm lens. Compatible with LUMIX cameras, this lens attaches easily without adding weight to your camera. The natural viewing angle works well in a wide variety of applications, and this Panasonic LUMIX 25mm lens features motor focusing for ultra-clear images.', 19, 78, '137.74', '42.00', '237.49', 282, '4.70', 'TechNova', 1, 'https://api.bestbuy.com/click/-/5203501/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5203/5203501_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501_sd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501ld.jpg\"}]', '2025-05-13 20:38:10'),
-(261, 'Polaroid - Optics 52mm Multicoated UV Protective Lens Filter', 'Make sure your photos retain sharpness and contrast by filtering out UV rays and haze with this Polaroid Optics PLFILUV52 filter that is designed for use with 52mm diameter lenses.', 64, 98, '3.55', '30.93', '5.14', 3, '3.30', 'ByteCrate', 0, 'https://api.bestbuy.com/click/-/5208969/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5208/5208969_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"}]', '2025-05-13 20:38:10'),
+(261, 'Polaroid - Optics 52mm Multicoated UV Protective Lens Filter', 'Make sure your photos retain sharpness and contrast by filtering out UV rays and haze with this Polaroid Optics PLFILUV52 filter that is designed for use with 52mm diameter lenses.', 64, 98, '3.55', '30.93', '5.14', 0, '0.00', 'ByteCrate', 0, 'https://api.bestbuy.com/click/-/5208969/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5208/5208969_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"}]', '2025-05-27 14:30:28'),
 (262, 'Sunpak - TravelLite Pro Reverse Folding 63\" Tripod - Black with red accents', 'Pack this TravelLite Pro tripod in your bag for better photography sessions. Its reverse folding system makes it compact enough for travel, and twist-lock leg locks ensure easy setup. This TravelLite Pro tripod has leg angle adjustment latches for shooting at almost any angle and rubber-tipped feet that provide a secure stand for your equipment.', 55, 81, '102.09', '22.00', '130.89', 993, '4.50', 'VoltEdge', 1, 'https://api.bestbuy.com/click/-/5310001/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5310/5310001_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"}]', '2025-05-13 20:38:10'),
 (263, 'Celestron - AstroMaster Accessory Kit AstroMaster Accessory Kit - Multicolor', 'Celestron AstroMaster Accessory Kit Brand New Includes Two Year WarrantyThe Celestron AstroMaster Accessory Kit is designed to enhance the functionality and pleasure of using the Celestron telescope. This kit features two fully coated eyepieces; a 15mm Kellner and a 6mm Plossl. This kit can also be used with other telescope brands that accept 1.25\" eyepieces and filters. There is a 2x doubling lens that will double the magnification of any eyepiece and has a built-on T-thread allowing camera to be attached.   The AstroMaster Accessory kit has planetary filters that reduce glare and increase contrast, definition and resolution. This kit includes #80A blue planetary filter, #25 red planetary filter, moon filter and hard plastic carrying case with fitted cut foam inside to protect the eyepieces and filters. These anti-reflection coated filters are great enhancement for lunar and planet viewing.   AstroMaster Accessory Kit Features:   Product # 94307Accessory KitPlanetary FiltersDouble Magnification Power6mm Plossl EyepieceMoon Filter - Lowers Amount of Light Reaching Your Eye for Clear ViewFully Coated Kellner Eyepieces  Includes:15 mm Kellner Eyepiece6 mm Plossl Eyepiece2x Power Lens#80A Blue Planetary Filter#25 Red Planetary FilterMoon FilterMicrofiber Cleaning ClothPlastic, Hard Carrying Case w/ Foam-Lined Interior', 59, 87, '47.11', '41.00', '79.85', 8, '4.90', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5360394/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5360/5360394_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (264, 'Sony - 2.0x Teleconverter Lens for Select Lenses - White', 'Sony 2.0x Teleconverter Lens: Double the focal length of your lens with this Sony 2.0x teleconverter. Extending the range of your current lens with minimal light loss lets you take closer wildlife photographs or portraits. High picture quality and lens features such as autofocus and aperture adjustments are retained when you use this Sony 2.0x teleconverter.', 51, 99, '179.52', '52.00', '373.99', 47, '4.60', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/5507119/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5507/5507119_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"}]', '2025-05-13 20:38:10'),
@@ -569,7 +529,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (504, 'Garmin - Vehicle Charger - Black', 'Get where you\'re going without running out of power with this Garmin vehicle charger. The 12V charger is compatible with a range of Garmin Nuvi GPS models to deliver you from doorstep to doorstep without having to ask for directions. This Garmin vehicle charger plugs easily into your car\'s auxiliary power port.', 101, 159, '14.52', '29.99', '20.74', 1336, '4.70', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5513289/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5513/5513289_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (505, 'Samsung - 3.3\' USB Type A-to-USB Type C Device Cable - White', 'Charge your device quickly and easily with this Samsung USB-C cable. It also transfers photo, video, data and music files between your smartphone and laptop.', 102, 160, '8.25', '41.03', '13.99', 2878, '4.70', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/5607902/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5607/5607902_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (506, 'Apple - Lightning-to-3.5mm Headphone Adapter - White', 'This Apple&#174; MD821ZM/A Lightning-to-USB adapter lets you connect devices that use a 3.5 mm audio plug to your Lightning devices.', 38, 161, '6.32', '37.98', '10.19', 27226, '4.70', 'Bitify', 0, 'https://api.bestbuy.com/click/-/5622278/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5622/5622278_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"}]', '2025-05-13 20:38:10'),
-(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 105, '4.50', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-13 20:38:10'),
+(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 3, '3.67', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-27 04:27:21'),
 (508, 'Ultra Mobile - 1-Month 3GB Prepaid SIM Card - Orange', 'With an Ultra Mobile wireless prepaid SIM card kit, your world is always included, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world.', 103, 162, '9.22', '49.97', '18.43', 135, '4.20', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5706136/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5706/5706136_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (509, 'Belkin - Lightning Audio with Charge Adapter - White', 'Enjoy nonstop music while charging your iPhone with this Belkin Lightning Audio + Charge RockStar adapter. It keeps your iPhone 7 or 7 Plus fully functional while plugged in, and it\'s compatible with Apple MFi-certified cables and headphones. The 12W power pass-through of this Belkin Lightning Audio + Charge RockStar adapter provides optimal charging speed for compatible devices.', 104, 161, '13.52', '39.99', '22.53', 1930, '4.50', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5710888/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5710/5710888_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (510, 'SureCall - Flare 4G Cell Phone Signal Booster - Silver', 'Improve cellular coverage throughout your home or office with this SureCall cell phone signal booster. It handles multiple users simultaneously, providing improved voice, text and 4G LTE data signals covering up to 2,500 sq. ft. This SureCall cellular phone signal booster comes with the antennas, cable and power supply for fast setup.', 100, 157, '184.91', '33.00', '275.99', 12, '3.80', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5753128/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5753/5753128_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"}]', '2025-05-13 20:38:10'),
@@ -635,7 +595,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (568, 'Apple - Geek Squad Certified Refurbished iPhone X 64GB - Space Gray (Sprint)', 'Geek Squad Certified Refurbished products are thoroughly, painstakingly and lovingly tested, so you can be sure that your device will work right, right away. Learn more about Geek Squad Certified Refurbished products.Stay connected to friends and family with this refurbished iPhone X smartphone for Sprint. It has 64GB of internal memory to save important files and contacts, and its 12MP camera takes crisp photos almost anywhere. This iPhone X smartphone has wireless charging capability and a long-lasting battery for added convenience.', 38, 171, '854.99', '0.00', '854.99', NULL, NULL, 'VoltEdge', 0, 'https://api.bestbuy.com/click/-/6304051/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6304/6304051_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_sd.jpg\"},{\"backViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304051_bd.jpg\"}]', '2025-05-13 20:38:10'),
 (569, 'Apple - Geek Squad Certified Refurbished iPhone 8 256GB - Space Gray (Sprint)', 'Geek Squad Certified Refurbished products are thoroughly, painstakingly and lovingly tested, so you can be sure that your device will work right, right away. Learn more about Geek Squad Certified Refurbished products.Talk online or play games with this refurbished iPhone 8 smartphone for Sprint. It has a 12MP camera for capturing important moments and memories, and its 256GB of memory lets you store plenty of files and apps. This iPhone 8 smartphone has a front-facing 7MP camera for taking selfies or making video calls.', 38, 171, '407.99', '36.00', '637.49', 1, '3.00', 'Nexonic', 0, 'https://api.bestbuy.com/click/-/6304057/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6304/6304057_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_sd.jpg\"},{\"backViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6304\\/6304057_bd.jpg\"}]', '2025-05-13 20:38:10'),
 (570, 'Apple - Pre-Owned Excellent iPhone 8 Plus 256GB 4G LTE (Unlocked) - Silver', 'Watch movies or play games on this refurbished Apple iPhone 8 Plus. The 5.5-inch display supports enjoyable media experiences, and the 256GB of internal memory lets you store plenty of photos, videos and apps. This unlocked Apple iPhone 8 Plus works with any carrier and has front and back cameras for capturing candid moments and selfies.', 38, 164, '132.77', '53.00', '282.49', 711, '4.10', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6305072/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6305/6305072_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6305\\/6305072_rd.jpg\"}]', '2025-05-13 20:38:10'),
-(571, 'Mint Mobile - Prepaid SIM Card Starter Kit - Gold', 'Our See For Yourself Kit is an easy, worry-free way to try Mint Mobile out before committing to one of our phone plans. Download our free Mint Mobile app to activate and test Mint where you live, work, and play. Try us for 7 days and once you know we\'re a match, choose the plan that\'s right for you. Bring your phone number with you from your current carrier or get a new one. The sooner you buy, the sooner you start saving like a fox.', 106, 162, '1.36', '39.82', '2.26', 858, '4.40', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6310601/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5ad8c6df-b247-4354-a25a-814b5617cb4b.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/96f2d8f4-1361-4626-b243-dd51fa032e7f.jpg\"}]', '2025-05-13 20:38:10'),
+(571, 'Mint Mobile - Prepaid SIM Card Starter Kit - Gold', 'Our See For Yourself Kit is an easy, worry-free way to try Mint Mobile out before committing to one of our phone plans. Download our free Mint Mobile app to activate and test Mint where you live, work, and play. Try us for 7 days and once you know we\'re a match, choose the plan that\'s right for you. Bring your phone number with you from your current carrier or get a new one. The sooner you buy, the sooner you start saving like a fox.', 106, 162, '1.36', '39.82', '2.26', 2, '4.50', 'ZapNest', 0, 'https://api.bestbuy.com/click/-/6310601/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/e0f689e8-b04c-44a0-8709-05d336fb3df2.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5ad8c6df-b247-4354-a25a-814b5617cb4b.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/96f2d8f4-1361-4626-b243-dd51fa032e7f.jpg\"}]', '2025-05-26 18:39:23'),
 (572, 'SaharaCase - ZeroDamage Privacy Glass Screen Protector for Apple® iPhone® 8/7/6s/6 - Clear', 'Protect your iPhone 8, 7, 6s, 6 with the ZeroDamage Privacy screen protector that features tempered-glass material to safeguard your device\'s display from breaks, scuffs, and scratches. The oil-resistant coating keeps the screen clean.', 109, 174, '18.92', '48.01', '36.39', 35, '4.10', 'ZapNest', 1, 'https://api.bestbuy.com/click/-/6315557/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6315/6315557_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315557_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (573, 'SaharaCase - ZeroDamage Privacy Glass Screen Protector for Apple® iPhone® 8 Plus/7 Plus/6s Plus/6 Plus - Clear', 'Protect your iPhone 8 Plus with this SaharaCase ZeroDamage privacy screen protector. The 9H hardened clear tempered glass safeguards the device\'s display against scratches and breakage from falls and bumps. This SaharaCase ZeroDamage privacy screen protector has an oil-resistant coating to keep fingerprints to a minimum while ensuring a precise touch response.', 109, 174, '38.14', '0.00', '38.14', 26, '4.50', 'Bitify', 1, 'https://api.bestbuy.com/click/-/6315559/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6315/6315559_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6315\\/6315559_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (574, 'SureCall - Flare 3.0 Cell Phone Signal Booster - Silver', 'Count on stronger 4G LTE data reception with this SureCall Flare 3.0 cellular signal booster kit. It supports all U.S. cell service carriers and optimizes mobile data signal strength in a 3000 sq. ft. remote home or building. Install the high-gain Yagi antenna of this SureCall Flare 3.0 cellular signal booster kit via its mounting hardware and 50-foot RG-6 cable.', 100, 157, '173.88', '48.00', '334.39', 11, '3.80', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/6319147/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/6319/6319147_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/6319\\/6319147_rd.jpg\"}]', '2025-05-13 20:38:10'),
@@ -759,19 +719,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (689, 'CorLiving - 4-Tier Media Stand, DVD Storage Cabinet with 3 Adjustable Shelves, Tempered Glass Doors, and Cable Management - Black', 'Step into a world of organized entertainment with our Cranley Component Stand. This stand, designed to cater to the demands of a modern, tech-savvy lifestyle, embodies durability and practicality. It epitomizes what today\'s busy, technology-oriented households require for their entertainment spaces. The robust Ravenwood Black finish is high quality and scratch-resistant, ensuring it withstands the hustle and bustle of daily life. Its tempered glass doors provide a protective yet sleek cover for your valued media devices, while adjustable shelves offer customizable storage solutions for everything from gaming consoles to streaming boxes. But the Cranley Component Stand isn\'t just about sturdiness and reliability; it\'s about making your life easier and more efficient. The built-in cable management system is a game-changer, allowing you to keep all your cables organized and out of sight, eliminating clutter. This feature can benefit families with children or pets, where safety and neatness are paramount. Furthermore, its space-saving design makes it an excellent choice for those in smaller living spaces, ensuring you don\'t have to sacrifice style for functionality. Whether you\'re a movie buff, a gaming enthusiast, or someone who loves hosting, this component stand seamlessly integrates into your lifestyle, enhancing your entertainment experience while keeping your space tidy and streamlined.', 121, 187, '150.96', '27.00', '206.79', 22, '4.00', 'CoreBay', 1, 'https://api.bestbuy.com/click/-/4202012/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/38cc522f-8b89-4f97-a390-011487e8015f.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/38cc522f-8b89-4f97-a390-011487e8015f.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/38cc522f-8b89-4f97-a390-011487e8015f.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/8162022a-991f-47ea-93ef-8b2e4b15a882.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/dae57cec-4466-4f80-9d73-f25aca18525d.jpg\"}]', '2025-05-13 20:38:10'),
 (690, 'CorLiving - Fillmore Black Wooden TV Stand, for TVs up to 55\" - Ravenwood Black', 'Enhance your living space with the contemporary design of the FS-3480 TV Stand from the Fillmore Collection by CorLiving. Enjoy the generous open storage space perfect for housing all of your A/V equipment, complete with adjustable shelves to create a custom look. The open design provides ample storage space and crucial breathing room for all of your high valued electronics allowing them to perform at their full potential. Complete in our signature Ravenwood Black finish this transitional stand can accommodate most 42\"-55\" TVs. Bring home this contemporary furniture by CorLiving.', 121, 185, '117.59', '0.00', '117.59', 137, '4.20', 'VoltEdge', 1, 'https://api.bestbuy.com/click/-/4202146/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/4202/4202146_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/4202\\/4202146_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/4202\\/4202146_sd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/4202\\/4202146_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/4202\\/4202146ld.jpg\"}]', '2025-05-13 20:38:10');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `Bitify`
---
-
-CREATE TABLE `Bitify` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Bitify`
@@ -1193,16 +1141,7 @@ INSERT INTO `Bitify` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCart
 (689, '233.19', '233.19', 'https://api.bestbuy.com/click/-/4202012/cart', 1),
 (690, '153.99', '153.99', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `Brand`
---
-
-CREATE TABLE `Brand` (
-  `BrandID` int(11) NOT NULL,
-  `BrandName` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Brand`
@@ -1331,19 +1270,7 @@ INSERT INTO `Brand` (`BrandID`, `BrandName`) VALUES
 (7, 'Whynter'),
 (27, 'Yamaha');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `ByteCrate`
---
-
-CREATE TABLE `ByteCrate` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ByteCrate`
@@ -1558,19 +1485,7 @@ INSERT INTO `ByteCrate` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToC
 (685, '40.79', '40.79', 'https://api.bestbuy.com/click/-/3720011/cart', 1),
 (689, '213.39', '213.39', 'https://api.bestbuy.com/click/-/4202012/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `ByteMart`
---
-
-CREATE TABLE `ByteMart` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ByteMart`
@@ -2095,16 +2010,7 @@ INSERT INTO `ByteMart` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 (688, '619.98', '477.38', 'https://api.bestbuy.com/click/-/4022512/cart', 1),
 (690, '170.79', '128.09', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `Category`
---
-
-CREATE TABLE `Category` (
-  `CategoryID` int(11) NOT NULL,
-  `CategoryName` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Category`
@@ -2310,9 +2216,9 @@ INSERT INTO `Category` (`CategoryID`, `CategoryName`) VALUES
 
 CREATE TABLE `ChipCart` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -2908,16 +2814,7 @@ INSERT INTO `ChipCart` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 (687, '461.23', '461.23', 'https://api.bestbuy.com/click/-/4022106/cart', 1),
 (689, '257.39', '257.39', 'https://api.bestbuy.com/click/-/4202012/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `Company`
---
-
-CREATE TABLE `Company` (
-  `CompanyID` int(11) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Company`
@@ -2935,19 +2832,7 @@ INSERT INTO `Company` (`CompanyID`, `Name`) VALUES
 (9, 'VoltEdge'),
 (10, 'ZapNest');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `CoreBay`
---
-
-CREATE TABLE `CoreBay` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `CoreBay`
@@ -3231,19 +3116,7 @@ INSERT INTO `CoreBay` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCar
 (689, '206.79', '150.96', 'https://api.bestbuy.com/click/-/4202012/cart', 1),
 (690, '149.79', '149.79', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `FuseBasket`
---
-
-CREATE TABLE `FuseBasket` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `FuseBasket`
@@ -3389,19 +3262,7 @@ INSERT INTO `FuseBasket` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddTo
 (686, '43.79', '43.79', 'https://api.bestbuy.com/click/-/3721001/cart', 1),
 (688, '489.98', '269.49', 'https://api.bestbuy.com/click/-/4022512/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `Nexonic`
---
-
-CREATE TABLE `Nexonic` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Nexonic`
@@ -3547,35 +3408,20 @@ INSERT INTO `Nexonic` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCar
 (680, '3129.99', '3129.99', 'https://api.bestbuy.com/click/-/3047587/cart', 1),
 (681, '3267.14', '2123.64', 'https://api.bestbuy.com/click/-/3047602/cart', 1);
 
--- --------------------------------------------------------
+
 
 --
--- Table structure for table `Review`
+-- Dumping data for table `Review`
 --
 
-CREATE TABLE `Review` (
-  `ReviewID` int(11) NOT NULL,
-  `ProductID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `ReviewTitle` varchar(255) DEFAULT NULL,
-  `ReviewDescription` text DEFAULT NULL,
-  `ReviewRating` tinyint(4) NOT NULL CHECK (`ReviewRating` between 1 and 5),
-  `Timestamp` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `Review` (`ReviewID`, `ProductID`, `UserID`, `ReviewTitle`, `ReviewDescription`, `ReviewRating`, `Timestamp`) VALUES
+(3, 571, 6, 'Satisfied', 'Works well on my so', 5, '2025-05-27 14:29:00'),
+(4, 507, 8, 'Satisfactory', 'A decent product', 3, '2025-05-26 18:43:10'),
+(5, 571, 8, 'lovely', 'works well', 4, '2025-05-26 18:39:23'),
+(7, 507, 7, 'Better', 'Good product', 4, '2025-05-27 03:29:47'),
+(8, 507, 6, 'Good Product', 'Very good!', 4, '2025-05-27 04:27:21');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `TechNova`
---
-
-CREATE TABLE `TechNova` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `TechNova`
@@ -4100,35 +3946,23 @@ INSERT INTO `TechNova` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 (687, '356.23', '356.23', 'https://api.bestbuy.com/click/-/4022106/cart', 1),
 (690, '155.39', '122.76', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
 
--- --------------------------------------------------------
+
 
 --
--- Table structure for table `Users`
+-- Dumping data for table `Users`
 --
 
-CREATE TABLE `Users` (
-  `UserID` int(11) NOT NULL,
-  `Email` varchar(255) DEFAULT NULL,
-  `Username` varchar(50) DEFAULT NULL,
-  `Salt` varchar(64) DEFAULT NULL,
-  `PasswordHash` char(128) DEFAULT NULL,
-  `APIKey` varchar(64) DEFAULT NULL,
-  `CreatedAt` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `Users` (`UserID`, `Email`, `Username`, `Salt`, `PasswordHash`, `APIKey`, `CreatedAt`) VALUES
+(1, 'test@gmail.com', 'newuser', '84abf4765bb1ee0ec7cd192a818177b53b2e5699725a96b2d17dce3bfadf99ba', '12162d65351c8d31db162200dc5405a8c8e39fe72cd5bd62f2fa92461caa60e259f108a699fb53661fde1c18e5df2d8a44184dcafaba03ddfa84032c9b396dee', '4d592c3020b2847db714f88a29ced27d7d177bfdbdca56e7239b78876536e67a', '2025-05-26 10:53:04'),
+(4, 'test123@gmail.com', 'testUser', 'd19c924afb1e85eecfbb88bc53fd914c313d834c63505a3958f644c04261f64e', '9e55a19eb745c87913fbb5672383078e9bac92033414a0078c913abaddeb8ad482195a969406e241a544c219abbf5247340e72cb5d8b1ec393c3a77747d85345', '7b708da7ce3863762173a66de859dc83fdc23278a279a25533b64eff8202bdea', '2025-05-26 11:41:15'),
+(5, 'Smit@gmail.com', 'userSmit', 'badca89c818d0060ff8ac59f9c921f26c9efbea8d68d9617164de23eb2676580', 'e7187cc83e4785136a959d461007c913d85151b8f18b1c7cab0fa6d84c2cefc9e30b33736f1c0ca5178fa836163ce18ffe57942da00788c79c6f4e081b72c5a8', '13916fd5cb4166a9826775ca670d100fe09046ae9e07c832006ff9c7b1840b6d', '2025-05-26 13:07:32'),
+(6, 'testuser@gmail.com', 'tester', '304a1e698fa4c3c7a1b13aeccbd7986bf289738d22ca13e289df85b715a02c48', '0c6af4f7216af4d2ed8a311c03b50d07de3ea94769ed2430bbafe050372dd018cb9669459dec60eab3278378f3d98c8bf7efcac47569026d9870c4fed8c88c4a', '72fb5bb8995047290651b66459ab2fa260f7e4eedcc3af9a2290d3f91e09f8ac', '2025-05-26 15:47:50'),
+(7, 'testuser2@gmail.com', 'tester2', 'd029b1782abe04e7310f8a91820c2460321f4bf2cc4cb200f741f086fdda4f35', 'ffa6c367c04bf93665937fc8e58e4b5849f031cb5e23ebaa350a0248c5c0872eeca8a23ea79d04387e96d2b9d4ca871f2c6a2859768ec12a16eb0dbc63e59786', 'f364a475cd2b5d369810bf78b4bf6623e0cb35f7a31ae49d7bf5167143182a8b', '2025-05-26 16:38:44'),
+(8, 'testuser3@gmail.com', 'tester3', '3125cdfbdea30482ab299e84281495e6a6547ba6bc42c0cfd9911c146d14fe18', '19d74bcc99e7519442731aa66decfddd42dc7cd3402af0d9ddac78cded11721e5f5a70aae07142de1415390752d6d1f0dbccf16aebefa929c2757575a8d37887', '840b38be5f1d4cd19f18c81590e3db504564aa7641dc0c6381551a1db87f7f19', '2025-05-26 18:33:33'),
+(9, 'admin@gmail.com', 'Admin', 'f6cc0a1c9259acfb82d49b6f69619cf183c9ad4cbfb894bded973ca874a971ca', '3b52f3af5e3e7e928fe452589362fc73e1d5e0e273f419eee0d6a730f0040e0d159e3d972abcaf163745fde480941619558e797097c285c53eaef5fb1e6724b7', 'c444d46e2e645c553693f6d60fa4aeb8d917e87c6e7d4c433f6b78dfa2647e46', '2025-05-26 21:05:35'),
+(10, 'admin2@gmail.com', 'Admin2', '1318393ddf8578d1a8ed3a49dfa978eee38f469cdf6b8812d4e6da75d62e101b', 'c8b9da35b5885069ee2498a0b604d8e740b7791cf1229ce085c26e08c3fde033c6237d497f8b98c28a3f5a4de79b38e10535a5fa0b550925ca60c23fd335bcda', '511e11c818e0d0aba302ca79e8b8ce119943521a20ba08ad35601c440bbaf553', '2025-05-26 21:08:31');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `VoltEdge`
---
-
-CREATE TABLE `VoltEdge` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `VoltEdge`
@@ -4481,19 +4315,7 @@ INSERT INTO `VoltEdge` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 (689, '272.79', '272.79', 'https://api.bestbuy.com/click/-/4202012/cart', 1),
 (690, '117.59', '117.59', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `ZapNest`
---
-
-CREATE TABLE `ZapNest` (
-  `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
-  `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ZapNest`
@@ -4948,232 +4770,3 @@ INSERT INTO `ZapNest` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCar
 (688, '499.98', '499.98', 'https://api.bestbuy.com/click/-/4022512/cart', 1),
 (689, '204.59', '204.59', 'https://api.bestbuy.com/click/-/4202012/cart', 1),
 (690, '153.99', '153.99', 'https://api.bestbuy.com/click/-/4202146/cart', 1);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `BestProduct`
---
-ALTER TABLE `BestProduct`
-  ADD PRIMARY KEY (`ProductID`),
-  ADD KEY `fk_BP1` (`BrandID`),
-  ADD KEY `fk_BP2` (`CategoryID`);
-
---
--- Indexes for table `Bitify`
---
-ALTER TABLE `Bitify`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Brand`
---
-ALTER TABLE `Brand`
-  ADD PRIMARY KEY (`BrandID`),
-  ADD UNIQUE KEY `BrandName` (`BrandName`);
-
---
--- Indexes for table `ByteCrate`
---
-ALTER TABLE `ByteCrate`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `ByteMart`
---
-ALTER TABLE `ByteMart`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Category`
---
-ALTER TABLE `Category`
-  ADD PRIMARY KEY (`CategoryID`),
-  ADD UNIQUE KEY `CategoryName` (`CategoryName`);
-
---
--- Indexes for table `ChipCart`
---
-ALTER TABLE `ChipCart`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Company`
---
-ALTER TABLE `Company`
-  ADD PRIMARY KEY (`CompanyID`),
-  ADD UNIQUE KEY `Name` (`Name`);
-
---
--- Indexes for table `CoreBay`
---
-ALTER TABLE `CoreBay`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `FuseBasket`
---
-ALTER TABLE `FuseBasket`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Nexonic`
---
-ALTER TABLE `Nexonic`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Review`
---
-ALTER TABLE `Review`
-  ADD PRIMARY KEY (`ReviewID`),
-  ADD KEY `fk_Review1` (`ProductID`),
-  ADD KEY `fk_Review2` (`UserID`);
-
---
--- Indexes for table `TechNova`
---
-ALTER TABLE `TechNova`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `Users`
---
-ALTER TABLE `Users`
-  ADD PRIMARY KEY (`UserID`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `PasswordHash` (`PasswordHash`),
-  ADD UNIQUE KEY `APIKey` (`APIKey`);
-
---
--- Indexes for table `VoltEdge`
---
-ALTER TABLE `VoltEdge`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- Indexes for table `ZapNest`
---
-ALTER TABLE `ZapNest`
-  ADD PRIMARY KEY (`ProductID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `BestProduct`
---
-ALTER TABLE `BestProduct`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=691;
-
---
--- AUTO_INCREMENT for table `Brand`
---
-ALTER TABLE `Brand`
-  MODIFY `BrandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
-
---
--- AUTO_INCREMENT for table `Category`
---
-ALTER TABLE `Category`
-  MODIFY `CategoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
-
---
--- AUTO_INCREMENT for table `Company`
---
-ALTER TABLE `Company`
-  MODIFY `CompanyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `Review`
---
-ALTER TABLE `Review`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `Users`
---
-ALTER TABLE `Users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `BestProduct`
---
-ALTER TABLE `BestProduct`
-  ADD CONSTRAINT `fk_BP1` FOREIGN KEY (`BrandID`) REFERENCES `Brand` (`BrandID`),
-  ADD CONSTRAINT `fk_BP2` FOREIGN KEY (`CategoryID`) REFERENCES `Category` (`CategoryID`);
-
---
--- Constraints for table `Bitify`
---
-ALTER TABLE `Bitify`
-  ADD CONSTRAINT `fk_Bitify` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `ByteCrate`
---
-ALTER TABLE `ByteCrate`
-  ADD CONSTRAINT `fk_ByteCrate` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `ByteMart`
---
-ALTER TABLE `ByteMart`
-  ADD CONSTRAINT `fk_ByteMart` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `ChipCart`
---
-ALTER TABLE `ChipCart`
-  ADD CONSTRAINT `fk_ChipCart` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `CoreBay`
---
-ALTER TABLE `CoreBay`
-  ADD CONSTRAINT `fk_CoreBay` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `FuseBasket`
---
-ALTER TABLE `FuseBasket`
-  ADD CONSTRAINT `fk_FuseBasket` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `Nexonic`
---
-ALTER TABLE `Nexonic`
-  ADD CONSTRAINT `fk_Nexonic` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `Review`
---
-ALTER TABLE `Review`
-  ADD CONSTRAINT `fk_Review1` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`),
-  ADD CONSTRAINT `fk_Review2` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`);
-
---
--- Constraints for table `TechNova`
---
-ALTER TABLE `TechNova`
-  ADD CONSTRAINT `fk_TechNova` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `VoltEdge`
---
-ALTER TABLE `VoltEdge`
-  ADD CONSTRAINT `fk_VoltEdge` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
-
---
--- Constraints for table `ZapNest`
---
-ALTER TABLE `ZapNest`
-  ADD CONSTRAINT `fk_ZapNest` FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`);
