@@ -62,6 +62,33 @@ CompareIt is a next-generation price comparison web application aggregating prod
 - **Best Buy Developer API** - Our Choice - Good Documentation - Able to get API key - easy to use query builder - lots of tech products - we decided to use this as a parent products dataset
 ## Mock Data Generation (Task 6)
 
+### JSON Extraction
+We tested the Best Buy API and choose several categories to give us a good spread of products:
+- Appliances
+- Audio Headphones
+- Cameras
+- Car Electronics
+- Cell Phones
+- Computers
+- TV Home Theater
+
+**[Best Buy API Data Extractor](MockDataTools/MockdataLoader/fetch_bestbuy.py)**
+
+### Extracting Products from JSON
+- Used PHP to insert products into a Best Products Table
+- **[JSON to Database Product Extractor](MockDataTools/MockdataLoader)**
+
+### Mock Data Generator & Generation
+**[Mock Data Generator](MockDataTools/MockDataGenerationTool)**
+
+[](images/MockDataGenerator)
+
+### Price Calculation
+Searched all the mock companies and find who offers the best price
+Update the best products table
+
+**[Price Calculator](MockDataTools/PriceCalculation)** `<!-- PLACEHOLDER: Link to price calculation code -->`
+
 ## Development Guidelines (Task 8 & 10)
 
 ## Demo Details (Task 9)
