@@ -8,7 +8,7 @@ setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teapots pricecheck</title>
+    <title>Teapots compareIT</title>
     <link rel="stylesheet" href="index.css">
     <script src="frontend/pages/jsFiles/cookies.js"></script>
 
