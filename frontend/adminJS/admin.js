@@ -15,7 +15,14 @@ var checkedHtml;
 
 var productHandler = {};
 
-document.addEventListener("DOMContentLoaded", setUpPage);
+function isAdminLoginPage() {
+    return window.location.pathname.endsWith("adminLogin.php");
+}
+
+// Only run setUpPage if not on the login page
+if (!isAdminLoginPage()) {
+    document.addEventListener("DOMContentLoaded", setUpPage);
+}
 
 
 function manageUsers() {
@@ -44,14 +51,19 @@ function setUpPage() {
         initialiseManageUsers();
     }
 
-    selectCompany.addEventListener('change', function() {
-        if (selectCompany.selectedIndex > 0) {
-            loadCompanyProducts(selectCompany.value);
-        }
-    });
+    // Only add event listener if selectCompany exists
+    if (selectCompany) {
+        selectCompany.addEventListener('change', function() {
+            if (selectCompany.selectedIndex > 0) {
+                loadCompanyProducts(selectCompany.value);
+            }
+        });
+    }
 }
 function initialiseManageProducts() {
-    selectCompany.disabled = false;
+    if (selectCompany) {
+        selectCompany.disabled = false;
+    }
     fillCompanyBox();
     fillBrandBox();
     fillCategoriesBox();
