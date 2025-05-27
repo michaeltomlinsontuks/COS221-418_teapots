@@ -122,7 +122,11 @@ Need to clarify how this is going to work - basically explain where to find dump
 
 ### Relational Mapping (Task 3)
 
-### Relational Constraints (Task 4)
+## Relational Constraints (Task 4)
+
+### Database Schema
+
+![Database Schema](images/Database_Schema.png)
 
 ### Optimisation (Task 7)
 
@@ -1001,7 +1005,14 @@ With the added functionality that a user can be made into an admin at creation.
 - API Core Functionality
 - Powerpoint
 - README Formatting
+
 ### Ayrtonn Taljaard (u24856462)
+-Task 2: EER Diagram with Aaron Kim
+-Task 3: EER to Relational Mapping with Aaron Kim
+-Task 4: Relational Schema with Aaron Kim
+-Task 5:
+   -Extended Product View page design html, css and javascript [view page](frontend/pages/view.php)
+   -Product Review Functionality [view page](frontend/pages/view.php)
 
 ### Dawid Eales (u24608892)
 
