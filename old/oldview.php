@@ -1,4 +1,3 @@
-this is the old one that looks like this
 <?php
 // Mock product data
 $product = [
