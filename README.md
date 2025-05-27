@@ -985,6 +985,18 @@ With the added functionality that a user can be made into an admin at creation.
 ## Individual Contributions
 
 ### Damian Moustakis (u24564738)
+- Pulled BestBuy data with python skript to get around 700 base products for mock data, with a list of predetermined attributes, compiled into several json files for db initialisation (fetch_bestby.py), /JSON/ 
+- Did initial Api endpoints for user and product management(basic model before DB completion, thus was mostly redone thereafter)
+- Reworked readme to consolidate db and api creation (now OLDREADME as it has become outdated)
+- Worked in git branch adminfeature/api-endpoints to work on the full functionality of the admin user.
+  - Modified/Created endpoints to makeAdmin, deleteUser, getAllUsers, getAllProducts, addProducts, updateProducts, deleteProducts, adminLogin
+  - Created Postman testing for the endpoints and for later verification and validation
+  - Used Wilmar generated base admin.php, adminLogin.php, admin.js, manageUsers.php, manageProducts.php files as frame works to build admin interdace
+  - Admin Login
+  - User Manipulation (inset/delete)
+  - Product Manipulation (insert/update/delete)
+  - Validated that Product and User manipulation was valid both in the admin workspace and user workspace (allowing for admin created products to be added to compareIt database)
+  - Overall worked on initial API endpoints related to user workspace and then moved onto API and Frontend work for all features admin related
 
 ### Aaron Kim (u21494305)
 
