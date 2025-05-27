@@ -811,3 +811,15 @@ Grants admin privileges to an existing user.
 ### Dawid Eales (u24608892)
 
 ### Wilmar Smit (u24584216)
+-Task 1:Reasearch 
+-Task 5:Web based applications:
+  -Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
+  -Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
+  -Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
+  -Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
+  -Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
+  -Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
+-Non task based responsibilites:
+  -file structure of the frontend [frontend](frontend)
+  -setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
+  -communication and group management with tutors.
