@@ -120,7 +120,79 @@ Need to clarify how this is going to work - basically explain where to find dump
 
 ### Structure (Task 2)
 
+The Enhanced Entity Relationship (EER) diagram below illustrates the structure of the `CompareIt_COS221PA5` database, as designed for the CompareIt platform in the COS 221 Practical Assignment 5.
+
+![EER Diagram](database/eer_diagram.png)
+
+**Description**: The EER model defines the entities, relationships, and constraints of the database:
+- **Entities**:
+  - **BestProduct**: Represents products with the best price offer and details (e.g., `Name`, `BestPrice`, `CarouselImages`).
+  - **Brand**: Represents product brands (e.g., `Samsung`).
+  - **Category**: Represents product categories (e.g., `TV Mounts`).
+  - **Company**: Represents retailers (e.g., `Bitify`, `ByteCrate`), with subtypes for each retailer.
+  - **Review**: Represents user reviews for products.
+  - **Users**: Represents registered users, with a specialised subtype for users with admin access.
+
+- **Inheritance**:
+  - `Company` has attribute-defined specialization (8c) based on `Name`, creating subtypes: `Bitify`, `ByteCrate`, `ByteMart`, `ChipCart`, `CoreBay`, `FuseBasket`, `Nexonic`, `TechNova`, `VoltEdge`, `ZapNest` which represent individual companies.
+  - `User` has a disjoint, partial specialization (8a) based on user role, resulting in the subtype `Admin`, which is stored in a separate table with a foreign key reference to User, indicating that only some users are administrators.
+
+- **Relationships**:
+  - `BestProduct` is sold by `Company` (links to retailer tables).
+  - `BestProduct` is produced by `Brand`.
+  - `BestProduct` is categorized by `Category`.
+  - `BestProduct` receives `Review`.
+  - `Users` leave `Review`.
+
+- **Cardinality**:
+  - `BestProduct` - `Company`: 1:N (one product, multiple retailers).
+  - `BestProduct` - `Brand`: 1:N (one brand, multiple products).
+  - `BestProduct` - `Category`: 1:N (one category, multiple products).
+  - `BestProduct` - `Review`: 1:N (one product, multiple reviews).
+  - `Users` - `Review`: 1:N (one user, multiple reviews).
+
+- **Participation**:
+  - `BestProduct` (Total) - `Company` (Partial): Products may not be sold by all retailers.
+  - `BestProduct` (Total) - `Brand` (Total): Every product has a brand.
+  - `BestProduct` (Total) - `Category` (Total): Every product has a category.
+  - `BestProduct` (Partial) - `Review` (Total): Reviews are tied to products, but not all products have reviews.
+  - `Users` (Partial) - `Review` (Total): Reviews require a user, but not all users leave reviews.
+
+**Purpose**: The EER model ensures a normalized, relational structure for efficient data storage and querying.
+
 ### Relational Mapping (Task 3)
+
+![ERD Diagram](database/erd_diagram.png)
+
+The EER model is then mapped to a relational schema by applying the steps to convert a EER to ERD as outlined by the COS 221 textbook
+
+**Steps:**
+- 1. **Strong Entity Types**: 
+  - Created tables for `BestProduct`, `Brand`, `Category`, `Company`, `Review`, `Users`.
+
+- 2. **Weak Entity Types**: 
+  - Not applicable.
+
+- 3. **Binary 1:1 Relationships**: 
+  - Not applicable.
+
+- 4. **Binary 1:N Relationships**: 
+  - All 1:N relations mapped via foreign keys (e.g., `BestProduct.BrandID` → `Brand.BrandID`, retailer tables’ `ProductID` → `BestProduct.ProductID`).
+
+- 5. **Binary M:N Relationships**: 
+  - Not applicable.
+
+- 6. **Multivalued Attributes**: 
+  - Not applicable
+
+- 7. **N-ary Relationships**: 
+  - Not applicable.
+
+- 8. **Specialization/Generalization**: 
+  - Used Option 8c (single relation with type attribute) for `Company`, with subtypes implemented as separate retailer tables (`Bitify`, etc.).
+  - Used Optiion 8a (Multiple Relations with a Superclass and subclass) for `User` for a subtype called `Admin`, implemented as a seperate table.
+
+- 9. **Unions**: Not applicable.
 
 ### Relational Constraints (Task 4)
 
@@ -792,6 +864,12 @@ Grants admin privileges to an existing user.
 ### Damian Moustakis (u24564738)
 
 ### Aaron Kim (u21494305)
+- Task 2: EER Diagram with Ayrtonn
+- Task 3: EER to Relational Mapping with Ayrtonn
+- Task 4: Relational Schema with Ayrtonn
+- Database documentation
+- Minor contribution to front end (aboutUs page)
+    
 
 ### Michael Tomlinson (u24569705)
 - Initial research on product competitors
