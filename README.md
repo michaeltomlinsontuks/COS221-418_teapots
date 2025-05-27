@@ -772,10 +772,43 @@ CREATE TABLE `ZapNest` (
 
 
 ### Optimisation (Task 7)
+**Product Page Query Optimisation**
+Initially we queried for each parameter, and then only returned the products that were returned in every query.
+```sql
+SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.CarouselImages,
+    bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
+    bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
+    FROM BestProduct bp
+    LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+    LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+    WHERE BestPrice < 1000
+
+# Similar Repeated Queries for all parameters
+```
+This is extremely inefficient, but easy to implement, its inefficiencies are due to many repeatitive, similar queries. Instead we made a complicated WHERE conditions builder to apply all the parameters at once, we also added joins for company filtering options:
+```sql
+SELECT DISTINCT bp.ProductID, bp.Name, bp.Description, bp.ThumbnailImage, bp.CarouselImages,
+    bp.ReviewAverage, bp.ReviewCount, bp.BestPrice, bp.RegularPrice,
+    bp.DiscountPercent, bp.OnlineAvailability, b.BrandName, c.CategoryName, bp.BestCompany
+FROM BestProduct bp
+LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+JOIN Nexonic nex ON bp.ProductID = nex.ProductID
+JOIN TechNova tec ON bp.ProductID = tec.ProductID
+WHERE (nex.OnlineAvailability = 1 OR tec.OnlineAvailability = 1)
+    AND bp.BestPrice >= 100
+    AND bp.BestPrice <= 500
+    AND b.BrandName IN ('Samsung', 'Apple')
+    AND c.CategoryName IN ('Smartphones')
+    AND (bp.Name LIKE '%wireless%' OR bp.Description LIKE '%wireless%' OR b.BrandName LIKE '%wireless%' OR c.CategoryName LIKE '%wireless%')
+ORDER BY bp.BestPrice ASC
+LIMIT 51 OFFSET 0
+```
+This drastically reduced the amount of queries being sent to the database and reduced the array comparisons done on the API, these arrays were becoming a major issue as the size of the arrays grew larger as we had more mock products. This made our code from a time to execute request, 10x faster, 5.96s -> 0.48s
 
 ## Website Functionality (Task 5)
 
-### API
+## API
 
 ### API Design
 
