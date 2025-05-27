@@ -332,54 +332,46 @@ function addNewProduct() {
         return null;
     }
 
-
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
-
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = this.responseText;
-                requestResponse = JSON.parse(requestResponse);
+                var requestResponse = JSON.parse(this.responseText);
                 if (requestResponse.status === "error") {
                     alert("something went wrong...");
-                }
-                else {
+                } else {
                     alert("Product added");
                 }
-            }
-            else {
-                alert("An error occurred on our side...")
+            } else {
+                alert("An error occurred on our side...");
             }
         }
-
-
     };
+
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
-    requestData = {
+    var requestData = {
         type: "addProduct",
         api_key: api_key,
         name: prodNameHtml.value,
         description: prodDscHtml.value,
-        brandID: selectNpBrand.options[selectNpBrand.selectedIndex].value,
-        categoryID: selectNpCat.options[selectNpCat.selectedIndex].value,
-        company: selectCompanyNP.options[selectCompanyNP.selectedIndex].value,
-        bestPrice: priceDiscHtml.value,
-        regularPrice: priceRegHtml.value,
-        images: [JSON.stringify({ image: imgUrlHtml.value })]
-    }
+        brand_id: parseInt(selectNpBrand.value),
+        category_id: parseInt(selectNpCat.value),
+        company: selectCompanyNP.value,
+        best_price: parseFloat(priceDiscHtml.value),
+        regular_price: parseFloat(priceRegHtml.value),
+        images: [{ image: imgUrlHtml.value }]
+    };
 
     var requestHeaderData = getLocalCredentials();
     console.log(requestData);
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
-
 }
 function testImgUrl() {
     var imgUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
@@ -734,5 +726,91 @@ function loadCompanyProducts(companyName) {
 }
 
 function editProduct(index) {
-    alert("Edit functionality not implemented yet. Product index: " + index);
+    var table = document.getElementById("manageProdID");
+    var row = table.rows[index + 1]; // +1 to skip header row
+    var product = productHandler.products[index];
+
+    // Save original HTML for cancel
+    var originalHTML = row.innerHTML;
+
+    // Replace cells with input fields
+    row.innerHTML = `
+        <td>${product.ProductID}</td>
+        <td><input type="text" value="${product.Name}" id="editName${index}" style="width: 120px;"></td>
+        <td><input type="text" value="${product.Description}" id="editDesc${index}" style="width: 200px;"></td>
+        <td>${product.BrandName}</td>
+        <td>${product.CategoryName}</td>
+        <td><input type="number" value="${product.RegularPrice}" id="editRegPrice${index}" style="width: 80px;"></td>
+        <td><input type="number" value="${product.BestPrice}" id="editBestPrice${index}" style="width: 80px;"></td>
+        <td>
+            <button onclick="saveProductEdit(${index})">Save</button>
+            <button onclick="cancelProductEdit(${index})">Cancel</button>
+        </td>
+    `;
+
+    // Store original HTML for cancel
+    row.setAttribute('data-original-html', originalHTML);
+}
+
+function saveProductEdit(index) {
+    var table = document.getElementById("manageProdID");
+    var row = table.rows[index + 1];
+    var product = productHandler.products[index];
+
+    // Get new values
+    var newName = document.getElementById(`editName${index}`).value.trim();
+    var newDesc = document.getElementById(`editDesc${index}`).value.trim();
+    var newRegPrice = document.getElementById(`editRegPrice${index}`).value;
+    var newBestPrice = document.getElementById(`editBestPrice${index}`).value;
+
+    if (!newName || !newDesc || newRegPrice === "" || newBestPrice === "") {
+        alert("Please fill out all fields.");
+        return;
+    }
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var response = JSON.parse(this.responseText);
+                if (response.status === "success") {
+                    alert("Product updated successfully.");
+                    loadCompanyProducts(selectCompany.value);
+                } else {
+                    alert("Error updating product: " + (response.message || "Unknown error"));
+                }
+            } else {
+                alert("An error occurred on our side...");
+            }
+        }
+    };
+
+    var cookieData = getLoginCookieAdmin();
+    var api_key = cookieData.api_key;
+
+    var requestData = {
+        type: "updateProduct",
+        api_key: api_key,
+        product_id: product.ProductID,
+        name: newName,
+        description: newDesc,
+        regular_price: parseFloat(newRegPrice),
+        best_price: parseFloat(newBestPrice),
+        company: selectCompany.value
+    };
+
+    var requestHeaderData = getLocalCredentials();
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
+    request.send(JSON.stringify(requestData));
+}
+
+function cancelProductEdit(index) {
+    var table = document.getElementById("manageProdID");
+    var row = table.rows[index + 1];
+    var originalHTML = row.getAttribute('data-original-html');
+    if (originalHTML) {
+        row.innerHTML = originalHTML;
+    }
 }

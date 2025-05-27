@@ -1287,7 +1287,9 @@ class API
                 'BrandName' => $row['BrandName'],
                 'CategoryName' => $row['CategoryName'],
                 'RegularPrice' => isset($row['RegularPrice']) ? number_format((float)$row['RegularPrice'], 2) : null,
-                'BestPrice' => isset($row['DiscountedPrice']) ? number_format((float)$row['DiscountedPrice'], 2) : null,
+                // Fix: Use BestPrice for default, DiscountedPrice for company
+                'BestPrice' => isset($row['DiscountedPrice']) ? number_format((float)$row['DiscountedPrice'], 2) :
+                           (isset($row['BestPrice']) ? number_format((float)$row['BestPrice'], 2) : null),
                 'OnlineAvailability' => isset($row['OnlineAvailability']) ? (bool)$row['OnlineAvailability'] : null,
                 'ThumbnailImage' => $row['ThumbnailImage'],
                 'CarouselImages' => $row['CarouselImages']
@@ -1308,51 +1310,42 @@ class API
 
         $this->conn->begin_transaction();
         try {
-            $query = "INSERT INTO BestProduct (Name, Description, BrandID, CategoryID, 
-                      RegularPrice, BestPrice, OnlineAvailability, ThumbnailImage) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            
+            $name = $this->requestData['name'];
+            $description = $this->requestData['description'];
+            $brand_id = $this->requestData['brand_id'];
+            $category_id = $this->requestData['category_id'];
+            $best_price = $this->requestData['discount_price'];
+            $regular_price = $this->requestData['regular_price'];
+            $thumbnail_image = $this->requestData['thumbnail_image'];
+            $online_availability = $this->requestData['online_availability'];
+            $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
+
+            // Insert into BestProduct
+            $query = "INSERT INTO BestProduct (Name, Description, BrandID, CategoryID, DiscountedPrice, RegularPrice, ThumbnailImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("ssiiddis",
-                $this->requestData['name'],
-                $this->requestData['description'],
-                $this->requestData['brand_id'],
-                $this->requestData['category_id'],
-                $this->requestData['regular_price'],
-                $this->requestData['discount_price'],
-                $this->requestData['online_availability'],
-                $this->requestData['thumbnail_image']
-            );
+            $stmt->bind_param("ssiddss", $name, $description, $brand_id, $category_id, $best_price, $regular_price, $thumbnail_image);
 
             if (!$stmt->execute()) {
-                throw new Exception('Failed to add product');
+                throw new Exception('Failed to add product: ' . $stmt->error);
             }
 
-            $productId = $this->conn->insert_id;
+            $product_id = $this->conn->insert_id;
 
-            // Add product to company table if specified
-            if (isset($this->requestData['company'])) {
-                $query = "INSERT INTO {$this->requestData['company']} 
-                         (ProductID, RegularPrice, DiscountedPrice, OnlineAvailability) 
-                         VALUES (?, ?, ?, ?)";
-                
-                $stmt = $this->conn->prepare($query);
-                $stmt->bind_param("iddi",
-                    $productId,
-                    $this->requestData['regular_price'],
-                    $this->requestData['discount_price'],
-                    $this->requestData['online_availability']
-                );
+            // Insert into company table
+            if ($company) {
+                $companyQuery = "INSERT INTO `$company` (ProductID, RegularPrice, DiscountedPrice, OnlineAvailability) VALUES (?, ?, ?, ?)";
+                $companyStmt = $this->conn->prepare($companyQuery);
+                $companyStmt->bind_param("iddi", $product_id, $regular_price, $best_price, $online_availability);
 
-                if (!$stmt->execute()) {
-                    throw new Exception('Failed to add company product data');
+                if (!$companyStmt->execute()) {
+                    throw new Exception('Failed to add company product data: ' . $companyStmt->error);
                 }
             }
 
             $this->conn->commit();
             $this->response['status'] = 'success';
             $this->response['message'] = 'Product added successfully';
-            $this->response['data'] = ['product_id' => $productId];
+            $this->response['data'] = ['product_id' => $product_id];
 
         } catch (Exception $e) {
             $this->conn->rollback();
@@ -1368,6 +1361,10 @@ class API
             return $this->response;
         }
 
+        $productId = $this->requestData['product_id'];
+        $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
+
+        // 1. Update BestProduct (name, description, etc.)
         $updates = [];
         $params = [];
         $types = '';
@@ -1379,39 +1376,79 @@ class API
             'category_id' => 'i',
             'regular_price' => 'd',
             'best_price' => 'd',
-            'online_availability' => 'i',
             'thumbnail_image' => 's'
         ];
 
         foreach ($allowedFields as $field => $type) {
             if (isset($this->requestData[$field])) {
+                $column = ($field === 'best_price') ? 'BestPrice' :
+                      (($field === 'regular_price') ? 'RegularPrice' :
+                      str_replace('_', '', ucwords($field, '_')));
                 $updates[] = "`" . str_replace('_', '', ucwords($field, '_')) . "` = ?";
                 $params[] = $this->requestData[$field];
                 $types .= $type;
             }
         }
 
-        if (empty($updates)) {
-            $this->response['message'] = 'No fields to update';
-            return $this->response;
+        if (!empty($updates)) {
+            $query = "UPDATE BestProduct SET " . implode(', ', $updates) . " WHERE ProductID = ?";
+            $params[] = $productId;
+            $types .= 'i';
+
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                $this->response['message'] = 'SQL Prepare failed (BestProduct): ' . $this->conn->error;
+                return $this->response;
+            }
+            $stmt->bind_param($types, ...$params);
+            if (!$stmt->execute()) {
+                $this->response['message'] = 'Error updating BestProduct: ' . $stmt->error;
+                return $this->response;
+            }
         }
 
-        $query = "UPDATE BestProduct SET " . implode(', ', $updates) . 
-                 " WHERE ProductID = ?";
-        
-        $params[] = $this->requestData['product_id'];
-        $types .= 'i';
+        // 2. Update company table (RegularPrice, BestPrice, OnlineAvailability)
+        if ($company && (isset($this->requestData['regular_price']) || isset($this->requestData['best_price']) || isset($this->requestData['online_availability']))) {
+            $companyUpdates = [];
+            $companyParams = [];
+            $companyTypes = '';
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param($types, ...$params);
-        
-        if ($stmt->execute()) {
-            $this->response['status'] = 'success';
-            $this->response['message'] = 'Product updated successfully';
-        } else {
-            $this->response['message'] = 'Error updating product';
+            if (isset($this->requestData['regular_price'])) {
+                $companyUpdates[] = "RegularPrice = ?";
+                $companyParams[] = $this->requestData['regular_price'];
+                $companyTypes .= 'd';
+            }
+            if (isset($this->requestData['best_price'])) {
+                $companyUpdates[] = "DiscountedPrice = ?";
+                $companyParams[] = $this->requestData['best_price'];
+                $companyTypes .= 'd';
+            }
+            if (isset($this->requestData['online_availability'])) {
+                $companyUpdates[] = "OnlineAvailability = ?";
+                $companyParams[] = $this->requestData['online_availability'];
+                $companyTypes .= 'i';
+            }
+
+            if (!empty($companyUpdates)) {
+                $companyQuery = "UPDATE `$company` SET " . implode(', ', $companyUpdates) . " WHERE ProductID = ?";
+                $companyParams[] = $productId;
+                $companyTypes .= 'i';
+
+                $stmt = $this->conn->prepare($companyQuery);
+                if (!$stmt) {
+                    $this->response['message'] = 'SQL Prepare failed (company): ' . $this->conn->error;
+                    return $this->response;
+                }
+                $stmt->bind_param($companyTypes, ...$companyParams);
+                if (!$stmt->execute()) {
+                    $this->response['message'] = 'Error updating company table: ' . $stmt->error;
+                    return $this->response;
+                }
+            }
         }
-        
+
+        $this->response['status'] = 'success';
+        $this->response['message'] = 'Product updated successfully';
         return $this->response;
     }
 
@@ -1545,4 +1582,5 @@ class API
 header('Content-Type: application/json');
 $api = API::getInstance();
 echo json_encode($api->handleRequest());
+
 ?>
