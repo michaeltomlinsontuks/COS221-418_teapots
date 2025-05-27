@@ -162,41 +162,40 @@ The Enhanced Entity Relationship (EER) diagram below illustrates the structure o
 
 ### Relational Mapping (Task 3)
 
-<<<<<<< HEAD
+
 ![ERD Diagram](database/erd_diagram.png)
 
 The EER model is then mapped to a relational schema by applying the steps to convert a EER to ERD as outlined by the COS 221 textbook
 
 **Steps:**
-- 1. **Strong Entity Types**: 
+1. **Strong Entity Types**: 
   - Created tables for `BestProduct`, `Brand`, `Category`, `Company`, `Review`, `Users`.
 
-- 2. **Weak Entity Types**: 
+2. **Weak Entity Types**: 
   - Not applicable.
 
-- 3. **Binary 1:1 Relationships**: 
+3. **Binary 1:1 Relationships**: 
   - Not applicable.
 
-- 4. **Binary 1:N Relationships**: 
+4. **Binary 1:N Relationships**: 
   - All 1:N relations mapped via foreign keys (e.g., `BestProduct.BrandID` → `Brand.BrandID`, retailer tables’ `ProductID` → `BestProduct.ProductID`).
 
-- 5. **Binary M:N Relationships**: 
+5. **Binary M:N Relationships**: 
   - Not applicable.
 
-- 6. **Multivalued Attributes**: 
+6. **Multivalued Attributes**: 
   - Not applicable
 
-- 7. **N-ary Relationships**: 
+7. **N-ary Relationships**: 
   - Not applicable.
 
-- 8. **Specialization/Generalization**: 
+8. **Specialization/Generalization**: 
   - Used Option 8c (single relation with type attribute) for `Company`, with subtypes implemented as separate retailer tables (`Bitify`, etc.).
   - Used Optiion 8a (Multiple Relations with a Superclass and subclass) for `User` for a subtype called `Admin`, implemented as a seperate table.
 
-- 9. **Unions**: Not applicable.
+9. **Unions**: Not applicable.
 
-### Relational Constraints (Task 4)
-=======
+
 ## Relational Constraints (Task 4)
 
 ### Database Schema
