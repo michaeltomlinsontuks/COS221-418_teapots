@@ -1256,12 +1256,26 @@ class API
     }
 
     private function getAdminProducts() {
-        $query = "SELECT bp.*, b.BrandName, c.CategoryName 
-              FROM BestProduct bp
-              LEFT JOIN Brand b ON bp.BrandID = b.BrandID
-              LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
-              ORDER BY bp.ProductID";
-        
+        // Check if a company filter is set
+        $company = isset($this->requestData['company']) ? $this->requestData['company'] : null;
+
+        if ($company) {
+            // Only show products that exist in the selected company's table
+            $query = "SELECT bp.*, b.BrandName, c.CategoryName, ct.RegularPrice, ct.DiscountedPrice, ct.OnlineAvailability
+                      FROM BestProduct bp
+                      LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+                      LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+                      INNER JOIN `$company` ct ON bp.ProductID = ct.ProductID
+                      ORDER BY bp.ProductID";
+        } else {
+            // Show all products
+            $query = "SELECT bp.*, b.BrandName, c.CategoryName 
+                      FROM BestProduct bp
+                      LEFT JOIN Brand b ON bp.BrandID = b.BrandID
+                      LEFT JOIN Category c ON bp.CategoryID = c.CategoryID
+                      ORDER BY bp.ProductID";
+        }
+
         $result = $this->conn->query($query);
         $products = [];
         
@@ -1272,9 +1286,9 @@ class API
                 'Description' => $row['Description'],
                 'BrandName' => $row['BrandName'],
                 'CategoryName' => $row['CategoryName'],
-                'RegularPrice' => number_format((float)$row['RegularPrice'], 2),
-                'BestPrice' => number_format((float)$row['BestPrice'], 2),
-                'OnlineAvailability' => (bool)$row['OnlineAvailability'],
+                'RegularPrice' => isset($row['RegularPrice']) ? number_format((float)$row['RegularPrice'], 2) : null,
+                'BestPrice' => isset($row['DiscountedPrice']) ? number_format((float)$row['DiscountedPrice'], 2) : null,
+                'OnlineAvailability' => isset($row['OnlineAvailability']) ? (bool)$row['OnlineAvailability'] : null,
                 'ThumbnailImage' => $row['ThumbnailImage'],
                 'CarouselImages' => $row['CarouselImages']
             ];

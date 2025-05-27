@@ -43,6 +43,12 @@ function setUpPage() {
     } else if (value === "adminUsers") {
         initialiseManageUsers();
     }
+
+    selectCompany.addEventListener('change', function() {
+        if (selectCompany.selectedIndex > 0) {
+            loadCompanyProducts(selectCompany.value);
+        }
+    });
 }
 function initialiseManageProducts() {
     selectCompany.disabled = false;
@@ -234,49 +240,47 @@ function fillCompanyBox() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
-
         if (this.readyState === 4) {
             if (this.status === 200) {
-                var requestResponse = this.responseText;
-                requestResponse = JSON.parse(requestResponse);
+                var requestResponse = JSON.parse(this.responseText);
                 if (requestResponse.status === "error") {
                     alert("something went wrong...");
-                }
-                else {
+                } else {
                     var data = requestResponse.data;
+                    // Clear existing options except the first
+                    selectCompany.length = 1;
+                    selectCompanyNP.length = 1;
                     for (var i = 0; i < data.length; i++) {
-                        var opt = document.createElement('option');
-                        opt.value = data[i].company_name;
-                        opt.textContent = data[i].company_name;
-                        selectCompany.appendChild(opt);
-                        selectCompanyNP.appendChild(opt);
-                    }
+                        var opt1 = document.createElement('option');
+                        opt1.value = data[i].company_name;
+                        opt1.textContent = data[i].company_name;
+                        selectCompany.appendChild(opt1);
 
+                        var opt2 = document.createElement('option');
+                        opt2.value = data[i].company_name;
+                        opt2.textContent = data[i].company_name;
+                        selectCompanyNP.appendChild(opt2);
+                    }
                 }
-            }
-            else {
-                alert("An error occurred on our side...")
+            } else {
+                alert("An error occurred on our side...");
             }
         }
-
-
     };
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
-    requestData = {
+    var requestData = {
         type: "getcompanies",
         api_key: api_key,
-    }
+    };
 
     var requestHeaderData = getLocalCredentials();
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
-
 }
 
 function fillBrandBox() {
@@ -694,5 +698,41 @@ function sendRequest(request, requestData) {
     // You must set up the request before calling this!
     // This function just sends the JSON data.
     request.setRequestHeader("Content-Type", "application/json");
+    request.send(JSON.stringify(requestData));
+}
+
+function loadCompanyProducts(companyName) {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var requestResponse = JSON.parse(this.responseText);
+                if (requestResponse.status === "error") {
+                    alert("something went wrong...");
+                } else {
+                    var data = requestResponse.data;
+                    productHandler.addProductsAdmin(data);
+                }
+            } else {
+                alert("Failed to load products.");
+            }
+        }
+    };
+
+    var cookieData = getLoginCookieAdmin();
+    var api_key = cookieData.api_key;
+
+    var requestData = {
+        type: "getadminproducts",
+        api_key: api_key,
+        company: companyName 
+    };
+
+    var requestHeaderData = getLocalCredentials();
+
+    request.open("POST", requestHeaderData.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
 }
