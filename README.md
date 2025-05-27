@@ -953,7 +953,7 @@ At the top of the page is a drop down list of all the companies that will allow 
 Upon selecting edit for a specific product the admin will be presented with the options of changing fields about a product 
 such as in this example where the name and description of the product changes to a text input box that can be submitted as an update to the product
 
-User management
+### User management
 The user management follows the same design pattern as the product manager allowing for viewing of all details of a user except for their password, 
 The table shows options for updating the user to an admin and does not allow for admins to alter user data,
 This being done under the assumption due to privacy concerns no user should have their details altered by an admin. 
