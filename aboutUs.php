@@ -167,8 +167,8 @@
                 <div class="member-details front">
                     <h3>About Dawid</h3>
                     <p>"Fly@UP"</p>
-                    <p>Fun fact: Inherited Harry Potter's ivisibility cloak</p>
-                    <p>Dream Career: Web Development</p>
+                    <p>Fun fact: Likes rocks</p>
+                    <p>Dream Career: cyber-security</p>
                 </div>
             </div>
         </div>

@@ -103,6 +103,9 @@ Update the best products table
     - Testing and review process before merging to main branch
 - **Only working code**
     - Ensure functionality works before committing to main
+- **Config Protections**
+    - Never commit a config.php file to the repo
+    - It has been added to the git ignore and there are automated commit checks to detect when the credentials are attempted to be committed 
 
 ### Code Standards
 
@@ -120,13 +123,626 @@ Need to clarify how this is going to work - basically explain where to find dump
 
 ### Structure (Task 2)
 
+The Enhanced Entity Relationship (EER) diagram below illustrates the structure of the `CompareIt_COS221PA5` database, as designed for the CompareIt platform in the COS 221 Practical Assignment 5.
+
+![EER Diagram](database/eer_diagram.png)
+
+**Description**: The EER model defines the entities, relationships, and constraints of the database:
+- **Entities**:
+  - **BestProduct**: Represents products with the best price offer and details (e.g., `Name`, `BestPrice`, `CarouselImages`).
+  - **Brand**: Represents product brands (e.g., `Samsung`).
+  - **Category**: Represents product categories (e.g., `TV Mounts`).
+  - **Company**: Represents retailers (e.g., `Bitify`, `ByteCrate`), with subtypes for each retailer.
+  - **Review**: Represents user reviews for products.
+  - **Users**: Represents registered users, with a specialised subtype for users with admin access.
+
+- **Inheritance**:
+  - `Company` has attribute-defined specialization (8c) based on `Name`, creating subtypes: `Bitify`, `ByteCrate`, `ByteMart`, `ChipCart`, `CoreBay`, `FuseBasket`, `Nexonic`, `TechNova`, `VoltEdge`, `ZapNest` which represent individual companies.
+  - `User` has a disjoint, partial specialization (8a) based on user role, resulting in the subtype `Admin`, which is stored in a separate table with a foreign key reference to User, indicating that only some users are administrators.
+
+- **Relationships**:
+  - `BestProduct` is sold by `Company` (links to retailer tables).
+  - `BestProduct` is produced by `Brand`.
+  - `BestProduct` is categorized by `Category`.
+  - `BestProduct` receives `Review`.
+  - `Users` leave `Review`.
+
+- **Cardinality**:
+  - `BestProduct` - `Company`: 1:N (one product, multiple retailers).
+  - `BestProduct` - `Brand`: 1:N (one brand, multiple products).
+  - `BestProduct` - `Category`: 1:N (one category, multiple products).
+  - `BestProduct` - `Review`: 1:N (one product, multiple reviews).
+  - `Users` - `Review`: 1:N (one user, multiple reviews).
+
+- **Participation**:
+  - `BestProduct` (Total) - `Company` (Partial): Products may not be sold by all retailers.
+  - `BestProduct` (Total) - `Brand` (Total): Every product has a brand.
+  - `BestProduct` (Total) - `Category` (Total): Every product has a category.
+  - `BestProduct` (Partial) - `Review` (Total): Reviews are tied to products, but not all products have reviews.
+  - `Users` (Partial) - `Review` (Total): Reviews require a user, but not all users leave reviews.
+
+**Purpose**: The EER model ensures a normalized, relational structure for efficient data storage and querying.
+
 ### Relational Mapping (Task 3)
+
+
+![ERD Diagram](database/erd_diagram.png)
+
+The EER model is then mapped to a relational schema by applying the steps to convert a EER to ERD as outlined by the COS 221 textbook
+
+**Steps:**
+1. **Strong Entity Types**: 
+  - Created tables for `BestProduct`, `Brand`, `Category`, `Company`, `Review`, `Users`.
+
+2. **Weak Entity Types**: 
+  - Not applicable.
+
+3. **Binary 1:1 Relationships**: 
+  - Not applicable.
+
+4. **Binary 1:N Relationships**: 
+  - All 1:N relations mapped via foreign keys (e.g., `BestProduct.BrandID` → `Brand.BrandID`, retailer tables’ `ProductID` → `BestProduct.ProductID`).
+
+5. **Binary M:N Relationships**: 
+  - Not applicable.
+
+6. **Multivalued Attributes**: 
+  - Not applicable
+
+7. **N-ary Relationships**: 
+  - Not applicable.
+
+8. **Specialization/Generalization**: 
+  - Used Option 8c (single relation with type attribute) for `Company`, with subtypes implemented as separate retailer tables (`Bitify`, etc.).
+  - Used Optiion 8a (Multiple Relations with a Superclass and subclass) for `User` for a subtype called `Admin`, implemented as a seperate table.
+
+9. **Unions**: Not applicable.
+
 
 ## Relational Constraints (Task 4)
 
 ### Database Schema
 
 ![Database Schema](images/Database_Schema.png)
+
+### Database Tables:
+
+### Admin
+
+- Represents the admin users
+
+```sql
+
+CREATE TABLE `Admin` (
+  `UserID` int(11) NOT NULL,
+  `LastLogin` datetime DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT current_timestamp(),
+   PRIMARY KEY (`UserID`),
+   FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
+);
+
+```
+
+**Fields:**
+
+- `UserID`: A unique identifier for each admin
+- `LastLogin`: Timestamp of the last admin login
+- `CreatedAt`: Timestamp of when the admin user created
+
+**Keys:**
+
+- `UserID`: Primary and Foreign Key
+
+### BestProduct
+
+- Represents the best priced version of each product
+
+```sql
+
+CREATE TABLE `BestProduct` (
+  `ProductID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(200) NOT NULL,
+  `Description` text DEFAULT NULL,
+  `BrandID` int(11) DEFAULT NULL,
+  `CategoryID` int(11) DEFAULT NULL,
+  `BestPrice` decimal(8,2) DEFAULT NULL CHECK (`BestPrice` > 0),
+  `DiscountPercent` decimal(5,2) DEFAULT NULL CHECK (`DiscountPercent` >= 0),
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `ReviewCount` int(11) DEFAULT 0 CHECK (`ReviewCount` >= 0),
+  `ReviewAverage` decimal(3,2) DEFAULT NULL 
+   CHECK (`ReviewAverage` BETWEEN 1 AND 5),
+  `BestCompany` varchar(100) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `ThumbnailImage` varchar(200) DEFAULT NULL,
+  `CarouselImages` text DEFAULT NULL,
+  `LastUpdated` datetime DEFAULT current_timestamp() 
+   ON UPDATE current_timestamp(),
+   PRIMARY KEY (`ProductID`),
+   UNIQUE KEY `Name` (`Name`),
+   FOREIGN KEY (`BrandID`) REFERENCES `Brand` (`BrandID`),
+   FOREIGN KEY (`CategoryID`) REFERENCES `Category` (`CategoryID`),
+   INDEX(BrandID),
+   INDEX(CategoryID)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `Name`: Product name
+- `Description`: Product description
+- `BrandID`: The ID of the product's brand
+- `CategoryID`: The ID of the category's brand
+- `BestPrice`: The lowest price found for that product
+- `DiscountPercent`: Percentage discount on the product
+- `RegularPrice`: Price without discount
+- `ReviewCount`: Number of reviews product has
+- `ReviewAverage`: Average review score of a product
+- `BestCompany`: Company with the best price for the product
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+- `ThumbnailImage`: Thumbnail image of product
+- `CarouselImages`: Additional images for carousel of product
+- `LastUpdated`: When the product was last updated
+
+**Keys:**
+
+- `ProductID`: Primary Key
+- `Name`: Unique Key
+- `BrandID`: Foreign Key
+- `CategoryID`: Foreign Key
+
+**Indexes:**
+
+- `BrandID`: Faster querying on product brands
+- `CategoryID`: Faster querying on product categories
+
+### Bitify
+
+- Represents Bitify's products
+
+```sql
+
+CREATE TABLE `Bitify` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Brand
+
+- Represents product brands
+
+```sql
+
+CREATE TABLE `Brand` (
+  `BrandID` int(11) NOT NULL AUTO_INCREMENT,
+  `BrandName` varchar(50) NOT NULL,
+   PRIMARY KEY (`BrandID`),
+   UNIQUE KEY `BrandName` (`BrandName`)
+);
+
+```
+
+**Fields:**
+- `BrandID`: A unique identifier for each brand
+- `BrandName`: Name of brand
+
+**Keys:**
+
+- `BrandID`: Primary Key
+- `BrandName`: Unique Key
+
+### ByteCrate
+
+- Represents ByteCrate's products
+
+```sql
+
+CREATE TABLE `ByteCrate` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### ByteMart
+
+- Represents ByteMart's products
+
+```sql
+
+CREATE TABLE `ByteMart` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Category
+
+- Represents product categories
+
+```sql
+
+CREATE TABLE `Category` (
+  `CategoryID` int(11) NOT NULL AUTO_INCREMENT,
+  `CategoryName` varchar(100) DEFAULT NULL,
+   PRIMARY KEY (`CategoryID`),
+   UNIQUE KEY `CategoryName` (`CategoryName`)
+);
+
+```
+
+**Fields:**
+- `CategoryID`: A unique identifier for each category
+- `CategoryName`: Name of category
+
+**Keys:**
+
+- `CategoryID`: Primary Key
+- `CategoryName`: Unique Key
+
+### ChipCart
+
+- Represents ChipCart's products
+
+```sql
+
+CREATE TABLE `ChipCart` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Company
+
+- Represents product companies
+
+```sql
+
+CREATE TABLE `Company` (
+  `CompanyID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) DEFAULT NULL,
+   PRIMARY KEY (`CompanyID`),
+   UNIQUE KEY `Name` (`Name`)
+);
+
+
+```
+
+**Fields:**
+- `CompanyID`: A unique identifier for each category
+- `Name`: Name of category
+
+**Keys:**
+
+- `CompanyID`: Primary Key
+- `Name`: Unique Key
+
+### CoreBay
+
+- Represents CoreBay's products
+
+```sql
+
+CREATE TABLE `CoreBay` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### FuseBasket
+
+- Represents FuseBasket's products
+
+```sql
+
+CREATE TABLE `FuseBasket` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Nexonic
+
+- Represents Nexonic's products
+
+```sql
+
+CREATE TABLE `Nexonic` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Review
+
+- Represents product reviews
+
+```sql
+
+CREATE TABLE `Review` (
+  `ReviewID` int(11) NOT NULL AUTO_INCREMENT,
+  `ProductID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `ReviewTitle` varchar(100) DEFAULT NULL,
+  `ReviewDescription` varchar(500) DEFAULT NULL,
+  `ReviewRating` tinyint(4) NOT NULL CHECK (`ReviewRating` BETWEEN 1 AND 5),
+  `Timestamp` datetime DEFAULT current_timestamp(),
+   PRIMARY KEY (`ReviewID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`),
+   FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`),
+   INDEX(ProductID)
+);
+
+```
+
+**Fields:**
+- `ReviewID`: A unique identfier for each review
+- `ProductID`: ID that links to a product
+- `UserID`: ID that links to a user
+- `ReviewTitle`: Title of review
+- `ReviewDescription`: Description given in review
+- `ReviewRating`: Rating given in review
+- `Timestamp`: When review was made
+
+**Keys:**
+
+- `ReviewID`: Primary Key
+- `ProductID`: Foreign Key
+- `UserID`: Foreign Key
+
+**Indexes:**
+
+- `ProductID`: Faster retrieval of reviews per product
+
+### TechNova
+
+- Represents TechNova's products
+
+```sql
+
+CREATE TABLE `TechNova` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### Users
+
+- Represents the users
+
+```sql
+
+CREATE TABLE `Users` (
+  `UserID` int(11) NOT NULL AUTO_INCREMENT,
+  `Email` varchar(200) DEFAULT NULL,
+  `Username` varchar(50) DEFAULT NULL,
+  `Salt` varchar(64) DEFAULT NULL,
+  `PasswordHash` char(128) DEFAULT NULL,
+  `APIKey` varchar(64) DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT current_timestamp(),
+   PRIMARY KEY (`UserID`),
+   UNIQUE KEY `Email` (`Email`),
+   UNIQUE KEY `Username` (`Username`),
+   UNIQUE KEY `PasswordHash` (`PasswordHash`),
+   UNIQUE KEY `APIKey` (`APIKey`)
+);
+
+```
+
+**Fields:**
+
+- `UserID`: A unique identifier for each user
+- `Email`: Email of user
+- `Username`: Username of user
+- `Salt`: User's Salt
+- `PasswordHash`: User's Hashed Password
+- `APIKey`: User's APIKey
+- `CreatedAt`: When user was created
+
+**Keys:**
+
+- `UserID`: Primary Key
+- `Email`: Unique Key
+- `Username`: Unique Key
+- `PasswordHash`: Unique Key
+- `APIKey`: Unique Key
+
+### VoltEdge
+
+- Represents VoltEdge's products
+
+```sql
+
+CREATE TABLE `VoltEdge` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+
+### ZapNest
+
+- Represents ZapNest's products
+
+```sql
+
+CREATE TABLE `ZapNest` (
+  `ProductID` int(11) NOT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL CHECK (`RegularPrice` > 0),
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL CHECK (`DiscountedPrice` > 0),
+  `AddToCartURL` varchar(200) DEFAULT NULL,
+  `OnlineAvailability` tinyint(1) DEFAULT NULL,
+   PRIMARY KEY (`ProductID`),
+   FOREIGN KEY (`ProductID`) REFERENCES `BestProduct` (`ProductID`)
+);
+
+```
+
+**Fields:**
+- `ProductID`: A unique identifier for each product
+- `RegularPrice`: Price without discount
+- `DiscountPercent`: Price with discount
+- `OnlineAvailability`: Is the product available online
+- `AddToCartURL`: URL to add the product to the best companies cart on their website
+
+**Keys:**
+
+- `ProductID`: Primary and Foreign Key
+>>>>>>> 5d71d9750b15f6b9b124931afb1a413a7458e6ea
 
 ### Optimisation (Task 7)
 
@@ -991,6 +1607,12 @@ With the added functionality that a user can be made into an admin at creation.
 ### Damian Moustakis (u24564738)
 
 ### Aaron Kim (u21494305)
+- Task 2: EER Diagram with Ayrtonn
+- Task 3: EER to Relational Mapping with Ayrtonn
+- Task 4: Relational Schema with Ayrtonn
+- Database documentation
+- Minor contribution to front end (aboutUs page)
+    
 
 ### Michael Tomlinson (u24569705)
 - Initial research on product competitors
@@ -1002,30 +1624,30 @@ With the added functionality that a user can be made into an admin at creation.
 - Git Repo Setup
 - Config Commit Protections
 - API Design
-- API Core Functionality
+- [API Core Functionality](API/api.php)
 - Powerpoint
 - README Formatting
 
 ### Ayrtonn Taljaard (u24856462)
--Task 2: EER Diagram with Aaron Kim
--Task 3: EER to Relational Mapping with Aaron Kim
--Task 4: Relational Schema with Aaron Kim
--Task 5:
-   -Extended Product View page design html, css and javascript [view page](frontend/pages/view.php)
-   -Product Review Functionality [view page](frontend/pages/view.php)
+- Task 2: EER Diagram with Aaron Kim
+- Task 3: EER to Relational Mapping with Aaron Kim
+- Task 4: Relational Schema with Aaron Kim
+- Task 5:
+   - Extended Product View page design html, css and javascript [view page](frontend/pages/view.php)
+   - Product Review Functionality [view page](frontend/pages/view.php)
 
 ### Dawid Eales (u24608892)
 
 ### Wilmar Smit (u24584216)
--Task 1:Reasearch 
--Task 5:Web based applications:
-  -Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
-  -Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
-  -Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
-  -Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
-  -Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
-  -Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
--Non task based responsibilites:
-  -file structure of the frontend [frontend](frontend)
-  -setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
-  -communication and group management with tutors.
+- Task 1:Reasearch 
+- Task 5:Web based applications:
+  - Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
+  - Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
+  - Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
+  - Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
+  - Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
+  - Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
+- Non task based responsibilites:
+  - File structure of the frontend [frontend](frontend)
+  - Setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
+  - Communication and group management with tutors.
