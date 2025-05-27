@@ -103,6 +103,9 @@ Update the best products table
     - Testing and review process before merging to main branch
 - **Only working code**
     - Ensure functionality works before committing to main
+- **Config Protections**
+    - Never commit a config.php file to the repo
+    - It has been added to the git ignore and there are automated commit checks to detect when the credentials are attempted to be committed 
 
 ### Code Standards
 
@@ -1621,7 +1624,7 @@ With the added functionality that a user can be made into an admin at creation.
 - Git Repo Setup
 - Config Commit Protections
 - API Design
-- API Core Functionality
+- [API Core Functionality](API/api.php)
 - Powerpoint
 - README Formatting
 
@@ -1636,15 +1639,15 @@ With the added functionality that a user can be made into an admin at creation.
 ### Dawid Eales (u24608892)
 
 ### Wilmar Smit (u24584216)
--Task 1:Reasearch 
--Task 5:Web based applications:
-  -Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
-  -Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
-  -Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
-  -Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
-  -Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
-  -Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
--Non task based responsibilites:
-  -file structure of the frontend [frontend](frontend)
-  -setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
-  -communication and group management with tutors.
+- Task 1:Reasearch 
+- Task 5:Web based applications:
+  - Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
+  - Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
+  - Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
+  - Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
+  - Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
+  - Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
+- Non task based responsibilites:
+  - File structure of the frontend [frontend](frontend)
+  - Setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
+  - Communication and group management with tutors.
