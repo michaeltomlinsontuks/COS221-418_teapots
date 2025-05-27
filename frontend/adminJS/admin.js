@@ -16,7 +16,7 @@ var checkedHtml;
 var productHandler = {};
 
 function isAdminLoginPage() {
-    return window.location.pathname.endsWith("adminLogin.php");
+    return window.location.pathname.endsWith("adminLogin");
 }
 
 if (!isAdminLoginPage()) {
@@ -25,11 +25,13 @@ if (!isAdminLoginPage()) {
 
 
 function manageUsers() {
-    window.location.href = "admin.php?page=adminUsers";
+    window.location.href = getLocalRoute() + "adminUsers";
 }
 function manageProducts() {
-    window.location.href = "admin.php?page=adminProducts";
+    window.location.href = getLocalRoute() + "admin";
 }
+
+
 function setUpPage() {
     selectCompany = document.getElementById("compID");
     selectCompanyNP = document.getElementById("compNP");
@@ -44,7 +46,7 @@ function setUpPage() {
 
     var params = new URLSearchParams(window.location.search);
     var value = params.get('page');
-    if (value === "adminProducts" || value === null) { // default to products if no page param
+    if (value === "admin" || value === null) { // default to products if no page param
         initialiseManageProducts();
     } else if (value === "adminUsers") {
         initialiseManageUsers();
@@ -52,7 +54,7 @@ function setUpPage() {
 
     // Only add event listener if selectCompany exists
     if (selectCompany) {
-        selectCompany.addEventListener('change', function() {
+        selectCompany.addEventListener('change', function () {
             if (selectCompany.selectedIndex > 0) {
                 loadCompanyProducts(selectCompany.value);
             }
@@ -105,7 +107,7 @@ function stateChangeProducts() {
     }
 }
 
-productHandler.addProductsAdmin = function(data) {
+productHandler.addProductsAdmin = function (data) {
     this.products = data;
     insertIntoTableAdmin();
 }
@@ -128,7 +130,7 @@ function insertIntoTableAdmin() {
         cell.innerText = "No products found.";
         return;
     }
-    productHandler.products.forEach(function(product, index) {
+    productHandler.products.forEach(function (product, index) {
         var row = table.insertRow();
         row.innerHTML = `
             <td>${product.ProductID}</td>
@@ -140,6 +142,8 @@ function insertIntoTableAdmin() {
             <td>${product.BestPrice}</td>
             <td>
                 <button onclick="editProduct(${index})">Edit</button>
+            </td>
+            <td>
                 <button onclick="deleteProduct(${index})">Delete</button>
             </td>
         `;
@@ -374,7 +378,7 @@ function addNewProduct() {
         company: selectCompanyNP.value,
         best_price: parseFloat(priceDiscHtml.value),
         regular_price: parseFloat(priceRegHtml.value),
-        images: [{ image: imgUrlHtml.value }]
+        images: [JSON.stringify({ image: imgUrlHtml.value })]
     };
 
     var requestHeaderData = getLocalCredentials();
@@ -499,9 +503,11 @@ function displayUsers(users) {
             <td>${user.created_at}</td>
             <td>${user.is_admin ? 'Yes' : 'No'}</td>
             <td>
-                ${!user.is_admin ? 
-                    `<button onclick="makeAdmin(${user.id})">Make Admin</button>` : 
-                    ''}
+                ${!user.is_admin ?
+                `<button onclick="makeAdmin(${user.id})">Make Admin</button>` :
+                ''}
+                </td>
+                <td>
                 <button onclick="deleteUser(${user.id})">Delete</button>
             </td>
         `;
@@ -515,7 +521,7 @@ function makeAdmin(userId) {
     if (!confirm('Are you sure you want to make this user an admin?')) return;
 
     var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
+    request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
             if (response.status === "success") {
@@ -541,7 +547,7 @@ function deleteUser(userId) {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
+    request.onreadystatechange = function () {
         if (this.readyState === 4) {
             console.log("Delete user response:", this.status, this.responseText);
             if (this.status === 200) {
@@ -595,7 +601,7 @@ function addNewUser() {
 
         requestData = {
             type: "addUser",
-            api_key: api_key, 
+            api_key: api_key,
             username: usernameHtml.value,
             password: passwordHtml.value,
             email: emailHtml.value,
@@ -688,7 +694,7 @@ function stateChangeAdminLogin() {
                 var data = requestResponse.data;
                 setLoginCookieAdmin(data.api_key, data.username);
                 alert("Admin login successful. Welcome!");
-                window.location.href = "./admin.php";
+                window.location.href = getLocalRoute() + "admin";
             }
         } else {
             alert("An error occurred on our side...");
@@ -706,6 +712,7 @@ function sendRequest(request, requestData) {
 function loadCompanyProducts(companyName) {
     var request = new XMLHttpRequest();
 
+
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
@@ -713,6 +720,14 @@ function loadCompanyProducts(companyName) {
                 if (requestResponse.status === "error") {
                     alert("something went wrong...");
                 } else {
+
+                    var table = document.getElementById("manageProdID");
+                    // Clear all rows except the header
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+
+
                     var data = requestResponse.data;
                     productHandler.addProductsAdmin(data);
                 }
@@ -728,7 +743,7 @@ function loadCompanyProducts(companyName) {
     var requestData = {
         type: "getadminproducts",
         api_key: api_key,
-        company: companyName 
+        company: companyName
     };
 
     var requestHeaderData = getLocalCredentials();

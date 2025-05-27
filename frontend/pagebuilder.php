@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/../config.php');
+//require_once(__DIR__ . '/../config.php');
+require_once 'config.php';
 require_once("header.php");
 // if necessary to user at some stage for http requests
 $EnvJson = array(
@@ -106,11 +107,11 @@ $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
                     include_once("adminLogin.php");
                     break;
                 case ('admin'):
-                    if ($adminLoggedInStatus)
+                   // if ($adminLoggedInStatus)
                         include_once("admin.php");
-                    else {
-                        header("Location: " . $localRoute . "adminLogin");
-                    }
+                   // else {
+                   //     header("Location: " . $localRoute . "adminLogin");
+                  //  }
                     break;
                 case ('adminUsers'):
                     if ($adminLoggedInStatus)
