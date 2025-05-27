@@ -18,10 +18,12 @@ $localEnvJson = array(
 $cookieData = json_encode($localEnvJson);
 setcookie('localAuthentication', $cookieData);
 
-//setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
-//$localRoute = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=";
-setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
-$localRoute = "http://localhost/teapots/frontend/pagebuilder.php?page=";
+setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=");
+$localRoute = "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend/pagebuilder.php?page=";
+
+
+//setcookie("localRoute", "http://localhost/teapots/frontend/pagebuilder.php?page=");
+//$localRoute = "http://localhost/teapots/frontend/pagebuilder.php?page=";
 //comment out and change it to be your local route 
 $loggedInStatus = isset($_COOKIE['userdata']);
 $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
@@ -50,14 +52,14 @@ $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
             <?php
             if (isset($_GET['page'])) {
 
-                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout" || $_GET['page'] == 'admin' || $_GET['page'] == "adminLogin" || $_GET['page'] == "adminUsers")
+                if ($_GET['page'] == 'login' || $_GET['page'] == 'signup' || $_GET['page'] == "logout" || $_GET['page'] == 'admin' || $_GET['page'] == "adminlogin" || $_GET['page'] == "adminUsers")
                     echo $_GET['page'];
                 else if ($_GET['page'] == 'products' || $_GET['page'] == 'view') {
                     echo "<img class=\"titleImg\" src =\"images/noBackgroundLogo.png\">";
                 } else {
                     echo "Please be aware that we do not permit changing of the pages through the url";
                     echo "<br>";
-                    echo "<img  src =\"images/thumbdown.png\">";
+                    echo "<img  src =\"images/thumbDown.png\">";
                     echo "<br>";
                     die("");
                 }
@@ -100,11 +102,15 @@ $adminLoggedInStatus = isset($_COOKIE['userdataAdmin']);
         //can do this in the items themselves
         if (isset($_GET['page']))
             switch ($_GET['page']) {
-                case ('adminLogin'):
+                case ('adminlogin'):
                     include_once("adminLogin.php");
                     break;
                 case ('admin'):
+                    if ($adminLoggedInStatus)
                         include_once("admin.php");
+                    else {
+                        header("Location: " . $localRoute . "adminLogin");
+                    }
                     break;
                 case ('adminUsers'):
                     if ($adminLoggedInStatus)
