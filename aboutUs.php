@@ -138,7 +138,7 @@
 </head>
 <body>
     <div class="title-container">
-        <img src="images/teapotsLogoPot.png" alt="Teapots Logo" class="logo">
+        <img src="images/teapotsLogoPotNoText.png" alt="Teapots Logo" class="logo">
         <h1 class="main-title">Meet The Teapots</h1>
     </div>
     

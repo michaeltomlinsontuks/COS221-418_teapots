@@ -8,15 +8,15 @@ body {
 }
 
 .container {
-    display: flex;
-    height: 100%;
-    width: 100%;
+    width: 100vw;
+    height: 80vh;
     max-height: 90vh;
     max-width: 100vw;
     align-content: center;
     justify-content: center;
     align-items: center;
     justify-items: center;
+    text-align: center;
 }
 
 
@@ -44,8 +44,8 @@ body {
 }
 
 .container img {
-    max-height: 40%;
-    max-width: 40%;
+    max-height: 90%;
+    max-width: 100%;
     object-fit: scale-down;
     border-radius: 50%;
 }

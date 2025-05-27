@@ -16,7 +16,7 @@ setcookie("localRoute", "https://wheatley.cs.up.ac.za/u24584216/teapots/frontend
 
 <body>
     <div class="container">
-        <img src="https://wheatley.cs.up.ac.za/u24584216/teapots/images/teapotsLogoPotNoText.png" alt="">
+        <img  src="https://wheatley.cs.up.ac.za/u24584216/teapots/images/teapotsLogoPot.png" alt="">
     </div>
     <div class="aboutUsDiv">
         <input type="button" onclick="goToProducts()" value="users">
