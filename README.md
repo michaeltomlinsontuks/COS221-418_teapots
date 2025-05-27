@@ -35,7 +35,31 @@ CompareIt is a next-generation price comparison web application aggregating prod
     -   [Wilmar Smit (u24584216)](#wilmar-smit-u24584216)
 
 ## Market Research (Task 1)
+### Competing Products
+**Analyzed Competitors:**
 
+- **PriceCheck**, **Smartprice**, **GoogleShopping** - Wide product range but poor user experience, confusing navigation
+- **Troli** - Best UX focused on groceries only, clear onboarding process
+
+**Key Gaps Identified:**
+
+- Lack of technology product focus in South Africa
+- Poor user guidance and functionality explanation
+- No gamified or interactive design elements
+
+**CompareIt Solution:**
+
+- Technology-focused scope (laptops, desktops, components, consoles)
+- Clean, gamified design with interactive elements
+- Improved user experience addressing SA tech market markup issues
+
+### Data Sources
+
+**Given API** choices - these didn't have good quality/enough data
+**Web scrapers** - questionable legality - hard to implement
+**eBay Developer API** - lots of variety between products - how do you easily compare iPhone to iPhone - without accidentally comparing an iPhone Case
+**Amazon Affiliate Program API** - unable to apply for Affiliate Program in South Africa
+**Best Buy Developer API** - Our Choice - Good Documentation - Able to get API key - easy to use query builder - lots of tech products - we decided to use this as a parent products dataset
 ## Mock Data Generation (Task 6)
 
 ## Development Guidelines (Task 8 & 10)
@@ -78,7 +102,7 @@ CompareIt is a next-generation price comparison web application aggregating prod
 - API Design
 - API Core Functionality
 - Powerpoint
-- README Formating
+- README Formatting
 ### Ayrtonn Taljaard (u24856462)
 
 ### Dawid Eales (u24608892)
