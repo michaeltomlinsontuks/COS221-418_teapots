@@ -857,7 +857,202 @@ Grants admin privileges to an existing user.
 
 ### Backend JS
 
-### Frontend
+### Frontend plan usage and concepts
+CompareIt uses a “pagebuilder” design which was done for several reasons to keep the designs consistent and allow all members who contribute to the frontend.
+###
+The page builder functionality is to swap in required pages, in a quick and manageable way on the server side for the user.
+Page builder will also keep track of what page is visible and as to what javascript and css files must be on the header at any given time.
+###
+
+The page builder works as a main overall container that holds different php login, signup, products, view, admin. 
+This was done for simple integration when several developments needed to happen between all members.
+Pagebuilder uses a get that will retrieve the type of page the user is on,
+There is handling done such that the user cannot manipulate the url to reach where they are not permitted to reach. 
+The page builder php file also tracks the user's type and logged in status using cookies.
+
+### Cookies used for various functionalities such as:
+to create a path used in all the javascript files of the project, this cookie is the localRoute and is used when traversing across pages.
+To simplify the development of the frontend across all developers and to allow for easy migration of the system to wheatley when the time came.
+[cookies](frontend/pages/jsFiles/cookies.js)
+### 
+Security precautions were also taken into consideration on the pagebuilder, this is including the data that holds the link to the api where requests are sent.
+The project maintains that no javascript should have the link to the api visible at any time
+passwords to authenticate into wheatley are also hidden at all times.
+
+### Classes within pageBuilder js 
+[pagebuilder](frontend/pages/jsFiles/pgbuilder.js)
+productHandler : maintains and sets an array of all products retrieved from the api
+Product : holds data specific to a single product.
+requestDataClass : builds requests for the api based on what is required on the products page, such as what search parameters are needed, and if the offset must be reset for requests (offset class) .
+parameterBuilderClass : uses values based on the filter bar of the products page and builds a parameter object that will be sent to the api using the requestDataClass.
+offsetClass: controls the offset that the request for the api is set at.
+requestStateHandler: detects if a request must be reset to initial.
+UserClass: holds the user data such as the api key of the user for validation of requests.
+### Classes within pageBuilder js 
+
+
+### Login and functionality:
+The users can log in using their credentials that they signed up with
+regex is used to ensure the entered credentials are of the correct length. 
+The password also comes with a button to allow a user to view the password text.
+
+### Signup and its functionality
+Users can sign up and create an account that will be recognised when logging in
+Users are expected to input a
+Username,
+password,
+confirm password,
+email.
+
+### Regex was done for each parameter
+The username is tested to be at least 3 characters in length 
+The password is tested to contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol and a digit 
+``` js
+    var letterTest = /[a-z]+/;
+    var upperLetterText = /[A-Z]+/;
+    var hasDigit = /\d+/;
+    var hasSymbol = /[\W_]+/;
+    var testLength = /.{8,}/
+```
+The confirm password is validated to match with the original password
+
+The email address is validated to be in the expected format that an email address must be. 
+```js
+ var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+```
+### Regex was done for each parameter
+
+when a user attempts to submit a sign in request, one final piece of validation is performed to ensure that the username and email the entered do not exist within the database
+
+On both the SignUp and Login pages the top right button will change based on where the user can travel to being either the login or sign up pages.
+
+### Products page and its functionality:
+As a user logs in or signs up they are presented with the product page a means to sign out and a button to control the filter bar
+
+# This page is decorated with products
+The best price available on our system
+review status 
+image of the product. 
+
+# The product page allows for scrolling and a sliding scale of when new products are loaded in for users. 
+batches of new products will come in at the 
+50% point in the scroll height 
+75% point in the scroll height
+82% point in the scroll height
+[scroll handler class](frontend/pages/jsFiles/productsPage.js)
+line : 231 at the time of writing
+
+### explaination of the sliding scale necessity
+The sliding scale was used to maximise the data coming in and the rate at which products were added optimised for the user experience.
+Products are added dynamically to the total table for the users and it never appears as though anything changed on the page.
+This was done for user experience and for ease of use of the user. 
+It was done using a scroll handler class:
+that manages the position of the scroll bar at all times, 
+and will call for the api to make a request at specific heights as stated above.
+
+The product page makes effective use of all the provided space without information overload, 
+it allows the user to find the features of the product page without being immediately subjected to it all at once.
+This is shown in the use of an animated filter bar that will be in the demonstration of the project in the presentation. 
+
+### The filter bar introduces 
+searching and sorting capabilities of the project to the user.
+The search bar works on the title of the product,
+The category is based on the category of the product
+The brand is the products brand
+Min and Max price are limiters for the prices that are shown to the user
+Sort by changing the order of products that are shown to users based on these categories.
+Price high-low
+Price low-high
+Name
+Newest
+Best rated
+[products](frontend/pages/jsFiles/productsPage.js)
+### The filter bar introduces
+
+The best reviewed items dashboard is presented when sorting items by review,
+it will sort items from best rated to worst. 
+
+The final feature of the products page is that each image of the products is the link to that products view page that is created when clicked on.
+
+### View page functionality.
+
+# The view page shows users more information about the product
+Description
+more images
+a list of all companies that provide that product and the price at which they provide the product.
+
+The view page also serves as the hub to view all the reviews done on that particular product,
+A general review of the product that was retrieved with the data of the api is also shown.
+
+### Specifics of the view page:
+The carousel is a linked list of html img nodes that are clickable and allow for swapping of images from the list to the main image on the page.
+
+### The review functionality allows for users to leave their own review and view all other reviews listed for this specific item. 
+When inserting a review, a pop up is shown that requires a :
+Title
+Description
+rating 1 through 5 for the product. 
+
+Once a review is posted it is immediately viewable in the customer reviews section of the view page.
+
+A customer is only available to review a product once, if detected that a user has already reviewed the product they are presented with an option to edit their review
+
+From the view page the user has the option to return to products or to directly sign out. 
+
+### admin details
+Admin login has its own page to directly take a user to the admin management page. 
+There is no route for a user to sign up to be an admin due to security concerns as such all admins must be added directly to the system through a root admin that was initialised within the database.
+
+CompareIT is designed under the assumption that companies sought out a means to present their products to users in a unified way to increase exposure to their sites
+
+admins on CompareIt thus have the full access to manage and control prices and products for the companies as was agreed, admins change products under requests from companies to do so. 
+
+### Product management
+The design of the admin page is such to place as much functionality on the page as possible for admins to achieve results in a short amount of time. 
+
+### On the product page at all times is 
+-a table of a chosen company's products with the options to edit in a button on the side. 
+-An option also exists to remove products from a company catalog. 
+-At all times a bottom field will be visible for administrators to add products to the database,
+-regular expressions are used for the fields with a main focus on the image url which must be in an expected format that aligns with the rest of the system.
+```js
+    var imgUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
+```
+The admins are presented with a drop down to access the brands and categories available to assign to an item.
+A company drop down is also listed to add the item into a specific company catalogue upon creation. 
+At the top of the page is a drop down list of all the companies that will allow a user to select product lists for specific companies for editing their product catalogue
+
+Upon selecting edit for a specific product the admin will be presented with the options of changing fields about a product 
+such as in this example where the name and description of the product changes to a text input box that can be submitted as an update to the product
+
+### User management
+The user management follows the same design pattern as the product manager allowing for viewing of all details of a user except for their password, 
+The table shows options for updating the user to an admin and does not allow for admins to alter user data,
+This being done under the assumption due to privacy concerns no user should have their details altered by an admin. 
+However users can be upgraded to the status of admin from this page 
+and accounts can be deleted. 
+This would be done in particular for users that violate policies for example the abuse of their api key.  
+
+### From the user management page new users can be added, 
+Verification is the same as on the signup page 
+
+### regex is done on 
+Usernames
+passwords 
+``` js
+    var letterTest = /[a-z]+/;
+    var upperLetterText = /[A-Z]+/;
+    var hasDigit = /\d+/;
+    var hasSymbol = /[\W_]+/;
+    var testLength = /.{8,}/
+```
+email addresses.
+```js
+ var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+```
+### regex is done on 
+
+With the added functionality that a user can be made into an admin at creation.
 
 ## Individual Contributions
 
