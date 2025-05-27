@@ -13,6 +13,8 @@ var emailHtml;
 var passwordHtml;
 var checkedHtml;
 
+var productHandler = {};
+
 document.addEventListener("DOMContentLoaded", setUpPage);
 
 
@@ -36,10 +38,11 @@ function setUpPage() {
 
     var params = new URLSearchParams(window.location.search);
     var value = params.get('page');
-    if (value === "admin")
+    if (value === "adminProducts" || value === null) { // default to products if no page param
         initialiseManageProducts();
-    else if (value === "adminUsers")
+    } else if (value === "adminUsers") {
         initialiseManageUsers();
+    }
 }
 function initialiseManageProducts() {
     selectCompany.disabled = false;
@@ -52,21 +55,17 @@ function initialiseManageProducts() {
     var cookieData = getLoginCookieAdmin();
     var api_key = cookieData.api_key;
 
-    requestData = {
-        type: "getproductpage",
-        api_key: api_key,
-        limit: 10000,
-    }
+    var requestData = {
+        type: "getadminproducts",
+        api_key: api_key
+    };
 
     var requestHeaderData = getLocalCredentials();
 
     request.open("POST", requestHeaderData.host, true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));    // fix to use wheately login stuff instead of the php my admin code if necessary
-    // fix to use wheately login stuff instead of the php my admin code if necessary
+    request.setRequestHeader("Authorization", "Basic " + btoa(requestHeaderData.username + ":" + requestHeaderData.password));
     request.send(JSON.stringify(requestData));
-
-
 }
 
 function stateChangeProducts() {
@@ -80,97 +79,55 @@ function stateChangeProducts() {
             else {
                 var data = requestResponse.data;
                 productHandler.addProductsAdmin(data);
-
             }
         }
         else {
-            alert("An error occurred on our side...")
+            alert("Failed to load products.");
         }
     }
 }
-function insertIntoTableAdmin() {
-    var table = document.getElementById("manageProdID")
-    for (var i = 0; i < productHandler.products.length; i++) {
-        var tr = document.createElement('tr');
-        var td = document.createElement('td');
-        var pData = document.createElement('p');
 
-        pData.textContent = productHandler.products[i].name;
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('p');
-        pData.style.maxHeight = "50px";
-        pData.style.overflowY = "auto";
-        pData.textContent = productHandler.products[i].description;
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('input');
-        pData.type = "number";
-        pData.min = "0";
-        pData.style.width = "50%";
-        pData.value = productHandler.products[i].regularPrice;
-        productHandler.products[i].AdminRegPrice = pData;
-        pData.style.textAlign = "center";
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('input');
-        pData.type = "number";
-        pData.min = "0";
-        pData.style.width = "50%";
-        pData.value = productHandler.products[i].salePrice;
-        pData.style.textAlign = "center";
-        productHandler.products[i].AdminDiscPrice = pData;
-        pData.id = productHandler.products[i].id;
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('p');
-        pData.textContent = productHandler.products[i].brand;
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('p');
-        pData.textContent = productHandler.products[i].category;
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-
-        td = document.createElement('td');
-        pData = document.createElement('input');
-        pData.type = "button";
-        pData.value = "update";
-        pData.id = i;
-        pData.addEventListener('click', function () {
-            sendUpdateToProdID(this.id);
-        })
-
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        td = document.createElement('td');
-        pData = document.createElement('input');
-        pData.type = "button";
-        pData.value = "delete";
-        pData.id = i;
-
-        pData.addEventListener('click', function () {
-            deleteProduct(this.id);
-        })
-
-        td.appendChild(pData);
-        tr.appendChild(td);
-
-        table.appendChild(tr);
-    }
+productHandler.addProductsAdmin = function(data) {
+    this.products = data;
+    insertIntoTableAdmin();
 }
+
+function insertIntoTableAdmin() {
+    var table = document.getElementById("manageProdID");
+    if (!table) {
+        console.error("Table with ID 'manageProdID' not found!");
+        return;
+    }
+    console.log("Products to display:", productHandler.products);
+    // Clear all rows except the header
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+    if (!productHandler.products || productHandler.products.length === 0) {
+        var row = table.insertRow();
+        var cell = row.insertCell();
+        cell.colSpan = 8;
+        cell.innerText = "No products found.";
+        return;
+    }
+    productHandler.products.forEach(function(product, index) {
+        var row = table.insertRow();
+        row.innerHTML = `
+            <td>${product.ProductID}</td>
+            <td>${product.Name}</td>
+            <td>${product.Description}</td>
+            <td>${product.BrandName}</td>
+            <td>${product.CategoryName}</td>
+            <td>${product.RegularPrice}</td>
+            <td>${product.BestPrice}</td>
+            <td>
+                <button onclick="editProduct(${index})">Edit</button>
+                <button onclick="deleteProduct(${index})">Delete</button>
+            </td>
+        `;
+    });
+}
+
 function deleteProduct(index) {
     if (selectCompany.selectedIndex === 0) {
         alert("select a company to delete the product of")

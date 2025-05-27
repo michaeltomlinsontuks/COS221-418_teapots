@@ -19,7 +19,9 @@
     $page = isset($_GET['page']) ? $_GET['page'] : '';
     if ($page == "adminUsers") {
         include "manageUsers.php";
-    } else {
+    } 
+    //we default to manage products if nothing is specified
+    else {
         include "manageProducts.php";
     }
     ?>
