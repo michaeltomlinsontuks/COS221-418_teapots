@@ -67,7 +67,18 @@ CompareIt is a next-generation price comparison web application aggregating prod
 ### Aaron Kim (u21494305)
 
 ### Michael Tomlinson (u24569705)
-
+- Initial research on product competitors
+- Research on data sources
+- Best Buy API Key Application
+- Data Extraction from JSONs
+- Mock Data Generator and Generation
+- Price Calculation
+- Git Repo Setup
+- Config Commit Protections
+- API Design
+- API Core Functionality
+- Powerpoint
+- README Formating
 ### Ayrtonn Taljaard (u24856462)
 
 ### Dawid Eales (u24608892)
