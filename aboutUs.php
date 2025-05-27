@@ -166,7 +166,7 @@
                 </div>
                 <div class="member-details front">
                     <h3>About Dawid</h3>
-                    <p>"If you begin to regret, you'll dull your future decisions and let others make your choices for you"</p>
+                    <p>"No one knows what the future holds, that's why its potential is infinite."</p>
                     <p>Fun fact: Likes boulders a lot</p>
                     <p>Dream Career: cyber-security</p>
                 </div>
