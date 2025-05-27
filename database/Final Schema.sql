@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 26, 2025 at 09:10 PM
+-- Generation Time: May 27, 2025 at 07:41 PM
 -- Server version: 10.3.39-MariaDB-0+deb10u2
 -- PHP Version: 7.3.31-1~deb10u7
 
@@ -25,6 +25,7 @@ DROP DATABASE IF EXISTS u24856462_COS221PA5;
 CREATE DATABASE u24856462_COS221PA5;
 
 USE u24856462_COS221PA5;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `Admin`
@@ -67,7 +68,7 @@ CREATE TABLE `BestProduct` (
   `ThumbnailImage` varchar(200) DEFAULT NULL,
   `CarouselImages` text DEFAULT NULL,
   `LastUpdated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `BestProduct`
@@ -339,7 +340,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (258, 'Sony - FE 70-300mm f/4.5-5.6 G OSS Telephoto Lens for Alpha E-mount Cameras - Black', 'Get a little closer to your subject with this Sony 70-300mm lens. Built-in optical stabilization delivers solid results even under low-light conditions, and the dust-resistant design helps prevent speckles from forming on the sensor itself. Narrower apertures from f/4.5-5.6 ensure you get wider depths of field with this Sony 70-300mm lens.', 51, 90, '910.34', '32.00', '1338.74', 190, '4.80', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5169500/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5169/5169500_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500_sd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5169\\/5169500ld.jpg\"}]', '2025-05-13 20:38:10'),
 (259, 'Sunpak - PlatinumPlus 4200XL 42\" Tripod - Black', 'Capture clear, stable videos and pictures with this Sunpak PlatinumPlus 4200XL 620-420BB 42\" tripod, which features 8 leg sections that extend from 11\" to 42\" for use on tabletops or the floor. The nonslip rubber feet ensure stability.', 55, 81, '14.78', '56.00', '33.59', 1508, '3.90', 'TechNova', 1, 'https://api.bestbuy.com/click/-/5191931/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5191/5191931_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931_rd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5191\\/5191931ld.jpg\"}]', '2025-05-13 20:38:10'),
 (260, 'Panasonic - LUMIX G 25mm f/1.7 ASPH. Lens for Mirrorless Micro Four Thirds Compatible Cameras, H-H025-K - Black', 'Take beautiful photos and hi-speed video with this hybrid Panasonic LUMIX 25mm lens. Compatible with LUMIX cameras, this lens attaches easily without adding weight to your camera. The natural viewing angle works well in a wide variety of applications, and this Panasonic LUMIX 25mm lens features motor focusing for ultra-clear images.', 19, 78, '137.74', '42.00', '237.49', 282, '4.70', 'TechNova', 1, 'https://api.bestbuy.com/click/-/5203501/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5203/5203501_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501_sd.jpg\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5203\\/5203501ld.jpg\"}]', '2025-05-13 20:38:10'),
-(261, 'Polaroid - Optics 52mm Multicoated UV Protective Lens Filter', 'Make sure your photos retain sharpness and contrast by filtering out UV rays and haze with this Polaroid Optics PLFILUV52 filter that is designed for use with 52mm diameter lenses.', 64, 98, '3.55', '30.93', '5.14', 3, '3.30', 'ByteCrate', 0, 'https://api.bestbuy.com/click/-/5208969/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5208/5208969_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"}]', '2025-05-13 20:38:10'),
+(261, 'Polaroid - Optics 52mm Multicoated UV Protective Lens Filter', 'Make sure your photos retain sharpness and contrast by filtering out UV rays and haze with this Polaroid Optics PLFILUV52 filter that is designed for use with 52mm diameter lenses.', 64, 98, '3.55', '30.93', '5.14', 0, '0.00', 'ByteCrate', 0, 'https://api.bestbuy.com/click/-/5208969/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5208/5208969_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5208\\/5208969_ra.jpg\"}]', '2025-05-27 14:30:28'),
 (262, 'Sunpak - TravelLite Pro Reverse Folding 63\" Tripod - Black with red accents', 'Pack this TravelLite Pro tripod in your bag for better photography sessions. Its reverse folding system makes it compact enough for travel, and twist-lock leg locks ensure easy setup. This TravelLite Pro tripod has leg angle adjustment latches for shooting at almost any angle and rubber-tipped feet that provide a secure stand for your equipment.', 55, 81, '102.09', '22.00', '130.89', 993, '4.50', 'VoltEdge', 1, 'https://api.bestbuy.com/click/-/5310001/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5310/5310001_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5310\\/5310001_rd.jpg\"}]', '2025-05-13 20:38:10'),
 (263, 'Celestron - AstroMaster Accessory Kit AstroMaster Accessory Kit - Multicolor', 'Celestron AstroMaster Accessory Kit Brand New Includes Two Year WarrantyThe Celestron AstroMaster Accessory Kit is designed to enhance the functionality and pleasure of using the Celestron telescope. This kit features two fully coated eyepieces; a 15mm Kellner and a 6mm Plossl. This kit can also be used with other telescope brands that accept 1.25\" eyepieces and filters. There is a 2x doubling lens that will double the magnification of any eyepiece and has a built-on T-thread allowing camera to be attached.   The AstroMaster Accessory kit has planetary filters that reduce glare and increase contrast, definition and resolution. This kit includes #80A blue planetary filter, #25 red planetary filter, moon filter and hard plastic carrying case with fitted cut foam inside to protect the eyepieces and filters. These anti-reflection coated filters are great enhancement for lunar and planet viewing.   AstroMaster Accessory Kit Features:   Product # 94307Accessory KitPlanetary FiltersDouble Magnification Power6mm Plossl EyepieceMoon Filter - Lowers Amount of Light Reaching Your Eye for Clear ViewFully Coated Kellner Eyepieces  Includes:15 mm Kellner Eyepiece6 mm Plossl Eyepiece2x Power Lens#80A Blue Planetary Filter#25 Red Planetary FilterMoon FilterMicrofiber Cleaning ClothPlastic, Hard Carrying Case w/ Foam-Lined Interior', 59, 87, '47.11', '41.00', '79.85', 8, '4.90', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5360394/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5360/5360394_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5360\\/5360394_ra.jpg\"}]', '2025-05-13 20:38:10'),
 (264, 'Sony - 2.0x Teleconverter Lens for Select Lenses - White', 'Sony 2.0x Teleconverter Lens: Double the focal length of your lens with this Sony 2.0x teleconverter. Extending the range of your current lens with minimal light loss lets you take closer wildlife photographs or portraits. High picture quality and lens features such as autofocus and aperture adjustments are retained when you use this Sony 2.0x teleconverter.', 51, 99, '179.52', '52.00', '373.99', 47, '4.60', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/5507119/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5507/5507119_rd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5507\\/5507119_rd.jpg\"}]', '2025-05-13 20:38:10'),
@@ -590,7 +591,7 @@ INSERT INTO `BestProduct` (`ProductID`, `Name`, `Description`, `BrandID`, `Categ
 (504, 'Garmin - Vehicle Charger - Black', 'Get where you\'re going without running out of power with this Garmin vehicle charger. The 12V charger is compatible with a range of Garmin Nuvi GPS models to deliver you from doorstep to doorstep without having to ask for directions. This Garmin vehicle charger plugs easily into your car\'s auxiliary power port.', 101, 159, '14.52', '29.99', '20.74', 1336, '4.70', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5513289/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5513/5513289_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5513\\/5513289_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (505, 'Samsung - 3.3\' USB Type A-to-USB Type C Device Cable - White', 'Charge your device quickly and easily with this Samsung USB-C cable. It also transfers photo, video, data and music files between your smartphone and laptop.', 102, 160, '8.25', '41.03', '13.99', 2878, '4.70', 'FuseBasket', 1, 'https://api.bestbuy.com/click/-/5607902/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5607/5607902_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5607\\/5607902_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (506, 'Apple - Lightning-to-3.5mm Headphone Adapter - White', 'This Apple&#174; MD821ZM/A Lightning-to-USB adapter lets you connect devices that use a 3.5 mm audio plug to your Lightning devices.', 38, 161, '6.32', '37.98', '10.19', 27226, '4.70', 'Bitify', 0, 'https://api.bestbuy.com/click/-/5622278/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5622/5622278_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5622\\/5622278_sd.jpg\"}]', '2025-05-13 20:38:10'),
-(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 3, '3.33', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-26 18:33:51'),
+(507, 'Ultra Mobile - Starter SIM Kit - Purple', 'With an Ultra Mobile wireless prepaid Starter SIM card kit, pick your plan and keep your own phone. Choose from 1, 3, 6, and 12-Month options from 250MB to Unlimited data, giving you the flexibility to pick the plan that works best for you. Your world is always included with Ultra Mobile, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world. For a full list of our Plans, visit ultramobile.com/purplesim', 103, 162, '1.31', '28.80', '1.84', 3, '3.67', 'CoreBay', 0, 'https://api.bestbuy.com/click/-/5706132/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/2663d6c0-9c9b-4dc9-966d-c9139cbb51fc.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/cf2abd2d-26f3-41d8-9fd7-4826aaaef5be.png\"},{\"leftViewImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/9595b884-fe66-49ee-87c7-4473681f66da.jpg\"}]', '2025-05-27 04:27:21'),
 (508, 'Ultra Mobile - 1-Month 3GB Prepaid SIM Card - Orange', 'With an Ultra Mobile wireless prepaid SIM card kit, your world is always included, without any compromises. Nationwide 5G with International included, starting as low as $10/mo, on the T-Mobile Network. Enjoy the flexibility to change your plan anytime, with options for single or multi-month plans. There are no contracts and no commitments - just the perfect plan for you to stay connected to those who matter most, no matter where they are in the world.', 103, 162, '9.22', '49.97', '18.43', 135, '4.20', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5706136/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5706/5706136_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5706\\/5706136_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (509, 'Belkin - Lightning Audio with Charge Adapter - White', 'Enjoy nonstop music while charging your iPhone with this Belkin Lightning Audio + Charge RockStar adapter. It keeps your iPhone 7 or 7 Plus fully functional while plugged in, and it\'s compatible with Apple MFi-certified cables and headphones. The 12W power pass-through of this Belkin Lightning Audio + Charge RockStar adapter provides optimal charging speed for compatible devices.', 104, 161, '13.52', '39.99', '22.53', 1930, '4.50', 'Nexonic', 1, 'https://api.bestbuy.com/click/-/5710888/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5710/5710888_sd.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5710\\/5710888_sd.jpg\"}]', '2025-05-13 20:38:10'),
 (510, 'SureCall - Flare 4G Cell Phone Signal Booster - Silver', 'Improve cellular coverage throughout your home or office with this SureCall cell phone signal booster. It handles multiple users simultaneously, providing improved voice, text and 4G LTE data signals covering up to 2,500 sq. ft. This SureCall cellular phone signal booster comes with the antennas, cable and power supply for fast setup.', 100, 157, '184.91', '33.00', '275.99', 12, '3.80', 'ByteCrate', 1, 'https://api.bestbuy.com/click/-/5753128/cart', 'https://pisces.bbystatic.com/prescaled/108/54/image2/BestBuy_US/images/products/5753/5753128_ra.jpg', '[{\"image\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/500\\/500\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"thumbnailImage\":\"https:\\/\\/pisces.bbystatic.com\\/prescaled\\/108\\/54\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"},{\"angleImage\":\"https:\\/\\/pisces.bbystatic.com\\/image2\\/BestBuy_US\\/images\\/products\\/5753\\/5753128_ra.jpg\"}]', '2025-05-13 20:38:10'),
@@ -792,7 +793,7 @@ CREATE TABLE `Bitify` (
   `DiscountedPrice` decimal(8,2) DEFAULT NULL,
   `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Bitify`
@@ -1360,11 +1361,11 @@ INSERT INTO `Brand` (`BrandID`, `BrandName`) VALUES
 
 CREATE TABLE `ByteCrate` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ByteCrate`
@@ -1587,11 +1588,11 @@ INSERT INTO `ByteCrate` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToC
 
 CREATE TABLE `ByteMart` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ByteMart`
@@ -2331,11 +2332,11 @@ INSERT INTO `Category` (`CategoryID`, `CategoryName`) VALUES
 
 CREATE TABLE `ChipCart` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ChipCart`
@@ -2964,11 +2965,11 @@ INSERT INTO `Company` (`CompanyID`, `Name`) VALUES
 
 CREATE TABLE `CoreBay` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `CoreBay`
@@ -3260,11 +3261,11 @@ INSERT INTO `CoreBay` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCar
 
 CREATE TABLE `FuseBasket` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `FuseBasket`
@@ -3418,11 +3419,11 @@ INSERT INTO `FuseBasket` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddTo
 
 CREATE TABLE `Nexonic` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Nexonic`
@@ -3578,7 +3579,7 @@ CREATE TABLE `Review` (
   `ReviewID` int(11) NOT NULL,
   `ProductID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
-  `ReviewTitle` varchar(255) DEFAULT NULL,
+  `ReviewTitle` varchar(100) DEFAULT NULL,
   `ReviewDescription` text DEFAULT NULL,
   `ReviewRating` tinyint(4) NOT NULL CHECK (`ReviewRating` between 1 and 5),
   `Timestamp` datetime DEFAULT current_timestamp()
@@ -3589,11 +3590,11 @@ CREATE TABLE `Review` (
 --
 
 INSERT INTO `Review` (`ReviewID`, `ProductID`, `UserID`, `ReviewTitle`, `ReviewDescription`, `ReviewRating`, `Timestamp`) VALUES
-(1, 507, 6, 'Rev', 'Not a bad product', 2, '2025-05-26 18:30:48'),
-(2, 507, 7, 'Better', 'It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product It\'s a nice product', 5, '2025-05-26 18:42:33'),
-(3, 571, 6, 'Satisfied', 'Works well on my son', 5, '2025-05-26 18:26:02'),
+(3, 571, 6, 'Satisfied', 'Works well on my so', 5, '2025-05-27 14:29:00'),
 (4, 507, 8, 'Satisfactory', 'A decent product', 3, '2025-05-26 18:43:10'),
-(5, 571, 8, 'lovely', 'works well', 4, '2025-05-26 18:39:23');
+(5, 571, 8, 'lovely', 'works well', 4, '2025-05-26 18:39:23'),
+(7, 507, 7, 'Better', 'Good product', 4, '2025-05-27 03:29:47'),
+(8, 507, 6, 'Good Product', 'Very good!', 4, '2025-05-27 04:27:21');
 
 -- --------------------------------------------------------
 
@@ -3603,11 +3604,11 @@ INSERT INTO `Review` (`ReviewID`, `ProductID`, `UserID`, `ReviewTitle`, `ReviewD
 
 CREATE TABLE `TechNova` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `TechNova`
@@ -4140,7 +4141,7 @@ INSERT INTO `TechNova` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 
 CREATE TABLE `Users` (
   `UserID` int(11) NOT NULL,
-  `Email` varchar(255) DEFAULT NULL,
+  `Email` varchar(200) DEFAULT NULL,
   `Username` varchar(50) DEFAULT NULL,
   `Salt` varchar(64) DEFAULT NULL,
   `PasswordHash` char(128) DEFAULT NULL,
@@ -4170,11 +4171,11 @@ INSERT INTO `Users` (`UserID`, `Email`, `Username`, `Salt`, `PasswordHash`, `API
 
 CREATE TABLE `VoltEdge` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `VoltEdge`
@@ -4535,11 +4536,11 @@ INSERT INTO `VoltEdge` (`ProductID`, `RegularPrice`, `DiscountedPrice`, `AddToCa
 
 CREATE TABLE `ZapNest` (
   `ProductID` int(11) NOT NULL,
-  `RegularPrice` decimal(10,2) DEFAULT NULL,
-  `DiscountedPrice` decimal(10,2) DEFAULT NULL,
-  `AddToCartURL` varchar(255) DEFAULT NULL,
+  `RegularPrice` decimal(8,2) DEFAULT NULL,
+  `DiscountedPrice` decimal(8,2) DEFAULT NULL,
+  `AddToCartURL` varchar(200) DEFAULT NULL,
   `OnlineAvailability` tinyint(1) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ZapNest`
@@ -5012,13 +5013,17 @@ ALTER TABLE `BestProduct`
   ADD PRIMARY KEY (`ProductID`),
   ADD UNIQUE KEY `Name` (`Name`),
   ADD KEY `fk_BP1` (`BrandID`),
-  ADD KEY `fk_BP2` (`CategoryID`);
+  ADD KEY `fk_BP2` (`CategoryID`),
+  ADD KEY `idx_bestprice` (`BestPrice`),
+  ADD KEY `idx_brand` (`BrandID`),
+  ADD KEY `idx_category` (`CategoryID`);
 
 --
 -- Indexes for table `Bitify`
 --
 ALTER TABLE `Bitify`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Brand`
@@ -5031,13 +5036,15 @@ ALTER TABLE `Brand`
 -- Indexes for table `ByteCrate`
 --
 ALTER TABLE `ByteCrate`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `ByteMart`
 --
 ALTER TABLE `ByteMart`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Category`
@@ -5050,7 +5057,8 @@ ALTER TABLE `Category`
 -- Indexes for table `ChipCart`
 --
 ALTER TABLE `ChipCart`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Company`
@@ -5063,19 +5071,22 @@ ALTER TABLE `Company`
 -- Indexes for table `CoreBay`
 --
 ALTER TABLE `CoreBay`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `FuseBasket`
 --
 ALTER TABLE `FuseBasket`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Nexonic`
 --
 ALTER TABLE `Nexonic`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Review`
@@ -5083,13 +5094,15 @@ ALTER TABLE `Nexonic`
 ALTER TABLE `Review`
   ADD PRIMARY KEY (`ReviewID`),
   ADD KEY `fk_Review1` (`ProductID`),
-  ADD KEY `fk_Review2` (`UserID`);
+  ADD KEY `fk_Review2` (`UserID`),
+  ADD KEY `idx_prod` (`ProductID`);
 
 --
 -- Indexes for table `TechNova`
 --
 ALTER TABLE `TechNova`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `Users`
@@ -5105,13 +5118,15 @@ ALTER TABLE `Users`
 -- Indexes for table `VoltEdge`
 --
 ALTER TABLE `VoltEdge`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- Indexes for table `ZapNest`
 --
 ALTER TABLE `ZapNest`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `idx_ProductID` (`ProductID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -5121,7 +5136,7 @@ ALTER TABLE `ZapNest`
 -- AUTO_INCREMENT for table `BestProduct`
 --
 ALTER TABLE `BestProduct`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=692;
 
 --
 -- AUTO_INCREMENT for table `Brand`
@@ -5145,13 +5160,13 @@ ALTER TABLE `Company`
 -- AUTO_INCREMENT for table `Review`
 --
 ALTER TABLE `Review`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
