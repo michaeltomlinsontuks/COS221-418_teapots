@@ -1629,6 +1629,13 @@ With the added functionality that a user can be made into an admin at creation.
 - Database documentation
 - Minor contribution to front end (aboutUs page)
     
+### Dawid Eales (u24608892)
+- Research on similar applications
+- Designs for frontend UI
+- Initial Products view page 
+- Powerpoint slides for frontend
+- README additions for frontend
+- testing application functions
 
 ### Michael Tomlinson (u24569705)
 - Initial research on product competitors
@@ -1651,8 +1658,6 @@ With the added functionality that a user can be made into an admin at creation.
 - Task 5:
    - Extended Product View page design html, css and javascript [view page](frontend/pages/view.php)
    - Product Review Functionality [view page](frontend/pages/view.php)
-
-### Dawid Eales (u24608892)
 
 ### Wilmar Smit (u24584216)
 - Task 1:Reasearch 
