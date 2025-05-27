@@ -138,7 +138,7 @@
 </head>
 <body>
     <div class="title-container">
-        <img src="images/teapotsLogoPot.png" alt="Teapots Logo" class="logo">
+        <img src="images/teapotsLogoPotNoText.png" alt="Teapots Logo" class="logo">
         <h1 class="main-title">Meet The Teapots</h1>
     </div>
     
@@ -154,7 +154,7 @@
                     <h3>About Wilmar</h3>
                     <p>"Deadlines are scary but the regret of missing them cuts deeper" ~ Wilmar</p>
                     <p>Fun Fact: "Damn this is tough💀"</p>
-                    <p>Dream Career: AI Machine Learning.</p>
+                    <p>Dream Career: Game Development with a focus on graphics.</p>
                 </div>
             </div>
             
@@ -166,9 +166,9 @@
                 </div>
                 <div class="member-details front">
                     <h3>About Dawid</h3>
-                    <p>"Fly@UP"</p>
-                    <p>Fun fact: Inherited Harry Potter's ivisibility cloak</p>
-                    <p>Dream Career: Web Development</p>
+                    <p>"If you begin to regret, you'll dull your future decisions and let others make your choices for you"</p>
+                    <p>Fun fact: Likes boulders a lot</p>
+                    <p>Dream Career: cyber-security</p>
                 </div>
             </div>
         </div>

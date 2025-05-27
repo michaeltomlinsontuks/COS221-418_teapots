@@ -103,6 +103,9 @@ Update the best products table
     - Testing and review process before merging to main branch
 - **Only working code**
     - Ensure functionality works before committing to main
+- **Config Protections**
+    - Never commit a config.php file to the repo
+    - It has been added to the git ignore and there are automated commit checks to detect when the credentials are attempted to be committed 
 
 ### Code Standards
 
@@ -241,6 +244,7 @@ CREATE TABLE `Admin` (
 
 - `UserID`: Primary and Foreign Key
 
+
 ### BestProduct
 
 - Represents the best priced version of each product
@@ -306,6 +310,7 @@ CREATE TABLE `BestProduct` (
 - `BrandID`: Faster querying on product brands
 - `CategoryID`: Faster querying on product categories
 
+
 ### Bitify
 
 - Represents Bitify's products
@@ -335,6 +340,7 @@ CREATE TABLE `Bitify` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Brand
 
 - Represents product brands
@@ -358,6 +364,7 @@ CREATE TABLE `Brand` (
 
 - `BrandID`: Primary Key
 - `BrandName`: Unique Key
+
 
 ### ByteCrate
 
@@ -388,6 +395,7 @@ CREATE TABLE `ByteCrate` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### ByteMart
 
 - Represents ByteMart's products
@@ -417,6 +425,7 @@ CREATE TABLE `ByteMart` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Category
 
 - Represents product categories
@@ -440,6 +449,7 @@ CREATE TABLE `Category` (
 
 - `CategoryID`: Primary Key
 - `CategoryName`: Unique Key
+
 
 ### ChipCart
 
@@ -470,6 +480,7 @@ CREATE TABLE `ChipCart` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Company
 
 - Represents product companies
@@ -494,6 +505,7 @@ CREATE TABLE `Company` (
 
 - `CompanyID`: Primary Key
 - `Name`: Unique Key
+
 
 ### CoreBay
 
@@ -524,6 +536,7 @@ CREATE TABLE `CoreBay` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### FuseBasket
 
 - Represents FuseBasket's products
@@ -553,6 +566,7 @@ CREATE TABLE `FuseBasket` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### Nexonic
 
 - Represents Nexonic's products
@@ -581,6 +595,7 @@ CREATE TABLE `Nexonic` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
+
 
 ### Review
 
@@ -623,6 +638,7 @@ CREATE TABLE `Review` (
 
 - `ProductID`: Faster retrieval of reviews per product
 
+
 ### TechNova
 
 - Represents TechNova's products
@@ -651,6 +667,7 @@ CREATE TABLE `TechNova` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
+
 
 ### Users
 
@@ -693,6 +710,7 @@ CREATE TABLE `Users` (
 - `PasswordHash`: Unique Key
 - `APIKey`: Unique Key
 
+
 ### VoltEdge
 
 - Represents VoltEdge's products
@@ -722,6 +740,7 @@ CREATE TABLE `VoltEdge` (
 
 - `ProductID`: Primary and Foreign Key
 
+
 ### ZapNest
 
 - Represents ZapNest's products
@@ -750,7 +769,7 @@ CREATE TABLE `ZapNest` (
 **Keys:**
 
 - `ProductID`: Primary and Foreign Key
->>>>>>> 5d71d9750b15f6b9b124931afb1a413a7458e6ea
+
 
 ### Optimisation (Task 7)
 
@@ -1632,7 +1651,7 @@ With the added functionality that a user can be made into an admin at creation.
 - Git Repo Setup
 - Config Commit Protections
 - API Design
-- API Core Functionality
+- [API Core Functionality](API/api.php)
 - Powerpoint
 - README Formatting
 
@@ -1647,15 +1666,15 @@ With the added functionality that a user can be made into an admin at creation.
 ### Dawid Eales (u24608892)
 
 ### Wilmar Smit (u24584216)
--Task 1:Reasearch 
--Task 5:Web based applications:
-  -Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
-  -Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
-  -Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
-  -Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
-  -Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
-  -Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
--Non task based responsibilites:
-  -file structure of the frontend [frontend](frontend)
-  -setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
-  -communication and group management with tutors.
+- Task 1:Reasearch 
+- Task 5:Web based applications:
+  - Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
+  - Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
+  - Product filters, animation and javascript functionality [product page](frontend/pages/products.php)
+  - Product View page design html, css and carousel linked list functionality [view page](frontend/pages/view.php)
+  - Admin products design html and css, javascript original structure.[admin page](frontend/manageProducts.php)
+  - Admin users design html and css, javascript original structure.[admin page](frontend/manageUsers.php)
+- Non task based responsibilites:
+  - File structure of the frontend [frontend](frontend)
+  - Setup and design of the pagebuilder structure [pagebuilder](frontend/pagebuilder.php) 
+  - Communication and group management with tutors.
