@@ -2,28 +2,28 @@
     <table id="manageProdID" class="manageProducts">
         <tr>
             <th>
-                title
+                ID
             </th>
             <th>
-                dsc
+                Name
             </th>
             <th>
-                regular price
+                Description
             </th>
             <th>
-                discount price
+                Brand
             </th>
             <th>
-                brand
+                Category
             </th>
             <th>
-                category
+                Regular Price
             </th>
             <th>
-                update
+                Best Price
             </th>
             <th>
-                delete
+                Actions
             </th>
         </tr>
     </table>

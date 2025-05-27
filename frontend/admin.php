@@ -16,11 +16,15 @@
     </table>
 
     <?php
-    if ($_GET['page'] == "adminUsers")
+    $page = isset($_GET['page']) ? $_GET['page'] : '';
+    if ($page == "adminUsers") {
         include "manageUsers.php";
+    } 
+    //we default to manage products if nothing is specified
     else {
         include "manageProducts.php";
     }
     ?>
 </div>
+<script src="pages/jsFiles/cookies.js"></script>
 <script src="adminJS/admin.js"></script>
