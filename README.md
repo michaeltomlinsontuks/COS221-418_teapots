@@ -1723,7 +1723,7 @@ With the added functionality that a user can be made into an admin at creation.
    - Product Review Functionality [view page](frontend/pages/view.php)
 
 ### Wilmar Smit (u24584216)
-- Task 1:Reasearch 
+- Task 1:Research 
 - Task 5:Web based applications:
   - Login and signup design html, css and javascript functionality[login and signup pages](frontend/pages)
   - Product page design html, css and javascript functionality [product page](frontend/pages/products.php)
