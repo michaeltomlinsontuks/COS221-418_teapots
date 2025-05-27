@@ -1197,20 +1197,34 @@ class API
             $query = "DELETE FROM Admin WHERE UserID = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param('i', $userId);
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to delete from Admin: ' . $stmt->error);
+            }
+
+            // Delete user's reviews
+            $query = "DELETE FROM Review WHERE UserID = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('i', $userId);
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to delete user reviews: ' . $stmt->error);
+            }
 
             // Delete user
             $query = "DELETE FROM Users WHERE UserID = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param('i', $userId);
-            
-            if ($stmt->execute()) {
-                $this->conn->commit();
-                $this->response['status'] = 'success';
-                $this->response['message'] = 'User deleted successfully';
-            } else {
-                throw new Exception('Failed to delete user');
+
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to delete user: ' . $stmt->error);
             }
+
+            if ($stmt->affected_rows === 0) {
+                throw new Exception('No user deleted. User may not exist or is referenced elsewhere.');
+            }
+
+            $this->conn->commit();
+            $this->response['status'] = 'success';
+            $this->response['message'] = 'User deleted successfully';
         } catch (Exception $e) {
             $this->conn->rollback();
             $this->response['message'] = 'Error deleting user: ' . $e->getMessage();
