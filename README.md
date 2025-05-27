@@ -117,8 +117,16 @@ Update the best products table
     - Should serve as living documentation for the project
 
 ## Demo Details (Task 9)
-Need to clarify how this is going to work - basically explain where to find dump etc. and how to boot using a local server or how to access the wheatley
+The website can be accessed locally through the provided localDemo.zip in the clickup submission 
+The way that the files should be structured will be contained inside the localDemo zip and has only been tested to work using xamp and the directory within htdocs
+The website should then be accessed through http://localhost/teapots/
+The dump can be accessed in the database folder the sql file labeled final Schema. [final schema](database/Final%20Schema.sql)
+This structure will mimic what is available on wheatley
 
+The website can be accessed through the link https://wheatley.cs.up.ac.za/u24584216/teapots/
+The username and password will be placed safely in the submission for clickup and will not appear on the readme
+The data will be placed within config.php within the submission and will only contain the credentials to log into wheatley
+This will be the main presentation version used in the demo.
 ## Database Design
 
 ### Structure (Task 2)
